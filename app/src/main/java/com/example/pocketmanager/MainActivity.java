@@ -6,32 +6,33 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.json.gson.GsonFactory;
+import com.google.android.gms.tasks.Task;
+
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
-import com.google.api.services.drive.model.File;
 
-import java.util.Collections;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int RC_SIGN_IN = 400;
     private GoogleSignInClient client;
-    private GoogleSignInAccount account;
-    private Drive googleDriveService;
-    private GoogleDriveServiceFunction mGoogleDriveServiceFunction;
+    private SharedPreferences accountData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.create_button).setOnClickListener(this);
         findViewById(R.id.LogOut).setOnClickListener(this);
-
 //        updateUI(account);
     }
     @Override
@@ -75,16 +75,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
-            handleSignInIntent(data);
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInIntent(task);
             Toast.makeText(this, "登入成功!!", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(this, "登入失敗", Toast.LENGTH_SHORT).show();
         }
     }
     public void logOut(){
@@ -93,27 +91,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "登出成功!!", Toast.LENGTH_SHORT).show();
         }
     }
-    private void handleSignInIntent(Intent data) {
-        GoogleSignIn.getSignedInAccountFromIntent(data)
-                .addOnSuccessListener(googleSignInAccount -> {
-                    GoogleAccountCredential credential = GoogleAccountCredential
-                            .usingOAuth2(this, Collections.singleton(DriveScopes.DRIVE_FILE));
+    private void handleSignInIntent(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-                    credential.setSelectedAccount(googleSignInAccount.getAccount());
-
-                    drive(credential);
-                })
-                .addOnFailureListener(e -> e.printStackTrace());
+            accountData = getSharedPreferences("Account_config", MODE_PRIVATE);
+            SharedPreferences.Editor editor = accountData.edit();
+            editor.putString("email", account.getEmail());
+            editor.putString("displayName", account.getDisplayName());
+            editor.putString("displayPhoto", account.getPhotoUrl().toString());
+            editor.commit();
+        } catch (ApiException e) {
+            Toast.makeText(this, "登入失敗", Toast.LENGTH_SHORT).show();
+            Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
+        }
     }
-    public void drive(GoogleAccountCredential credential) {
-        this.googleDriveService =
-                new Drive.Builder(
-                        AndroidHttp.newCompatibleTransport(),
-                        new GsonFactory(),
-                        credential)
-                        .setApplicationName("Appname")
-                        .build();
 
-        this.mGoogleDriveServiceFunction = new GoogleDriveServiceFunction(googleDriveService);
+    public String getAccountEmail(){
+        return accountData.getString("email", "xxx@gmail.com");
+    }
+    public String getAccountdisplayName(){
+        return accountData.getString("displayName", "XXX-XXX");
     }
 }
