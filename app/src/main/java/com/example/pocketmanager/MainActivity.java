@@ -1,47 +1,46 @@
 package com.example.pocketmanager;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.tasks.Task;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.File;
+
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int RC_SIGN_IN = 400;
-    GoogleSignInClient client;
-//    GoogleDriveServiceFunction googleDriveServiceFunction;
+    private GoogleSignInClient client;
+    private GoogleSignInAccount account;
+    private Drive googleDriveService;
+    private GoogleDriveServiceFunction mGoogleDriveServiceFunction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_google);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestScopes(new Scope(DriveScopes.DRIVE_FILE),
-                        new Scope(DriveScopes.DRIVE_APPDATA))
-                .build();
-
-        client = GoogleSignIn.getClient(this, gso);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        findViewById(R.id.create_button).setOnClickListener(this);
+        findViewById(R.id.LogOut).setOnClickListener(this);
+
 //        updateUI(account);
     }
     @Override
@@ -49,54 +48,72 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.sign_in_button:
                 signIn();
+                requestStoragePremission();
+                break;
+            case R.id.LogOut:
+                logOut();
                 break;
             // ...
         }
     }
-//    private void updateUI(@Nullable GoogleSignInAccount account) {
-//        if (account != null) {
-//            mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
-//
-//            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-//            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-//        } else {
-//            mStatusTextView.setText(R.string.signed_out);
-//
-//            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-//            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
-//        }
-//    }
     private void signIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestScopes(new Scope(DriveScopes.DRIVE_FILE),
+                        new Scope(DriveScopes.DRIVE_APPDATA))
+                .requestIdToken("1013631286690-5pdqknoqqql0o0ntdjbvmo5l04dc8s70.apps.googleusercontent.com")
+                .requestProfile()
+                .build();
+
+        client = GoogleSignIn.getClient(this, gso);
         Intent signInIntent = client.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+    public void requestStoragePremission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Log.w(TAG, "result");
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+        if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
+            handleSignInIntent(data);
+            Toast.makeText(this, "登入成功!!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "登入失敗", Toast.LENGTH_SHORT).show();
         }
     }
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
-//            updateUI(account);
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-//            updateUI(null);
+    public void logOut(){
+        if(client != null){
+            client.signOut();
+            Toast.makeText(this, "登出成功!!", Toast.LENGTH_SHORT).show();
         }
     }
+    private void handleSignInIntent(Intent data) {
+        GoogleSignIn.getSignedInAccountFromIntent(data)
+                .addOnSuccessListener(googleSignInAccount -> {
+                    GoogleAccountCredential credential = GoogleAccountCredential
+                            .usingOAuth2(this, Collections.singleton(DriveScopes.DRIVE_FILE));
 
+                    credential.setSelectedAccount(googleSignInAccount.getAccount());
 
+                    drive(credential);
+                })
+                .addOnFailureListener(e -> e.printStackTrace());
+    }
+    public void drive(GoogleAccountCredential credential) {
+        this.googleDriveService =
+                new Drive.Builder(
+                        AndroidHttp.newCompatibleTransport(),
+                        new GsonFactory(),
+                        credential)
+                        .setApplicationName("Appname")
+                        .build();
+
+        this.mGoogleDriveServiceFunction = new GoogleDriveServiceFunction(googleDriveService);
+    }
 }
