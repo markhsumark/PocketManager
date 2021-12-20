@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">PocketManager</string>
+    <string name="app_name">My Application</string>
+    <string name="google">連結Google</string>
+    <string name="notice">提醒</string>
+    <string name="remind">提醒</string>
+    <string name="desktool">桌面小工具</string>
+    <string name="property">資產</string>
+    <string name="hand_backup">手動備份</string>
+    <string name="auto_backup">自動備份</string>
+    <string name="edit_category">編輯類別</string>
+    <string name="speak">語音</string>
+    <string name="notice_capture">通知擷取</string>
+    <string name="last">last</string>
 </resources>
