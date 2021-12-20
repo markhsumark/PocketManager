@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/topEdge"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@color/purple_200" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:autoSizeTextType="uniform" />
+        //頁面名稱:從ACTIVITY給 新增/編輯紀錄
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dateInfo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topEdge">
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:autoSizeTextType="uniform"
+            android:text="日期" />
+
+        <EditText
+            android:id="@+id/datePicker"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:onClick="datePicker" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/typeInfo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateInfo">
+
+        <TextView
+            android:id="@+id/typeText"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:autoSizeTextType="uniform"
+            android:text="收支" />
+
+        <NumberPicker
+            android:id="@+id/typePicker"
+            android:layout_width="250dp"
+            android:layout_height="80dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/assetInfo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/typeInfo">
+
+        <TextView
+            android:id="@+id/assetText"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:autoSizeTextType="uniform"
+            android:text="資產" />
+
+        <NumberPicker
+            android:id="@+id/assetPicker"
+            android:layout_width="250dp"
+            android:layout_height="80dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/moneyInfo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetInfo">
+
+        <TextView
+            android:id="@+id/moneyText"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:autoSizeTextType="uniform"
+            android:text="金額" />
+
+        <EditText
+            android:id="@+id/moneyEditor"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/categoryInfo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moneyInfo">
+
+        <TextView
+            android:id="@+id/categoryText"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:autoSizeTextType="uniform"
+            android:text="類別/\n子類別" />
+
+        <NumberPicker
+            android:id="@+id/categoryPicker"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:src="@color/purple_200" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/descriptionInfo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/categoryInfo">
+
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:autoSizeTextType="uniform"
+            android:text="描述" />
+
+        <EditText
+            android:id="@+id/descriptionEditor"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:text="" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="64dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginBottom="64dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
