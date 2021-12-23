@@ -14,7 +14,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -29,7 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.test_google);
         accountData = getSharedPreferences("Account_config", MODE_PRIVATE);;
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.create_button).setOnClickListener(this);
+        findViewById(R.id.upload_button).setOnClickListener(this);
+        findViewById(R.id.download_button).setOnClickListener(this);
         findViewById(R.id.LogOut).setOnClickListener(this);
 
     }
@@ -48,8 +51,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 accountData = mGoogleDriveService.clearAccountData(accountData);
                 refreshView();
                 break;
-            case R.id.create_button:
+            case R.id.upload_button:
+                mGoogleDriveService.backUpToDrive();
                 break;
+            case R.id.download_button:
+                mGoogleDriveService.restoreFromDrive();
+                break;
+
             // ...
         }
     }
@@ -61,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mGoogleDriveService.handleSignInResult(data);
             accountData = mGoogleDriveService.setAccountData(accountData);
             mGoogleDriveService.setDrive(data, this);
-
             refreshView();
         }
         else{

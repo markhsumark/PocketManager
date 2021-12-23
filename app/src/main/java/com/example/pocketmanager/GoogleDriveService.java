@@ -29,18 +29,24 @@ import java.util.Collections;
 public class GoogleDriveService {
 
     public static final int RC_SIGN_IN = 400;
-    public Drive driveService;
+    private Drive driveService;
     private GoogleSignInClient client;
     private GoogleSignInAccount account;
-//    private GoogleDriveUtil GUtil;
+    private GoogleDriveUtil GUtil;
 
     public Intent getSignInIntent(Activity activity) {
         Log.i("log", "get sign in intent");
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestScopes(new Scope(DriveScopes.DRIVE_FILE),
-                        new Scope(DriveScopes.DRIVE_APPDATA))
-//                .requestIdToken("1013631286690-5pdqknoqqql0o0ntdjbvmo5l04dc8s70.apps.googleusercontent.com")
+                        new Scope(DriveScopes.DRIVE),
+                        new Scope(DriveScopes.DRIVE_APPDATA),
+                        new Scope(DriveScopes.DRIVE_READONLY),
+                        new Scope(DriveScopes.DRIVE_METADATA),
+                        new Scope(DriveScopes.DRIVE_SCRIPTS),
+                        new Scope(DriveScopes.DRIVE_METADATA_READONLY),
+                        new Scope(DriveScopes.DRIVE_PHOTOS_READONLY))
+                .requestIdToken("1013631286690-5pdqknoqqql0o0ntdjbvmo5l04dc8s70.apps.googleusercontent.com")
                 .requestProfile()
                 .build();
 
@@ -55,10 +61,8 @@ public class GoogleDriveService {
         }
     }
     public void logOut(){
-        if(client != null){
-            client.signOut();
-            Log.i("isLogOut?", "yes!");
-        }
+        client.signOut();
+        Log.i("isLogOut?", "yes!");
     }
     public void handleSignInResult(Intent data) {
         try {
@@ -93,7 +97,7 @@ public class GoogleDriveService {
                         credential)
                         .setApplicationName("PocketManager")
                         .build();
-//        GUtil = new GoogleDriveUtil(driveService);
+        GUtil = new GoogleDriveUtil(driveService);
     }
     public SharedPreferences setAccountData(SharedPreferences accountData){
         try{
@@ -113,17 +117,21 @@ public class GoogleDriveService {
     }
     public SharedPreferences clearAccountData(SharedPreferences accountData){
         try{
-            if(account != null) {
-                SharedPreferences.Editor editor = accountData.edit();
-                editor.clear();
-                editor.commit();
-            }
+            SharedPreferences.Editor editor = accountData.edit();
+            editor.clear();
+            editor.commit();
+
         }catch(Exception e){
             Log.w("TAG", e);
         }
 
         return accountData;
     }
-
+    public void backUpToDrive(){
+        GUtil.createFile();
+    }
+    public void restoreFromDrive(){
+        GUtil.downloadFile();
+    }
 
 }
