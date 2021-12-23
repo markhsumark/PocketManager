@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class HomeActivity extends AppCompatActivity {
+    private Button adder;
     private RecyclerView externalRecyclerView, internalRecyclerView;
     private RecyclerView.LayoutManager exLayoutManager, inLayoutManager;
     private ExAdapter exAdapter;
@@ -27,6 +30,16 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
+
+        adder = findViewById(R.id.adder);
+        adder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, AddOrEditActivity.class);
+                intent.putExtra("mode", false);
+                startActivity(intent);
+            }
+        });
 /*
         internalRecyclerView = findViewById(R.id.internalRecyclerView);
         internalRecyclerView.setHasFixedSize(true);
@@ -46,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
         exAdapter = new ExAdapter();
         externalRecyclerView.setAdapter(exAdapter);
 
+
     }
 
     private void makeData(){
@@ -58,6 +72,8 @@ public class HomeActivity extends AppCompatActivity {
             data.add(row);
         }
     }
+
+
 
     private class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
 
@@ -88,6 +104,21 @@ public class HomeActivity extends AppCompatActivity {
             holder.category.setText(data.get(position).get("category"));
             holder.description.setText(data.get(position).get("description"));
             holder.money.setText(data.get(position).get("money"));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String category = data.get(position).get("category");
+                    String description = data.get(position).get("description");
+                    String money = data.get(position).get("money");
+                    Intent intent = new Intent(HomeActivity.this, AddOrEditActivity.class);
+                    intent.putExtra("category", category);
+                    intent.putExtra("description", description);
+                    intent.putExtra("money", money);
+                    intent.putExtra("mode", true); //edit
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override
