@@ -51,7 +51,6 @@ public class GoogleDriveUtil {
                     fileId = file.getId();
 
                     Log.i("File ID: " , file.getId());
-                    Log.i("File ID: " , file.getDescription());
                 }catch(IOException e){
                     Log.e("err when create file",e.getMessage());
                 }
