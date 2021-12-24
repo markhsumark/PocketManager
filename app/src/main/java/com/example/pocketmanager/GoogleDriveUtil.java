@@ -1,7 +1,5 @@
 package com.example.pocketmanager;
 
-import android.content.Context;
-
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -9,8 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import java.io.OutputStream;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
@@ -18,27 +14,26 @@ import com.google.api.services.drive.model.File;
 
 public class GoogleDriveUtil {
 
-    private Drive driveService;
+//    會改為資料庫的路徑
+    private static String appFolderRootPath = "data/data/com.example.pocketmanager/shared_prefs/";
+//    會改為DB file name
+    private static String dbFileName = "Account_config.xml";
     private String fileId;
-    private static String appFolderRootPath = "data/data/com.example.pocketmanager/";
 
-    GoogleDriveUtil(Drive driveService){
-        this.driveService = driveService;
-    }
-
-    public void createFile(){
+//    傳入參數為：上傳的目的地drive 和上傳的file名稱
+    public void createFileToDrive(Drive driveService, String fileName){
         Thread thr = new Thread(){
             @Override
             public void run(){
 //                create new file object
                 File fileMetadata = new File();
-                fileMetadata.setName("Account_config.xml");
+                fileMetadata.setName("PocketManager_DB.db");
 
-//                上傳到app目錄用
+//                設定為上傳到app專用的Drive目錄
 //                fileMetadata.setParents(Collections.singletonList("appDataFolder"));
 
 //                實際檔案位置
-                java.io.File filePath = new java.io.File(appFolderRootPath +"shared_prefs/Account_config.xml");
+                java.io.File filePath = new java.io.File(appFolderRootPath +dbFileName);
 //                設定檔案內容
                 FileContent mediaContent = new FileContent("text/xml", filePath);
 //                type表格：https://developers.google.com/drive/api/v3/ref-export-formats
@@ -58,8 +53,8 @@ public class GoogleDriveUtil {
         };
         thr.start();
     }
-//未測試
-    public void updateFile(){
+//  未測試
+    public void updateFileToDrive(Drive driveService){
         Thread thr = new Thread(){
             @Override
             public void run(){
@@ -67,11 +62,11 @@ public class GoogleDriveUtil {
                 //create a new file
                 File fileMetadata = new File();
 
-                //set new file property
-                fileMetadata.setName("Account_config.xml");
+                //set "new" file property
+//                fileMetadata.setName(fileName);
 
                 //get media file's content
-                java.io.File filePath = new java.io.File(appFolderRootPath+"shared_prefs/Account_config.xml");
+                java.io.File filePath = new java.io.File(appFolderRootPath+dbFileName);
                 FileContent mediaContent = new FileContent("text/xml", filePath);
 
                 try {
@@ -86,19 +81,18 @@ public class GoogleDriveUtil {
         };
         thr.start();
     }
-    public void downloadFile(){
+    public void downloadFileFromDrive(Drive driveService, String fileId){
         Thread thr = new Thread(){
                     @Override
                     public void run(){
-                        OutputStream outputStream = new ByteArrayOutputStream();
                         try {
                             if(fileId != null) {
                                 // image/jpeg：jpg檔
-                                driveService.files().get(fileId)
-                                        .executeMediaAndDownloadTo(outputStream);
+                                File file = driveService.files().get(fileId)
+                                        .execute();
+                                Log.i("info", "download success");
+                                Log.i("file content" , file.getDescription());
                             }
-                            Log.i("info", "download success");
-//                            Log.i("" , file.getDescription());
                         }catch(IOException e){
                             if(e.getMessage() == "416") {
                                 Log.e("Error!!the file might empty", e.getMessage());
@@ -110,7 +104,12 @@ public class GoogleDriveUtil {
                 };
                 thr.start();
     }
-
+    public void setFileId(String id){
+        fileId = id;
+    }
+    public String getFileId(){
+        return fileId;
+    }
 
 }
 

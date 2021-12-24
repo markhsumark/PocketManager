@@ -26,14 +26,17 @@ import com.google.api.services.drive.DriveScopes;
 import java.io.IOException;
 import java.util.Collections;
 
+
+
 public class GoogleDriveService {
 
     public static final int RC_SIGN_IN = 400;
     private Drive driveService;
     private GoogleSignInClient client;
     private GoogleSignInAccount account;
-    private GoogleDriveUtil GUtil;
+    private GoogleDriveUtil GDU;
 
+//    return sign in intent
     public Intent getSignInIntent(Activity activity) {
         Log.i("log", "get sign in intent");
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -64,6 +67,7 @@ public class GoogleDriveService {
         client.signOut();
         Log.i("isLogOut?", "yes!");
     }
+//    handle the result of sign in intent, and reset account data
     public void handleSignInResult(Intent data) {
         try {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -76,6 +80,7 @@ public class GoogleDriveService {
 
         }
     }
+    // set/reset driveServie and GoogleDiveUtil
     public void setDrive(Intent data, Context context){
         GoogleSignIn.getSignedInAccountFromIntent(data)
                 .addOnSuccessListener(googleSignInAccount -> {
@@ -84,21 +89,19 @@ public class GoogleDriveService {
                             .usingOAuth2( context, Collections.singleton(DriveScopes.DRIVE_FILE));
 
                     credential.setSelectedAccount(googleSignInAccount.getAccount());
-
-                    drive(credential);
+                    driveService =
+                            new Drive.Builder(
+                                    AndroidHttp.newCompatibleTransport(),
+                                    new GsonFactory(),
+                                    credential)
+                                    .setApplicationName("PocketManager")
+                                    .build();
+                    GDU = new GoogleDriveUtil();
                 })
                 .addOnFailureListener(e -> e.printStackTrace());
     }
-    private void drive(GoogleAccountCredential credential) {
-        driveService =
-                new Drive.Builder(
-                        AndroidHttp.newCompatibleTransport(),
-                        new GsonFactory(),
-                        credential)
-                        .setApplicationName("PocketManager")
-                        .build();
-        GUtil = new GoogleDriveUtil(driveService);
-    }
+
+//    return account info to Activity
     public SharedPreferences setAccountData(SharedPreferences accountData){
         try{
             if(account != null) {
@@ -115,6 +118,7 @@ public class GoogleDriveService {
 
         return accountData;
     }
+//    clear account info form Activity
     public SharedPreferences clearAccountData(SharedPreferences accountData){
         try{
             SharedPreferences.Editor editor = accountData.edit();
@@ -128,10 +132,21 @@ public class GoogleDriveService {
         return accountData;
     }
     public void backUpToDrive(){
-        GUtil.createFile();
+        if(GDU.getFileId() == null){
+            GDU.createFileToDrive(driveService, "PocketManager_DB");
+        }
+        else{
+            GDU.updateFileToDrive(driveService);
+        }
     }
     public void restoreFromDrive(){
-        GUtil.downloadFile();
+       String id = GDU.getFileId();
+        if(id == null){
+            //user haven't login on this app
+        }else{
+            GDU.downloadFileFromDrive(driveService, id);
+        }
+
     }
 
 }
