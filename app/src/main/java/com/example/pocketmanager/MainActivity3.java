@@ -21,7 +21,7 @@ public class MainActivity3 extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity3.this, MainActivity.class);
                 startActivity(intent);
-            });
-            }
+            };
+        });
     }
 }
