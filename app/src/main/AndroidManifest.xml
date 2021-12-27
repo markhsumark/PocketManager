@@ -10,8 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketManager">
         <activity android:name=".AddOrEditActivity"></activity>
+        <activity android:name=".HomeActivity"></activity>
         <activity
-            android:name=".HomeActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
