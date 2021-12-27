@@ -18,6 +18,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.kal.rackmonthpicker.RackMonthPicker;
+import com.kal.rackmonthpicker.listener.DateMonthDialogListener;
+import com.kal.rackmonthpicker.listener.OnCancelMonthDialogListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -111,10 +115,10 @@ public class HomeActivity extends AppCompatActivity {
             data.add(row);
         }
     }
-/*
+
     public void rackMonthPicker(View v){
 
-        RackMonthPicker rackMonthPicker = new RackMonthPicker(this)
+        new RackMonthPicker(this)
                 .setLocale(Locale.ENGLISH)
                 .setPositiveButton(new DateMonthDialogListener() {
                     @Override
@@ -129,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }).show();
     }
-*/
+
 ///*  顯示RecyclerView
     private class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
 
