@@ -15,9 +15,9 @@ import com.google.api.services.drive.model.File;
 public class GoogleDriveUtil {
 
 //    會改為資料庫的路徑
-    private static String appFolderRootPath = "data/data/com.example.pocketmanager/shared_prefs/";
+    private static String appFolderRootPath = "data/data/com.example.pocketmanager/databases/";
 //    會改為DB file name
-    private static String dbFileName = "Account_config.xml";
+    private static String dbFileName = "account_database";
     private String fileId;
 
 //    傳入參數為：上傳的目的地drive 和上傳的file名稱
@@ -27,7 +27,7 @@ public class GoogleDriveUtil {
             public void run(){
 //                create new file object
                 File fileMetadata = new File();
-                fileMetadata.setName("PocketManager_DB.db");
+                fileMetadata.setName(dbFileName);
 
 //                設定為上傳到app專用的Drive目錄
 //                fileMetadata.setParents(Collections.singletonList("appDataFolder"));
@@ -35,8 +35,8 @@ public class GoogleDriveUtil {
 //                實際檔案位置
                 java.io.File filePath = new java.io.File(appFolderRootPath +dbFileName);
 //                設定檔案內容
-                FileContent mediaContent = new FileContent("text/xml", filePath);
-//                type表格：https://developers.google.com/drive/api/v3/ref-export-formats
+                FileContent mediaContent = new FileContent("*/*", filePath);
+//                type表格：https://blog.csdn.net/github_35631540/article/details/103228868
 
                 try {
 //                    新增檔案，要求：檔案資訊和檔案內容
@@ -91,7 +91,6 @@ public class GoogleDriveUtil {
                                 File file = driveService.files().get(fileId)
                                         .execute();
                                 Log.i("info", "download success");
-                                Log.i("file content" , file.getDescription());
                             }
                         }catch(IOException e){
                             if(e.getMessage() == "416") {
