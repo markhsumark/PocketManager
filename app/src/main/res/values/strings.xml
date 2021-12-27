@@ -1,5 +1,13 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Pocket Manager</string>
+    <string name="round">圓</string>
+    <string name="bar">長</string>
+    <string-array name="property_array">
+        <item>所有資產</item>
+        <item>信用卡</item>
+        <item>現金</item>
+        <item>linepay</item>
+    </string-array>
     <string name="google">連結Google</string>
     <string name="notice">提醒</string>
     <string name="remind">提醒</string>

@@ -25,34 +25,30 @@ public class MainActivity extends TabActivity{
         Intent intentA=new Intent();
         intentA.setClass(this, HomeActivity.class);
         tabSpecA.setContent(intentA);
-/*
+
         //for chart：
         tabSpecB=tabHost.newTabSpec("Chart");
         tabSpecB.setIndicator("Chart",getResources().getDrawable(android.R.drawable.ic_media_next));
         Intent intentB=new Intent();
-        intentB.setClass(this, TabTwo.class);
+        intentB.setClass(this, GraphActivity.class);
         tabSpecB.setContent(intentB);
-*/
-/*
+
+
         //for setting：
         tabSpecC=tabHost.newTabSpec("Setting");
         tabSpecC.setIndicator("Setting",getResources().getDrawable(android.R.drawable.ic_media_next));
         Intent intentC=new Intent();
-        intentC.setClass(this, TabThree.class);
+        intentC.setClass(this, SettingActivity.class);
         tabSpecC.setContent(intentC);
-*/
+
         //最后一步，把两个选项卡TabSpec添加到选项卡控件TabHost中
         tabHost.addTab(tabSpecA);
-//        tabHost.addTab(tabSpecB);
-//        tabHost.addTab(tabSpecC);
+        tabHost.addTab(tabSpecB);
+        tabHost.addTab(tabSpecC);
 
 
 
 
 
     }
-
-
-
-
 }

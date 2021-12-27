@@ -13,16 +13,17 @@
         <activity android:name=".HomeActivity"></activity>
 
         <activity
-            android:name=".MainActivity9"
-            android:exported="false" />
+            android:name=".PropertyActivity"/>
         <activity
-            android:name=".MainActivity3"
-            android:exported="false" />
+            android:name=".CategoryActivity"/>
         <activity
-            android:name=".MainActivity6"
-            android:exported="false" />
+            android:name=".BackUpActivity"/>
         <activity
-            android:name=".settings"
+            android:name=".SettingActivity"/>
+        <activity
+            android:name=".GraphActivity"/>
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
