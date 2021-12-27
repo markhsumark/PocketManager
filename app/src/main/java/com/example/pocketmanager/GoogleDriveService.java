@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
@@ -57,7 +58,7 @@ public class GoogleDriveService {
         Intent signInIntent = client.getSignInIntent();
         return signInIntent;
     }
-    public void requestStoragePremission(Activity activity) {
+    public static void requestStoragePremission(Activity activity) {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
@@ -68,7 +69,7 @@ public class GoogleDriveService {
         Log.i("isLogOut?", "yes!");
     }
 //    handle the result of sign in intent, and reset account data
-    public void handleSignInResult(Intent data) {
+    public Boolean handleSignInResult(Intent data) {
         try {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             account = task.getResult(ApiException.class);
@@ -77,8 +78,9 @@ public class GoogleDriveService {
             if(e.getStatusCode() == 7){
                 Log.i("signin repo", "no internet connect");
             }
-
+            return false;
         }
+        return true;
     }
     // set/reset driveServie and GoogleDiveUtil
     public void setDrive(Intent data, Context context){
@@ -107,7 +109,7 @@ public class GoogleDriveService {
             if(account != null) {
                 SharedPreferences.Editor editor = accountData.edit();
                 editor.putString("email", account.getEmail());
-                editor.putString("givenname", account.getGivenName());
+                editor.putString("giveName", account.getGivenName());
                 editor.putString("displayName", account.getDisplayName());
 //                editor.putString("displayPhoto", account.getPhotoUrl().toString());
                 editor.commit();

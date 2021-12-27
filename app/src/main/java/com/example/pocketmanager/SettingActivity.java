@@ -3,20 +3,32 @@ package com.example.pocketmanager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class SettingActivity extends AppCompatActivity {
+    private Boolean isLogIn = false;
+    private GoogleDriveService mGDS;
+    private SharedPreferences accountData;
+
     Button google_button,hand_backup,auto_backup,edit_category,property;
     Switch remind_switch,speak_switch,notice_switch;
-    public Integer n = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
+
+        mGDS = new GoogleDriveService();
+        accountData = this.getSharedPreferences("Account_Data", MODE_PRIVATE);
+        //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
+        // INPUTA 是keyword,可以是 email, givenName, displayName
+        //INPUTB 是預設的文字
+
         auto_backup = findViewById(R.id.auto_backup);
         auto_backup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,18 +57,22 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
         google_button = findViewById(R.id.google_button);
+        google_button.setText("連結帳號");
         google_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (n == 0) {
-                    google_button.setText("登入google");
-                    n = 1;
-                } else {
-                    google_button.setText("連結google");
-                    n = 0;
+                if(isLogIn){
+                    mGDS.logOut();
+                    isLogIn = false;
+                    Toast.makeText(SettingActivity.this, "登出", Toast.LENGTH_SHORT);
+                    google_button.setText("連結帳號");
+                }else {
+                    Intent intent = mGDS.getSignInIntent(SettingActivity.this);
+                    startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
                 }
             }
         });
+
         remind_switch=findViewById(R.id.remind_switch);
         remind_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -93,5 +109,29 @@ public class SettingActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        switch (requestCode) {
+            case GoogleDriveService.RC_SIGN_IN:
+                if(mGDS.handleSignInResult(data)){
+                    Toast.makeText(SettingActivity.this, "登入成功", Toast.LENGTH_SHORT);
+                    mGDS.setDrive(data, this);
+                    accountData = mGDS.setAccountData(accountData);
+                    GoogleDriveService.requestStoragePremission(SettingActivity.this);
+                    google_button.setText(accountData.getString("email", "已登入"));
+                    isLogIn = true;
+                }
+                else{
+                    isLogIn = false;
+                    Toast.makeText(SettingActivity.this, "登入失敗", Toast.LENGTH_SHORT);
+                }
+                break;
+            default:
+                break;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
