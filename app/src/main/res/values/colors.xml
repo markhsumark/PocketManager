@@ -10,4 +10,8 @@
     <color name="gray">#E0E0E0</color>
     <color name="deepGray">#4F4F4F</color>
     <color name="darkGreen">#3D641C</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
 </resources>
