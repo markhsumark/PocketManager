@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        edit_category=findViewById(R.id.edit_catogory);
+        edit_category = findViewById(R.id.edit_catogory);
         edit_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        property=findViewById(R.id.property);
+        property = findViewById(R.id.property);
         property.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,17 +44,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        google_button=findViewById(R.id.google_button);
+        google_button = findViewById(R.id.google_button);
         google_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(n==0) {
+                if (n == 0) {
                     google_button.setText("登入google");
-                    n=1;
-                }
-                else {
+                    n = 1;
+                } else {
                     google_button.setText("連結google");
-                    n=0;
+                    n = 0;
                 }
             }
         });

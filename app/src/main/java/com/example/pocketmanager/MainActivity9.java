@@ -26,14 +26,5 @@ public class MainActivity9 extends AppCompatActivity {
             }
         });
         property_add = findViewById(R.id.property_add);
-        property_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity9.this, MainActivity13.class);
-                startActivity(intent);
-            }
-        });
-
     }
 }
