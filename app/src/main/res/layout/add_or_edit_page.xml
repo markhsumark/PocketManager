@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<!--收支可以改成tabview形式-->
+    <LinearLayout
+        android:id="@+id/topEdge"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/back"
+            android:text="back"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:textSize="8dp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autoSizeTextType="uniform" />
+        //從ACTIVITY設置頁面名稱
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dateInfo"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topEdge">
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:autoSizeTextType="uniform"
+            android:text="日期" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/datePickButton"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:textSize="18dp"
+            android:gravity="right|center_vertical"
+            android:onClick="datePicker" />
+
+        <Button
+            android:id="@+id/timePickButton"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:textSize="20dp"
+            android:gravity="right|center_vertical"
+            android:onClick="timePicker" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/typeInfo"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateInfo">
+
+        <TextView
+            android:id="@+id/typeText"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:autoSizeTextType="uniform"
+            android:text="收支" />
+
+        <Spinner
+            android:id="@+id/typePicker"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:gravity="right"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/assetInfo"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/typeInfo">
+
+        <TextView
+            android:id="@+id/assetText"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:autoSizeTextType="uniform"
+            android:text="資產" />
+
+        <Spinner
+            android:id="@+id/assetPicker"
+            android:layout_width="250dp"
+            android:layout_height="40dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/moneyInfo"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetInfo">
+
+        <TextView
+            android:id="@+id/moneyText"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:autoSizeTextType="uniform"
+            android:text="金額" />
+
+        <EditText
+            android:id="@+id/moneyEditor"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:numeric="integer"
+            android:gravity="right|center_vertical"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/categoryInfo"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moneyInfo">
+
+        <TextView
+            android:id="@+id/categoryText"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:autoSizeTextType="uniform"
+            android:text="類別/\n子類別" />
+
+        <Spinner
+            android:id="@+id/categoryPicker"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:gravity="right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/descriptionInfo"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/categoryInfo">
+
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:autoSizeTextType="uniform"
+            android:text="描述" />
+
+        <EditText
+            android:id="@+id/descriptionEditor"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:gravity="right"
+            android:text="" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/done"
+        android:text="done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/delete"
+        android:text="delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
