@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketManager">
         <activity
-            android:name=".MainActivity"
+            android:name=".categoryListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".graphActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
