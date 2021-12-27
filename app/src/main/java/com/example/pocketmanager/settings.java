@@ -9,20 +9,20 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-public class MainActivity extends AppCompatActivity {
+public class settings extends AppCompatActivity {
     Button google_button,hand_backup,auto_backup,edit_category,property;
     Switch remind_switch,speak_switch,notice_switch;
     public Integer n = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.settings);
         auto_backup = findViewById(R.id.auto_backup);
         auto_backup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this, MainActivity6.class);
+                intent.setClass(settings.this, MainActivity6.class);
                 startActivity(intent);
             }
         });
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this, MainActivity3.class);
+                intent.setClass(settings.this, MainActivity3.class);
                 startActivity(intent);
             }
         });
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this, MainActivity9.class);
+                intent.setClass(settings.this, MainActivity9.class);
                 startActivity(intent);
             }
         });

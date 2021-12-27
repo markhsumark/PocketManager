@@ -19,7 +19,7 @@ public class MainActivity3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity3.this, MainActivity.class);
+                intent.setClass(MainActivity3.this, settings.class);
                 startActivity(intent);
             };
         });

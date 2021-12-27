@@ -1,7 +1,6 @@
 package com.example.pocketmanager;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +20,11 @@ public class MainActivity9 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity9.this, MainActivity.class);
+                intent.setClass(MainActivity9.this, settings.class);
                 startActivity(intent);
             }
         });
         property_add = findViewById(R.id.property_add);
+
     }
 }
