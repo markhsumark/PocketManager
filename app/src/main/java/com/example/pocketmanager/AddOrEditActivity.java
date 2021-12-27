@@ -16,14 +16,16 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.Calendar;
 
 public class AddOrEditActivity extends AppCompatActivity {
-    private TextView title;
+    private Toolbar title;
     private Button datePickButton, timePickButton;
-    private Button back, delete, done;
+    private Button delete, done;
     Spinner typePicker, assetPicker, categoryPicker;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,18 +33,25 @@ public class AddOrEditActivity extends AppCompatActivity {
         setContentView(R.layout.add_or_edit_page);
         Intent intent = getIntent();
         boolean mode = intent.getBooleanExtra("mode", false);
-
-        title = findViewById(R.id.title);
+        title = findViewById(R.id.topEdge);
         typePicker = findViewById(R.id.typePicker);
         assetPicker = findViewById(R.id.assetPicker);
         categoryPicker = findViewById(R.id.categoryPicker);
         datePickButton = findViewById(R.id.datePickButton);
         timePickButton = findViewById(R.id.timePickButton);
-        back = findViewById(R.id.back);
+
         delete = findViewById(R.id.delete);
         done = findViewById(R.id.done);
+
+        setSupportActionBar(title);
+        title.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         if (mode) {  //edit mode
-            title.setText("編輯頁面");
+            getSupportActionBar().setTitle("編輯頁面");
             EditText description = findViewById(R.id.descriptionEditor);
             EditText money = findViewById(R.id.moneyEditor);
 
@@ -52,7 +61,7 @@ public class AddOrEditActivity extends AppCompatActivity {
             description.setText(intent.getStringExtra("description"));
             money.setText(intent.getStringExtra("money"));
         } else {
-            title.setText("新增頁面");
+            getSupportActionBar().setTitle("新增頁面");
             delete.setVisibility(View.GONE);
 ///*  設置點進adder按鈕時的日期
             Calendar calendar = Calendar.getInstance();
@@ -114,12 +123,7 @@ public class AddOrEditActivity extends AppCompatActivity {
         });
 //*/
 ///*  設置返回、完成更動、刪除按鈕的功能
-        back.setOnClickListener(new View.OnClickListener() {  //返回HomePage
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
 
         delete.setOnClickListener(new View.OnClickListener() {  //刪除現有資料
             @Override
@@ -138,7 +142,7 @@ public class AddOrEditActivity extends AppCompatActivity {
         });
 //*/
     }
-///*  選日期，選完自動跳去選時間
+    ///*  選日期，選完自動跳去選時間
     public void datePicker(View v){
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -155,7 +159,7 @@ public class AddOrEditActivity extends AppCompatActivity {
 
         }, year, month, day).show();
     }
-//*/
+    //*/
 ///*  選時間
     public void timePicker(View v){
         Calendar calendar = Calendar.getInstance();

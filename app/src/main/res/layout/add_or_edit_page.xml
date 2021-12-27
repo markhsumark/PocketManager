@@ -4,29 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<!--收支可以改成tabview形式-->
-    <LinearLayout
+    <!--收支可以改成tabview形式-->
+
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/topEdge"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/back"
-            android:text="back"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:textSize="8dp" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:autoSizeTextType="uniform" />
-        //從ACTIVITY設置頁面名稱
-    </LinearLayout>
+        app:navigationIcon="?attr/actionModeCloseDrawable"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
         android:id="@+id/dateInfo"
@@ -43,8 +28,8 @@
             android:layout_height="40dp"
             android:autoSizeTextType="uniform"
             android:text="日期" />
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/datePickButton"
