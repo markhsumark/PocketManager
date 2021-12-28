@@ -6,21 +6,13 @@
     android:layout_height="match_parent">
     <!--收支可以改成tabview形式-->
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/topEdge"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:navigationIcon="?attr/actionModeCloseDrawable"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <LinearLayout
         android:id="@+id/dateInfo"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topEdge">
+        app:layout_constraintLeft_toLeftOf="parent">
 
         <TextView
             android:id="@+id/dateText"
@@ -35,17 +27,17 @@
             android:id="@+id/datePickButton"
             android:layout_width="150dp"
             android:layout_height="40dp"
-            android:textSize="18dp"
             android:gravity="right|center_vertical"
-            android:onClick="datePicker" />
+            android:onClick="datePicker"
+            android:textSize="18dp" />
 
         <Button
             android:id="@+id/timePickButton"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:textSize="20dp"
             android:gravity="right|center_vertical"
-            android:onClick="timePicker" />
+            android:onClick="timePicker"
+            android:textSize="20dp" />
     </LinearLayout>
 
     <LinearLayout

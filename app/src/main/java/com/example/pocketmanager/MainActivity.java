@@ -1,5 +1,6 @@
 package com.example.pocketmanager;
 
+import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ public class MainActivity extends TabActivity{
     TabHost tabHost=null;      //选项卡控制器
     TabHost.TabSpec tabSpecA,tabSpecB, tabSpecC=null;   //选项卡,这里选项卡最好不用混用，有几个选项卡就设置几个对象
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub

@@ -18,10 +18,6 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.kal.rackmonthpicker.RackMonthPicker;
-import com.kal.rackmonthpicker.listener.DateMonthDialogListener;
-import com.kal.rackmonthpicker.listener.OnCancelMonthDialogListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -30,10 +26,10 @@ import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
     private Button previousStep, nextStep, editor, adder;
-/*TODO assetLine
-    private Spinner assetName;
-    private TextView assetBalance;
-*/
+    /*TODO assetLine
+        private Spinner assetName;
+        private TextView assetBalance;
+    */
     private RecyclerView externalRecyclerView, internalRecyclerView;
     private RecyclerView.LayoutManager exLayoutManager, inLayoutManager;
     private ExAdapter exAdapter;
@@ -45,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
 
-///*  點選新增按鈕會跳轉頁面
+    ///*  點選新增按鈕會跳轉頁面
         previousStep = findViewById(R.id.previousStep);
         previousStep.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +112,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void rackMonthPicker(View v){
+    /*public void rackMonthPicker(View v){
 
         new RackMonthPicker(this)
                 .setLocale(Locale.ENGLISH)
@@ -132,7 +128,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     }
                 }).show();
-    }
+    }*/
 
 ///*  顯示RecyclerView
     private class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
@@ -160,7 +156,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
             Resources res=getResources();
             holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(data.get(position).get("category"))]);
             holder.description.setText(data.get(position).get("description"));
