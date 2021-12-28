@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -115,11 +116,11 @@ public class SettingActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         switch (requestCode) {
             case GoogleDriveService.RC_SIGN_IN:
-                if(mGDS.handleSignInResult(data)){
+                if(mGDS.handleSignInResult(data , SettingActivity.this)){
                     Toast.makeText(SettingActivity.this, "登入成功", Toast.LENGTH_SHORT);
-                    mGDS.setDrive(data, this);
+                    Log.i("sign in", "Sign in success");
                     accountData = mGDS.setAccountData(accountData);
-                    GoogleDriveService.requestStoragePremission(SettingActivity.this);
+                    mGDS.requestStoragePremission(this);
                     google_button.setText(accountData.getString("email", "已登入"));
                     isLogIn = true;
                 }

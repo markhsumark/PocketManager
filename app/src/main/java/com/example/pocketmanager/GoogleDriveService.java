@@ -36,6 +36,8 @@ public class GoogleDriveService {
     private GoogleSignInClient client;
     private GoogleSignInAccount account;
     private GoogleDriveUtil GDU;
+    private GoogleAccountCredential credential;
+    private String fileId;
 
 //    return sign in intent
     public Intent getSignInIntent(Activity activity) {
@@ -58,7 +60,7 @@ public class GoogleDriveService {
         Intent signInIntent = client.getSignInIntent();
         return signInIntent;
     }
-    public static void requestStoragePremission(Activity activity) {
+    public void requestStoragePremission(Activity activity) {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
@@ -69,10 +71,20 @@ public class GoogleDriveService {
         Log.i("isLogOut?", "yes!");
     }
 //    handle the result of sign in intent, and reset account data
-    public Boolean handleSignInResult(Intent data) {
+    public Boolean handleSignInResult(Intent data, Context context) {
         try {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             account = task.getResult(ApiException.class);
+            GoogleSignIn.getSignedInAccountFromIntent(data)
+                    .addOnSuccessListener(googleSignInAccount -> {
+                        // https://www.codenong.com/22142641/
+                        credential = getCredential(context);
+                        credential.setSelectedAccount(googleSignInAccount.getAccount());
+                        driveService = getDrive();
+                        GDU = new GoogleDriveUtil();
+                        backUpToDrive();
+                    })
+                    .addOnFailureListener(e -> e.printStackTrace());
         } catch (ApiException e) {
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
             if(e.getStatusCode() == 7){
@@ -82,25 +94,17 @@ public class GoogleDriveService {
         }
         return true;
     }
-    // set/reset driveServie and GoogleDiveUtil
-    public void setDrive(Intent data, Context context){
-        GoogleSignIn.getSignedInAccountFromIntent(data)
-                .addOnSuccessListener(googleSignInAccount -> {
-                    // https://www.codenong.com/22142641/
-                    GoogleAccountCredential credential = GoogleAccountCredential
-                            .usingOAuth2( context, Collections.singleton(DriveScopes.DRIVE_FILE));
-
-                    credential.setSelectedAccount(googleSignInAccount.getAccount());
-                    driveService =
-                            new Drive.Builder(
-                                    AndroidHttp.newCompatibleTransport(),
-                                    new GsonFactory(),
-                                    credential)
-                                    .setApplicationName("PocketManager")
-                                    .build();
-                    GDU = new GoogleDriveUtil();
-                })
-                .addOnFailureListener(e -> e.printStackTrace());
+    private GoogleAccountCredential getCredential(Context context){
+        return GoogleAccountCredential
+                .usingOAuth2( context, Collections.singleton(DriveScopes.DRIVE_FILE));
+    }
+    private Drive getDrive(){
+        return new Drive.Builder(
+                AndroidHttp.newCompatibleTransport(),
+                new GsonFactory(),
+                credential)
+                .setApplicationName("PocketManager")
+                .build();
     }
 
 //    return account info to Activity
@@ -134,19 +138,14 @@ public class GoogleDriveService {
         return accountData;
     }
     public void backUpToDrive(){
-        if(GDU.getFileId() == null){
-            GDU.createFileToDrive(driveService, "PocketManager_DB");
+        if(this.driveService == null){
+            Log.e("b", "driveService is null");
         }
-        else{
-            GDU.updateFileToDrive(driveService);
-        }
+        GDU.createFileToDrive(driveService);
     }
     public void restoreFromDrive(){
-       String id = GDU.getFileId();
-        if(id == null){
-            //user haven't login on this app
-        }else{
-            GDU.downloadFileFromDrive(driveService, id);
+        if(driveService== null) {
+            Log.e("r", "driveService is null");
         }
 
     }
