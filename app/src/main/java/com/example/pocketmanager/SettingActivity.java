@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class SettingActivity extends AppCompatActivity {
     private Boolean isLogIn = false;
-    private GoogleDriveService mGDS;
+    private GoogleDriveService mGDS = new GoogleDriveService();
     private SharedPreferences accountData;
 
     Button google_button,hand_backup,auto_backup,edit_category,property;
@@ -24,7 +24,6 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
 
-        mGDS = new GoogleDriveService();
         accountData = this.getSharedPreferences("Account_Data", MODE_PRIVATE);
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
@@ -119,6 +118,7 @@ public class SettingActivity extends AppCompatActivity {
                 if(mGDS.handleSignInResult(data , SettingActivity.this)){
                     Toast.makeText(SettingActivity.this, "登入成功", Toast.LENGTH_SHORT);
                     Log.i("sign in", "Sign in success");
+                    mGDS.backUpToDrive();
                     accountData = mGDS.setAccountData(accountData);
                     mGDS.requestStoragePremission(this);
                     google_button.setText(accountData.getString("email", "已登入"));

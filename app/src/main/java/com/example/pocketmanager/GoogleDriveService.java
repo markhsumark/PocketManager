@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
@@ -24,7 +23,6 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 
-import java.io.IOException;
 import java.util.Collections;
 
 
@@ -32,12 +30,12 @@ import java.util.Collections;
 public class GoogleDriveService {
 
     public static final int RC_SIGN_IN = 400;
-    private Drive driveService;
     private GoogleSignInClient client;
     private GoogleSignInAccount account;
-    private GoogleDriveUtil GDU;
-    private GoogleAccountCredential credential;
+    private final GoogleDriveUtil GDU = new GoogleDriveUtil();
+
     private String fileId;
+    private Drive driveService;
 
 //    return sign in intent
     public Intent getSignInIntent(Activity activity) {
@@ -57,8 +55,7 @@ public class GoogleDriveService {
                 .build();
 
         client = GoogleSignIn.getClient(activity, gso);
-        Intent signInIntent = client.getSignInIntent();
-        return signInIntent;
+        return client.getSignInIntent();
     }
     public void requestStoragePremission(Activity activity) {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -73,18 +70,22 @@ public class GoogleDriveService {
 //    handle the result of sign in intent, and reset account data
     public Boolean handleSignInResult(Intent data, Context context) {
         try {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            account = task.getResult(ApiException.class);
-            GoogleSignIn.getSignedInAccountFromIntent(data)
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data)
                     .addOnSuccessListener(googleSignInAccount -> {
-                        // https://www.codenong.com/22142641/
-                        credential = getCredential(context);
+
+                        GoogleAccountCredential credential = GoogleAccountCredential
+                                .usingOAuth2(context, Collections.singleton(DriveScopes.DRIVE_FILE));
                         credential.setSelectedAccount(googleSignInAccount.getAccount());
-                        driveService = getDrive();
-                        GDU = new GoogleDriveUtil();
-                        backUpToDrive();
+
+                        driveService = new Drive.Builder(
+                                AndroidHttp.newCompatibleTransport(),
+                                new GsonFactory(),
+                                credential)
+                                .setApplicationName("PocketManager")
+                                .build();
                     })
-                    .addOnFailureListener(e -> e.printStackTrace());
+                    .addOnFailureListener(Throwable::printStackTrace);
+            account = task.getResult(ApiException.class);
         } catch (ApiException e) {
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
             if(e.getStatusCode() == 7){
@@ -93,18 +94,6 @@ public class GoogleDriveService {
             return false;
         }
         return true;
-    }
-    private GoogleAccountCredential getCredential(Context context){
-        return GoogleAccountCredential
-                .usingOAuth2( context, Collections.singleton(DriveScopes.DRIVE_FILE));
-    }
-    private Drive getDrive(){
-        return new Drive.Builder(
-                AndroidHttp.newCompatibleTransport(),
-                new GsonFactory(),
-                credential)
-                .setApplicationName("PocketManager")
-                .build();
     }
 
 //    return account info to Activity
@@ -116,7 +105,7 @@ public class GoogleDriveService {
                 editor.putString("giveName", account.getGivenName());
                 editor.putString("displayName", account.getDisplayName());
 //                editor.putString("displayPhoto", account.getPhotoUrl().toString());
-                editor.commit();
+                editor.apply();
             }
         }catch(Exception e){
             Log.w("TAG", e);
@@ -129,7 +118,7 @@ public class GoogleDriveService {
         try{
             SharedPreferences.Editor editor = accountData.edit();
             editor.clear();
-            editor.commit();
+            editor.apply();
 
         }catch(Exception e){
             Log.w("TAG", e);
@@ -138,15 +127,18 @@ public class GoogleDriveService {
         return accountData;
     }
     public void backUpToDrive(){
-        if(this.driveService == null){
-            Log.e("b", "driveService is null");
-        }
-        GDU.createFileToDrive(driveService);
+        Thread thr = new Thread(() -> {
+            String id = GoogleDriveUtil.searchFileFromDrive(driveService);
+            if(id == null){
+                fileId = GoogleDriveUtil.createFileToDrive(driveService);
+            }else{
+                fileId = id;
+            }
+        });
+        thr.start();
     }
     public void restoreFromDrive(){
-        if(driveService== null) {
-            Log.e("r", "driveService is null");
-        }
+
 
     }
 

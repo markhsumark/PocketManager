@@ -15,6 +15,7 @@ import com.google.api.services.drive.model.FileList;
 
 public class GoogleDriveUtil {
 
+
 //    會改為資料庫的路徑
     private static String appFolderRootPath = "data/data/com.example.pocketmanager/databases/";
     private static String testFolderRootPath = "data/data/com.example.pocketmanager/shared_prefs/";
@@ -24,41 +25,38 @@ public class GoogleDriveUtil {
 
     private static String mineType = "*/*";
     private static String testMineType = "plain/xml";
-    private String fileId;
 
-//    傳入參數為：上傳的目的地drive 和上傳的file名稱
-    public void createFileToDrive(Drive driveService){
+    public static String createFileToDrive(Drive driveService){
+        String fileId;
 //                create new file object
         File fileMetadata = new File();
 //        fileMetadata.setName(dbFileName);
         fileMetadata.setName(testFileName);
 
-        //                設定為上傳到app專用的Drive目錄
-        //                fileMetadata.setParents(Collections.singletonList("appDataFolder"));
+//                設定為上傳到app專用的Drive目錄
+//                fileMetadata.setParents(Collections.singletonList("appDataFolder"));
 
-        //                實際檔案位置
+//                實際檔案位置
 //        java.io.File filePath = new java.io.File(appFolderRootPath + dbFileName);
         java.io.File filePath = new java.io.File(testFolderRootPath + testFileName);
-        //                設定檔案內容
+//                設定檔案內容
         FileContent mediaContent = new FileContent(testMineType, filePath);
-        //                type表格：https://blog.csdn.net/github_35631540/article/details/103228868
-        Thread thr = new Thread(){
-            @Override
-            public void run(){
-                try {
-                    //                    新增檔案，要求：檔案資訊和檔案內容
-                    File file = driveService.files().create(fileMetadata, mediaContent)
-                            .setFields("id")
-                            .execute();
-                    fileId = file.getId();
-                    Log.i("File ID: ", file.getId());
-                } catch (IOException e) {
-                    fileId = null;
-                    Log.e("err when create file", e.getMessage());
-                }
-            }
-        };
-        thr.start();
+//                type表格：https://blog.csdn.net/github_35631540/article/details/103228868
+        Log.i("Createfile: ", "create start");
+        try {
+            //                    新增檔案，要求：檔案資訊和檔案內容
+            File file = driveService.files().create(fileMetadata, mediaContent)
+                    .setFields("id")
+                    .execute();
+            fileId = file.getId();
+            Log.i("File ID: ", file.getId());
+            Log.i("Createfile: ", "create successfully");
+        } catch (Exception e) {
+            fileId = null;
+            Log.e("err when create file", e.getMessage());
+        }
+
+        return fileId;
     }
 
     public static void downloadFileFromDrive(Drive driveService, String fileId){
@@ -83,37 +81,43 @@ public class GoogleDriveUtil {
                 };
                 thr.start();
     }
-    public static Boolean searchFileFromDrive(Drive driveService){
-
-        String pageToken = null;
-        FileList result = new FileList();
-        Log.i("", "end searching");
+    public static String searchFileFromDrive(Drive driveService){
+        if(driveService == null){
+            Log.e("searching", "driveService is null");
+        }
+        FileList result;
+        String id;
         try {
-            do {
-                result = driveService.files().list()
-                        .setSpaces("drive")
-                        //                .setSpaces("appDataFolder")
-                        .setQ("mimeType='*/*'")
-                        .setFields("nextPageToken, files(id, name)")
-                        .setPageToken(pageToken)
-                        .execute();
-
-                pageToken = result.getNextPageToken();
-            } while (pageToken != null);
-            Log.i("","end searching");
+            Log.i("searching", "start");
+            result = driveService.files().list()
+                    .setQ("name ='"+testFileName+"'")
+                    .setSpaces("drive")
+                    .setSpaces("appDataFolder")
+                    .setFields("files(id, name)")
+                    .execute();
+            for (File file : result.getFiles()) {
+                System.out.printf("Found file: %s (%s)\n",
+                        file.getName(), file.getId());
+            }
+            Log.w("searching", "take the first id in the array");
         } catch (Exception e) {
             Log.e("Error in searchFile", e.getMessage());
+            return null;
         }
-        if(result.isEmpty()){
-            return false;
-        }else{
-            return true;
+        Log.i("searching", "end");
+        if(result.getFiles().isEmpty()){
+            return null;
         }
-
-
+        else{
+            return result.getFiles().get(0).getId();
+        }
     }
-    public String getID(){
-        return fileId;
+    private static void deleteFileFromDrive(Drive driveService, String fileId) {
+        try {
+            driveService.files().delete(fileId).execute();
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
     }
 
 }
