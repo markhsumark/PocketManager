@@ -2,11 +2,9 @@ package com.example.pocketmanager;
 
 import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
-
 import java.io.IOException;
 
-import java.io.OutputStream;
+import java.util.ArrayList;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
@@ -59,6 +57,31 @@ public class GoogleDriveUtil {
         return fileId;
     }
 
+    public static void uploadFileToDrive(Drive driveService, String fileId){
+        try {
+            //                create new file object
+            File fileMetadata = new File();
+//        fileMetadata.setName(dbFileName);
+            fileMetadata.setName(testFileName);
+
+//                設定為上傳到app專用的Drive目錄
+//                fileMetadata.setParents(Collections.singletonList("appDataFolder"));
+
+//                實際檔案位置
+//        java.io.File filePath = new java.io.File(appFolderRootPath + dbFileName);
+            java.io.File filePath = new java.io.File(testFolderRootPath + testFileName);
+//                設定檔案內容
+            FileContent mediaContent = new FileContent(testMineType, filePath);
+            //                    新增檔案，要求：檔案資訊和檔案內容
+            File file = driveService.files().update(fileId, fileMetadata, mediaContent)
+                    .execute();
+            Log.i("Uploadfile: ", "upload to :"+file.getId());
+            Log.i("Uploadfile: ", "upload successfully");
+        } catch (Exception e) {
+            fileId = null;
+            Log.e("err when upload file", e.getMessage());
+        }
+    }
     public static void downloadFileFromDrive(Drive driveService, String fileId){
         Thread thr = new Thread(){
                     @Override
@@ -81,7 +104,15 @@ public class GoogleDriveUtil {
                 };
                 thr.start();
     }
-    public static String searchFileFromDrive(Drive driveService){
+    public static void deleteFileFromDrive(Drive driveService, String fileId){
+        try {
+            driveService.files().delete(fileId)
+                    .execute();
+        }catch(IOException e){
+            Log.e("err when delete file", e.getMessage());
+        }
+    }
+    public static ArrayList<String> searchFileFromDrive(Drive driveService){
         if(driveService == null){
             Log.e("searching", "driveService is null");
         }
@@ -92,14 +123,9 @@ public class GoogleDriveUtil {
             result = driveService.files().list()
                     .setQ("name ='"+testFileName+"'")
                     .setSpaces("drive")
-                    .setSpaces("appDataFolder")
+//                    .setSpaces("appDataFolder")
                     .setFields("files(id, name)")
                     .execute();
-            for (File file : result.getFiles()) {
-                System.out.printf("Found file: %s (%s)\n",
-                        file.getName(), file.getId());
-            }
-            Log.w("searching", "take the first id in the array");
         } catch (Exception e) {
             Log.e("Error in searchFile", e.getMessage());
             return null;
@@ -109,16 +135,14 @@ public class GoogleDriveUtil {
             return null;
         }
         else{
-            return result.getFiles().get(0).getId();
+            ArrayList<String> ids = new ArrayList<String>();
+            for (File file : result.getFiles()) {
+                System.out.printf("Found file: %s (%s)\n",
+                        file.getName(), file.getId());
+                ids.add(file.getId());
+            }
+            return ids;
         }
     }
-    private static void deleteFileFromDrive(Drive driveService, String fileId) {
-        try {
-            driveService.files().delete(fileId).execute();
-        } catch (IOException e) {
-            System.out.println("An error occurred: " + e);
-        }
-    }
-
 }
 

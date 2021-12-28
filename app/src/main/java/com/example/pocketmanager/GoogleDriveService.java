@@ -23,7 +23,10 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 
+import java.util.ArrayList;
 import java.util.Collections;
+
+
 
 
 
@@ -126,20 +129,49 @@ public class GoogleDriveService {
 
         return accountData;
     }
-    public void backUpToDrive(){
+    public void backUpToDrive(Context context){
+        driveService= getDriveService(context);
         Thread thr = new Thread(() -> {
-            String id = GoogleDriveUtil.searchFileFromDrive(driveService);
-            if(id == null){
-                fileId = GoogleDriveUtil.createFileToDrive(driveService);
+            ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService);
+            if(ids == null){
+                GoogleDriveUtil.createFileToDrive(driveService);
             }else{
-                fileId = id;
+                GoogleDriveUtil.uploadFileToDrive(driveService, ids.get(0));
             }
         });
         thr.start();
     }
-    public void restoreFromDrive(){
+    public void deleteAllBackupFromDrive(Context context){
+        driveService= getDriveService(context);
+        Thread thr = new Thread(() -> {
+            ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService);
+            try{
+                for(String s: ids){
+                    Log.i("delete id", s);
+                    GoogleDriveUtil.deleteFileFromDrive(driveService, s);
+                }
+            }catch(NullPointerException e){
+                Log.w("delete id", "there isn't exist file");
+            }
 
+        });
+        thr.start();
+    }
+    private Drive getDriveService(Context context){
+        GoogleAccountCredential credential = GoogleAccountCredential
+                .usingOAuth2(context, Collections.singleton(DriveScopes.DRIVE_FILE));
+        if(account == null) {
+            Log.e("getDrive", "account is null");
+        }
+        credential.setSelectedAccount(account.getAccount());
 
+        driveService = new Drive.Builder(
+                AndroidHttp.newCompatibleTransport(),
+                new GsonFactory(),
+                credential)
+                .setApplicationName("PocketManager")
+                .build();
+        return driveService;
     }
 
 }

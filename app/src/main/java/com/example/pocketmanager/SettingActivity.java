@@ -15,6 +15,16 @@ import android.widget.Toast;
 public class SettingActivity extends AppCompatActivity {
     private Boolean isLogIn = false;
     private GoogleDriveService mGDS = new GoogleDriveService();
+    /*
+    interpret function
+
+    GoogleDriveService.backUpToDrive(SettingActivity.this);
+    :return  void
+    :if you need upload file to drive, call this funciton.
+
+
+     */
+
     private SharedPreferences accountData;
 
     Button google_button,hand_backup,auto_backup,edit_category,property;
@@ -118,7 +128,8 @@ public class SettingActivity extends AppCompatActivity {
                 if(mGDS.handleSignInResult(data , SettingActivity.this)){
                     Toast.makeText(SettingActivity.this, "登入成功", Toast.LENGTH_SHORT);
                     Log.i("sign in", "Sign in success");
-                    mGDS.backUpToDrive();
+//                    mGDS.backUpToDrive(SettingActivity.this);
+//                    mGDS.deleteAllBackupFromDrive(SettingActivity.this);
                     accountData = mGDS.setAccountData(accountData);
                     mGDS.requestStoragePremission(this);
                     google_button.setText(accountData.getString("email", "已登入"));
