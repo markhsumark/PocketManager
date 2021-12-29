@@ -3,6 +3,8 @@ package com.example.pocketmanager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +15,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -46,7 +50,8 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager exLayoutManager, inLayoutManager;
     private ExAdapter exAdapter;
     //private InAdapter inAdapter;
-    private LinkedList<HashMap<String,String>> data;
+    List<Account> data = new ArrayList<>();
+    AccountViewModel accountViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,36 @@ public class HomeActivity extends AppCompatActivity {
             monthPicker.setBackgroundColor(Color.parseColor("#000000"));
 
 
-//  點選新增按鈕會跳轉頁面
+        //  點選新增按鈕會跳轉頁面
+        externalRecyclerView = findViewById(R.id.externalRecyclerView);
+        externalRecyclerView.setHasFixedSize(true);
+        exLayoutManager = new LinearLayoutManager(this);
+        externalRecyclerView.setLayoutManager(exLayoutManager);
+        exAdapter = new ExAdapter();
+        externalRecyclerView.setAdapter(exAdapter);
+        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
+        accountViewModel.getAllAccountsLive().observe(this, new Observer<List<Account>>() {
+            @Override
+            public void onChanged(List<Account> accounts) {
+                data = new ArrayList<>();
+                for (int i = 0; i < accounts.size(); i++) {
+                    data.add(accounts.get(i));
+                }
+                Log.e("size",Integer.toString(accounts.size()));
+                exAdapter.notifyDataSetChanged();
+                /*StringBuilder text = new StringBuilder();
+                for (int i = 0; i < accounts.size(); i++) {
+                    Account account = accounts.get(i);
+                    text.append("id:").append(account.getId())
+                            .append(",類別:").append(account.getInOut())
+                            .append(",金額:").append(account.getPrice())
+                            .append(",摘要:").append(account.getNotation())
+                            .append('\n');
+                }
+                textView.setText(text.toString());*/
+            }
+        });
+        ///*  點選新增按鈕會跳轉頁面
         previousStep = findViewById(R.id.previousStep);
         previousStep.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,49 +128,17 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, AddOrEditActivity.class);
-                intent.putExtra("mode", false);
+                intent.putExtra("mode", "add");
                 startActivity(intent);
             }
         });
-/*TODO assetLine
-        assetName = findViewById(R.id.assetChooser);
-        assetBalance = findViewById(R.id.assetBalance);
-*/
+        /*TODO assetLine
+                assetName = findViewById(R.id.assetChooser);
+                assetBalance = findViewById(R.id.assetBalance);
+        */
 
-/*
-        internalRecyclerView = findViewById(R.id.internalRecyclerView);
-        internalRecyclerView.setHasFixedSize(true);
-        inLayoutManager = new LinearLayoutManager(this);
-        internalRecyclerView.setLayoutManager(inLayoutManager);
-*/
-        externalRecyclerView = findViewById(R.id.externalRecyclerView);
-        externalRecyclerView.setHasFixedSize(true);
-        exLayoutManager = new LinearLayoutManager(this);
-        externalRecyclerView.setLayoutManager(exLayoutManager);
 
-        makeData();
-/*
-        inAdapter = new InAdapter();
-        internalRecyclerView.setAdapter(inAdapter);
-*/
-        exAdapter = new ExAdapter();
-        externalRecyclerView.setAdapter(exAdapter);
 
-//        month.setText(Calendar.MONTH);
-
-    }
-
-    private void makeData(){
-        data = new LinkedList<>();
-        for(int i=1; i<20; i++){
-            HashMap<String, String> row = new HashMap<>();
-            row.put("type", String.valueOf(i/10));
-            row.put("asset", String.valueOf(i/8));
-            row.put("category", String.valueOf(i/5));
-            row.put("description", "i=" + i);
-            row.put("money", "123" + i);
-            data.add(row);
-        }
     }
 
     public void rackMonthPicker(View v, TextView t){
@@ -191,32 +193,30 @@ public class HomeActivity extends AppCompatActivity {
         public ExAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from((parent.getContext()))
                     .inflate(R.layout.single_record, parent,false);
-
             return new MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, int position) {
-            Resources res=getResources();
-            holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(data.get(position).get("category"))]);
+        public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
+            //Resources res=getResources();
+            /*holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(data.get(position).get("category"))]);
             holder.description.setText(data.get(position).get("description"));
-            holder.money.setText(data.get(position).get("money"));
-
+            holder.money.setText(data.get(position).get("money"));*/
+            holder.category.setText(data.get(position).getCategoryName());
+            holder.description.setText(data.get(position).getDescription());
+            holder.money.setText(Integer.toString(data.get(position).getPrice()));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String type = data.get(position).get("type");
-                    String assets = data.get(position).get("asset");
-                    String category = data.get(position).get("category");
-                    String description = data.get(position).get("description");
-                    String money = data.get(position).get("money");
                     Intent intent = new Intent(HomeActivity.this, AddOrEditActivity.class);
-                    intent.putExtra("type", type);
-                    intent.putExtra("asset", assets);
-                    intent.putExtra("category", category);
-                    intent.putExtra("description", description);
-                    intent.putExtra("money", money);
-                    intent.putExtra("mode", true); //edit
+                    intent.putExtra("mode", "edit");
+                    intent.putExtra("Id", data.get(position).getId());
+                    intent.putExtra("Property", data.get(position).getProperty());
+                    intent.putExtra("InOut", data.get(position).getInOut());
+                    intent.putExtra("Price", Integer.toString(data.get(position).getPrice()));
+                    intent.putExtra("CategoryName", data.get(position).getCategoryName());
+                    intent.putExtra("SubCategoryName", data.get(position).getSubCategoryName());
+                    intent.putExtra("Description", data.get(position).getDescription());
                     startActivity(intent);
                 }
             });
@@ -227,39 +227,4 @@ public class HomeActivity extends AppCompatActivity {
             return data.size();
         }
     }
-
-/*
-    private class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
-
-        class MyViewHolder extends RecyclerView.ViewHolder{
-            public View itemView;
-            public  TextView category;
-
-            public MyViewHolder(View v){
-                super(v);
-                itemView = v;
-
-                category = itemView.findViewById(R.id.category);
-            }
-        }
-
-        @NonNull
-        @Override
-        public ExAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from((parent.getContext()))
-                    .inflate(R.layout.daily_records, parent,false);
-
-            return new MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, int position) {
-            holder.category.setText(data.get(position).get("category"));
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-    }*/
 }

@@ -13,7 +13,7 @@
         android:layout_marginTop="100dp"
         android:text="收入/支出"
         app:layout_constraintEnd_toStartOf="@+id/in_out"
-        app:layout_constraintHorizontal_bias="0.414"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
