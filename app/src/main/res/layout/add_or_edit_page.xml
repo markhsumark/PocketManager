@@ -4,185 +4,229 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--收支可以改成tabview形式-->
+    <!--收支可以改成tabview形式--><![CDATA[
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/topEdge"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:navigationIcon="?attr/actionModeCloseDrawable"
-        app:layout_constraintTop_toTopOf="parent"/>
 
-    <LinearLayout
-        android:id="@+id/dateInfo"
-        android:layout_width="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+
+
+
+
+    ]]>
+
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="100dp"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topEdge">
+        android:autoSizeTextType="uniform"
+        android:text="日期"
+        app:layout_constraintBottom_toBottomOf="@+id/timePickButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toTopOf="@+id/timePickButton" />
 
-        <TextView
-            android:id="@+id/dateText"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:autoSizeTextType="uniform"
-            android:text="日期" />
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/datePickButton"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:textSize="18dp"
-            android:gravity="right|center_vertical"
-            android:onClick="datePicker" />
-
-        <Button
-            android:id="@+id/timePickButton"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:textSize="20dp"
-            android:gravity="right|center_vertical"
-            android:onClick="timePicker" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/typeInfo"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/datePickButton"
+        android:layout_width="150dp"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateInfo">
+        android:gravity="right|center_vertical"
+        android:onClick="datePicker"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toTopOf="@+id/guideline15" />
 
-        <TextView
-            android:id="@+id/typeText"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:autoSizeTextType="uniform"
-            android:text="收支" />
-
-        <Spinner
-            android:id="@+id/typePicker"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:gravity="right"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/assetInfo"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/timePickButton"
+        android:layout_width="100dp"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/typeInfo">
+        android:gravity="right|center_vertical"
+        android:onClick="timePicker"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toEndOf="@+id/datePickButton"
+        app:layout_constraintTop_toTopOf="@+id/guideline15" />
 
-        <TextView
-            android:id="@+id/assetText"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:autoSizeTextType="uniform"
-            android:text="資產" />
-
-        <Spinner
-            android:id="@+id/assetPicker"
-            android:layout_width="250dp"
-            android:layout_height="40dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/moneyInfo"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/typeText"
+        android:layout_width="100dp"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/assetInfo">
+        android:layout_marginTop="10dp"
+        android:autoSizeTextType="uniform"
+        android:text="收支"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/dateText" /><![CDATA[
 
-        <TextView
-            android:id="@+id/moneyText"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:autoSizeTextType="uniform"
-            android:text="金額" />
+    android:id="@+id/assetInfo"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:gravity="center"
+    android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/moneyEditor"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:numeric="integer"
-            android:gravity="right|center_vertical"
-            android:text="" />
-    </LinearLayout>
+    ]]>
 
-    <LinearLayout
-        android:id="@+id/categoryInfo"
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/typePicker"
+        android:layout_width="250dp"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/moneyInfo">
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/datePickButton" />
 
-        <TextView
-            android:id="@+id/categoryText"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:autoSizeTextType="uniform"
-            android:text="類別/\n子類別" />
-
-        <Spinner
-            android:id="@+id/categoryPicker"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:gravity="right" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/descriptionInfo"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/assetText"
+        android:layout_width="100dp"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryInfo">
+        android:layout_marginTop="10dp"
+        android:autoSizeTextType="uniform"
+        android:text="資產"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/typeText" />
 
-        <TextView
-            android:id="@+id/descriptionText"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:autoSizeTextType="uniform"
-            android:text="描述" />
+    <Spinner
+        android:id="@+id/assetPicker"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/assetText"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/typePicker" />
 
-        <EditText
-            android:id="@+id/descriptionEditor"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:gravity="right"
-            android:text="" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/moneyText"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:autoSizeTextType="uniform"
+        android:text="金額"
+        app:layout_constraintBottom_toBottomOf="@+id/moneyEditor"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/categoryText" />
+
+    <EditText
+        android:id="@+id/moneyEditor"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="right|center_vertical"
+        android:inputType="number"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/categoryPicker" />
+
+    <TextView
+        android:id="@+id/categoryText"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:autoSizeTextType="uniform"
+        android:text="類別/\n子類別"
+        app:layout_constraintBottom_toBottomOf="@+id/categoryPicker"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/assetText" /><![CDATA[
+
+    android:id="@+id/descriptionInfo"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+
+
+    ]]>
+
+    <Spinner
+        android:id="@+id/categoryPicker"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/assetPicker" />
+
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:autoSizeTextType="uniform"
+        android:text="描述"
+        app:layout_constraintBottom_toBottomOf="@+id/descriptionEditor"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/moneyText" />
+
+    <EditText
+        android:id="@+id/descriptionEditor"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:text=""
+        android:inputType="text"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/moneyEditor" />
 
     <Button
         android:id="@+id/done"
-        android:text="done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="60dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="60dp"
+        android:text="done"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.835"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/delete"
-        android:text="delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="60dp"
+        android:text="delete"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="400dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="132dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="270dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="40dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

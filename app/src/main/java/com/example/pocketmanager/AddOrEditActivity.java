@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,7 +25,6 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Calendar;
 
 public class AddOrEditActivity extends AppCompatActivity {
-    private Toolbar title;
     private Button datePickButton, timePickButton;
     private Button delete, done;
     Spinner typePicker, assetPicker, categoryPicker;
@@ -33,27 +34,24 @@ public class AddOrEditActivity extends AppCompatActivity {
         setContentView(R.layout.add_or_edit_page);
         Intent intent = getIntent();
         boolean mode = intent.getBooleanExtra("mode", false);
-        title = findViewById(R.id.topEdge);
         typePicker = findViewById(R.id.typePicker);
         assetPicker = findViewById(R.id.assetPicker);
         categoryPicker = findViewById(R.id.categoryPicker);
         datePickButton = findViewById(R.id.datePickButton);
         timePickButton = findViewById(R.id.timePickButton);
+        EditText description = findViewById(R.id.descriptionEditor);
+        EditText money = findViewById(R.id.moneyEditor);
+
+        Calendar calendar = Calendar.getInstance();
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setTitle("");
+        actionbar.setDisplayHomeAsUpEnabled(true);
 
         delete = findViewById(R.id.delete);
         done = findViewById(R.id.done);
 
-        setSupportActionBar(title);
-        title.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        Toolbar myToolbar = findViewById(R.id.linear_toolbar);
         if (mode) {  //edit mode
-            getSupportActionBar().setTitle("編輯頁面");
-            EditText description = findViewById(R.id.descriptionEditor);
-            EditText money = findViewById(R.id.moneyEditor);
 
             typePicker.setSelection(Integer.parseInt(intent.getStringExtra("type")));
             assetPicker.setSelection(Integer.parseInt(intent.getStringExtra("asset")));
@@ -61,10 +59,8 @@ public class AddOrEditActivity extends AppCompatActivity {
             description.setText(intent.getStringExtra("description"));
             money.setText(intent.getStringExtra("money"));
         } else {
-            getSupportActionBar().setTitle("新增頁面");
             delete.setVisibility(View.GONE);
 ///*  設置點進adder按鈕時的日期
-            Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -133,11 +129,16 @@ public class AddOrEditActivity extends AppCompatActivity {
             }
         });
 
+
         done.setOnClickListener(new View.OnClickListener() {  //新增OR編輯完成
             @Override
             public void onClick(View v) {
                 //TODO
-                finish();
+                if(TextUtils.isEmpty(money.getText())){
+                    Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
+                }
+                else
+                    finish();
             }
         });
 //*/
@@ -176,4 +177,14 @@ public class AddOrEditActivity extends AppCompatActivity {
         }, hour, minute, true).show();
     }
 //*/
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home: //對用戶按home icon的處理，本例只需關閉activity，就可返回上一activity，即主activity。
+                finish();
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
