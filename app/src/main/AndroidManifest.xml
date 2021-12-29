@@ -34,6 +34,19 @@
         <activity android:name=".SettingActivity" />
         <activity android:name=".GraphActivity" />
         <activity
+            android:name=".ChildCategory"
+            android:exported="false" />
+        <activity
+            android:name=".AddCategoryActivity"
+            android:exported="false" />
+        <activity android:name=".AddOrEditActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".PropertyActivity" />
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".BackUpActivity" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".GraphActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -44,4 +57,8 @@
         </activity>
     </application>
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

@@ -9,16 +9,26 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.google.android.gms.common.SignInButton;
+
 public class SettingActivity extends AppCompatActivity {
-    Button google_button,hand_backup,auto_backup,edit_category,property;
-    Switch remind_switch,speak_switch,notice_switch;
-    public Integer n = 0;
+    Button connectGoogle,handBackup,autoBackup,editCategory,property;
+    Switch remindSwitch,speakSwitch,noticeSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-        auto_backup = findViewById(R.id.auto_backup);
-        auto_backup.setOnClickListener(new View.OnClickListener() {
+
+        connectGoogle = findViewById(R.id.connectGoogle);
+        connectGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        autoBackup = findViewById(R.id.autoBackup);
+        autoBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -26,8 +36,8 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        edit_category = findViewById(R.id.edit_catogory);
-        edit_category.setOnClickListener(new View.OnClickListener() {
+        editCategory = findViewById(R.id.editCatogory);
+        editCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -35,30 +45,9 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        property = findViewById(R.id.property);
-        property.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(SettingActivity.this, PropertyActivity.class);
-                startActivity(intent);
-            }
-        });
-        google_button = findViewById(R.id.google_button);
-        google_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (n == 0) {
-                    google_button.setText("登入google");
-                    n = 1;
-                } else {
-                    google_button.setText("連結google");
-                    n = 0;
-                }
-            }
-        });
-        remind_switch=findViewById(R.id.remind_switch);
-        remind_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        remindSwitch=findViewById(R.id.remindSwitch);
+        remindSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -69,8 +58,8 @@ public class SettingActivity extends AppCompatActivity {
                 }
             }
         });
-        speak_switch=findViewById(R.id.speak_switch);
-        speak_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        speakSwitch=findViewById(R.id.speakSwitch);
+        speakSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -81,8 +70,8 @@ public class SettingActivity extends AppCompatActivity {
                 }
             }
         });
-        notice_switch=findViewById(R.id.notice_switch);
-        notice_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        noticeSwitch=findViewById(R.id.noticeSwitch);
+        noticeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
