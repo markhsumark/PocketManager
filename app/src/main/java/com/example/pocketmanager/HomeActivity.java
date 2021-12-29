@@ -9,23 +9,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kal.rackmonthpicker.RackMonthPicker;
+import com.kal.rackmonthpicker.listener.DateMonthDialogListener;
+import com.kal.rackmonthpicker.listener.OnCancelMonthDialogListener;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
-    private Button previousStep, nextStep, editor, adder;
+    private TextView month;
+    private ImageButton monthPicker;
+    private FloatingActionButton previousStep, nextStep, editor, adder;
 /*TODO assetLine
     private Spinner assetName;
     private TextView assetBalance;
@@ -41,7 +53,21 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
 
-///*  點選新增按鈕會跳轉頁面
+        Calendar calendar = Calendar.getInstance();
+        month = findViewById(R.id.month);
+        month.setText(calendar.get(Calendar.YEAR)+","+calendar.get(Calendar.MONTH)+"月");
+        monthPicker = findViewById(R.id.monthPicker);
+        monthPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rackMonthPicker(v, month);
+            }
+        });
+        if((getBaseContext().getResources().getConfiguration().uiMode& Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES)
+            monthPicker.setBackgroundColor(Color.parseColor("#000000"));
+
+
+//  點選新增按鈕會跳轉頁面
         previousStep = findViewById(R.id.previousStep);
         previousStep.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         assetName = findViewById(R.id.assetChooser);
         assetBalance = findViewById(R.id.assetBalance);
 */
-//*/
+
 /*
         internalRecyclerView = findViewById(R.id.internalRecyclerView);
         internalRecyclerView.setHasFixedSize(true);
@@ -96,6 +122,7 @@ public class HomeActivity extends AppCompatActivity {
         exAdapter = new ExAdapter();
         externalRecyclerView.setAdapter(exAdapter);
 
+//        month.setText(Calendar.MONTH);
 
     }
 
@@ -111,26 +138,39 @@ public class HomeActivity extends AppCompatActivity {
             data.add(row);
         }
     }
-/*
-    public void rackMonthPicker(View v){
 
-        RackMonthPicker rackMonthPicker = new RackMonthPicker(this)
+    public void rackMonthPicker(View v, TextView t){
+
+        new RackMonthPicker(this)
                 .setLocale(Locale.ENGLISH)
                 .setPositiveButton(new DateMonthDialogListener() {
                     @Override
                     public void onDateMonth(int month, int startDate, int endDate, int year, String monthLabel) {
-
+                        String[] time = monthLabel.split(",");
+                        if(time[0].equals("Jan")) time[0]="1";
+                        else if (time[0].equals("Feb")) time[0]="2";
+                        else if (time[0].equals("Mar")) time[0]="3";
+                        else if (time[0].equals("Apr")) time[0]="4";
+                        else if (time[0].equals("May")) time[0]="5";
+                        else if (time[0].equals("Jun")) time[0]="6";
+                        else if (time[0].equals("Jul")) time[0]="7";
+                        else if (time[0].equals("Aug")) time[0]="8";
+                        else if (time[0].equals("Sep")) time[0]="9";
+                        else if (time[0].equals("Oct")) time[0]="10";
+                        else if (time[0].equals("Nov")) time[0]="11";
+                        else if (time[0].equals("Dec")) time[0]="12";
+                        t.setText(time[1]+","+time[0]+"月");
                     }
                 })
                 .setNegativeButton(new OnCancelMonthDialogListener() {
                     @Override
                     public void onCancel(AlertDialog dialog) {
-
+                        dialog.cancel();
                     }
                 }).show();
     }
-*/
-///*  顯示RecyclerView
+
+//  顯示RecyclerView
     private class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
 
         class MyViewHolder extends RecyclerView.ViewHolder{
@@ -187,7 +227,7 @@ public class HomeActivity extends AppCompatActivity {
             return data.size();
         }
     }
-//*/
+
 /*
     private class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
 
