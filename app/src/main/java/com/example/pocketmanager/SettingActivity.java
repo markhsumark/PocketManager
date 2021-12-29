@@ -121,7 +121,7 @@ public class SettingActivity extends AppCompatActivity {
 
                     accountData = mGDS.setAccountData(accountData);
                     mGDS.requestStoragePremission(this);
-                    google_button.setText(accountData.getString("email", "已登入"));
+                    connectGoogle.setText(accountData.getString("email", "已登入"));
 
 //                    File tfile  = Environment.getDataDirectory();
 //                    Log.i("root", tfile.getAbsolutePath());
