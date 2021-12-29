@@ -7,29 +7,40 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Account {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int Id;
     private String Property;
     private String InOut;
     private int Price;
     private String CategoryName;
     private String SubCategoryName;
     //private Date Time;
-    private String Notation;
+    private String Description;
 
     @Ignore
-    public Account(String property, String inOut, int price, String categoryName, String subCategoryName, String notation) {
+    public Account(String property, String inOut, int price, String categoryName, String subCategoryName, String description) {
         Property = property;
         InOut = inOut;
         Price = price;
         CategoryName = categoryName;
         SubCategoryName = subCategoryName;
-        Notation = notation;
+        Description = description;
+    }
+
+    @Ignore
+    public Account(int id, String property, String inOut, int price, String categoryName, String subCategoryName, String description) {
+        Id = id;
+        Property = property;
+        InOut = inOut;
+        Price = price;
+        CategoryName = categoryName;
+        SubCategoryName = subCategoryName;
+        Description = description;
     }
 
     public Account() {}
 
     public int getId() {
-        return id;
+        return Id;
     }
     public String getProperty() {
         return Property;
@@ -46,15 +57,15 @@ public class Account {
     public String getSubCategoryName() {
         return SubCategoryName;
     }
-    public String getNotation() {
-        return Notation;
+    public String getDescription() {
+        return Description;
     }
 
     public void setProperty(String property) {
         Property = property;
     }
     public void setId(int id) {
-        this.id = id;
+        this.Id = id;
     }
     public void setInOut(String inOut) {
         InOut = inOut;
@@ -68,7 +79,7 @@ public class Account {
     public void setSubCategoryName(String subCategoryName) {
         SubCategoryName = subCategoryName;
     }
-    public void setNotation(String notation) {
-        Notation = notation;
+    public void setDescription(String description) {
+        Description = description;
     }
 }

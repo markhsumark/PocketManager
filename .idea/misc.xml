@@ -5,10 +5,15 @@
       <map>
         <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/drawable/button_style.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/activity_category_list.xml" value="0.14375" />
-        <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/activity_insert.xml" value="0.165" />
+        <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/activity_insert.xml" value="0.335" />
         <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/add_or_edit_page.xml" value="0.335" />
+        <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/asset_frame.xml" value="0.165" />
+        <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/category_page.xml" value="0.16354166666666667" />
+        <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/daily_records.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/home_page.xml" value="0.14375" />
+        <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/property_page.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/settings.xml" value="0.14375" />
+        <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/single_record.xml" value="0.375" />
         <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/test_google.xml" value="0.14010416666666667" />
       </map>
     </option>

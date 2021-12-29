@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,14 +22,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Calendar;
 
 public class AddOrEditActivity extends AppCompatActivity {
-    private Button datePickButton, timePickButton;
-    private Button delete, done;
+    Button datePickButton, timePickButton;
+    Button delete, done;
+    String mode;
     Spinner typePicker, assetPicker, categoryPicker;
-
+    EditText description, money;
+    AccountViewModel accountViewModel;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -43,33 +47,34 @@ public class AddOrEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("");
         setContentView(R.layout.add_or_edit_page);
+        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
-        boolean mode = intent.getBooleanExtra("mode", false);
+        mode = intent.getStringExtra("mode");
         typePicker = findViewById(R.id.typePicker);
         assetPicker = findViewById(R.id.assetPicker);
         categoryPicker = findViewById(R.id.categoryPicker);
         datePickButton = findViewById(R.id.datePickButton);
         timePickButton = findViewById(R.id.timePickButton);
+        description = findViewById(R.id.descriptionEditor);
+        money = findViewById(R.id.moneyEditor);
 
         delete = findViewById(R.id.delete);
         done = findViewById(R.id.done);
-
-        if (mode) {  //edit mode
+        Log.e("mode",mode);
+        if (mode.equals("edit")) {  //edit mode
             //getSupportActionBar().setTitle("編輯頁面");
-            EditText description = findViewById(R.id.descriptionEditor);
-            EditText money = findViewById(R.id.moneyEditor);
-
-            typePicker.setSelection(Integer.parseInt(intent.getStringExtra("type")));
-            assetPicker.setSelection(Integer.parseInt(intent.getStringExtra("asset")));
-            categoryPicker.setSelection(Integer.parseInt(intent.getStringExtra("category")));
-            description.setText(intent.getStringExtra("description"));
-            money.setText(intent.getStringExtra("money"));
-        } else {
+            //typePicker.setSelection(Integer.parseInt(intent.getStringExtra("type")));
+            //assetPicker.setSelection(Integer.parseInt(intent.getStringExtra("asset")));
+            //categoryPicker.setSelection(Integer.parseInt(intent.getStringExtra("category")));
+            description.setText(intent.getStringExtra("Description"));
+            money.setText(intent.getStringExtra("Price"));
+        } else if (mode.equals("add")) {
+            Log.e("mode","add");
             //getSupportActionBar().setTitle("新增頁面");
             delete.setVisibility(View.GONE);
-///*  設置點進adder按鈕時的日期
+            //設置點進adder按鈕時的日期
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
@@ -82,9 +87,8 @@ public class AddOrEditActivity extends AppCompatActivity {
                     ":" + (minute < 10 ? "0" + String.valueOf(minute) : String.valueOf(minute));
             datePickButton.setText(date);  //set initial value
             timePickButton.setText(time);  //set initial value
-//*/
         }
-///*  設置type,asset,category綁定的資源，並可於頁面中更改選取的物件
+        //設置type,asset,category綁定的資源，並可於頁面中更改選取的物件
         ArrayAdapter typeAdapter = ArrayAdapter.createFromResource(this
                 , R.array.type, android.R.layout.simple_dropdown_item_1line);
         typePicker.setAdapter(typeAdapter);
@@ -127,10 +131,8 @@ public class AddOrEditActivity extends AppCompatActivity {
                 //TODO
             }
         });
-//*/
-///*  設置返回、完成更動、刪除按鈕的功能
 
-
+        //設置返回、完成更動、刪除按鈕的功能
         delete.setOnClickListener(new View.OnClickListener() {  //刪除現有資料
             @Override
             public void onClick(View v) {
@@ -142,13 +144,35 @@ public class AddOrEditActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {  //新增OR編輯完成
             @Override
             public void onClick(View v) {
-                //TODO
+                Log.e("button","done");
+                if(mode.equals("edit")) {
+                    accountViewModel.updateAccounts(new Account(
+                            intent.getIntExtra("Id",0),
+                            "來源",
+                            "收支",
+                            Integer.parseInt(money.getText().toString()),
+                            "類別",
+                            "子類別",
+                            description.getText().toString()));
+                }
+                else if(mode.equals("add")) {
+                    Log.e("Check","add in");
+                    accountViewModel.insertAccounts(new Account(
+                            "來源",
+                            "收支",
+                            Integer.parseInt(money.getText().toString()),
+                            "類別",
+                            "子類別",
+                            description.getText().toString()));
+                    Log.e("Check","add out");
+                }
+
                 finish();
             }
         });
-//*/
     }
-    ///*  選日期，選完自動跳去選時間
+
+    // 選日期，選完自動跳去選時間
     public void datePicker(View v){
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -165,8 +189,8 @@ public class AddOrEditActivity extends AppCompatActivity {
 
         }, year, month, day).show();
     }
-    //*/
-///*  選時間
+
+    // 選時間
     public void timePicker(View v){
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -181,5 +205,4 @@ public class AddOrEditActivity extends AppCompatActivity {
 
         }, hour, minute, true).show();
     }
-//*/
 }
