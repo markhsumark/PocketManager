@@ -6,24 +6,18 @@
     android:layout_height="match_parent"
     tools:context="com.example.pocketmanager.BackUpActivity">
 
-    <Button
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="44dp"
-        android:text="返回"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <RadioGroup
         android:id="@+id/backup_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="280dp"
         android:layout_marginEnd="136dp"
         android:layout_marginBottom="304dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
             android:id="@+id/month_backup"

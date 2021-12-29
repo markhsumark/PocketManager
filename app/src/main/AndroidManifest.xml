@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pocketmanager">
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,19 +14,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketManager">
-        <activity android:name=".AddOrEditActivity"></activity>
-        <activity android:name=".HomeActivity"></activity>
-
         <activity
-            android:name=".PropertyActivity"/>
+            android:name=".ChildCategory"
+            android:exported="false" />
         <activity
-            android:name=".CategoryActivity"/>
-        <activity
-            android:name=".BackUpActivity"/>
-        <activity
-            android:name=".SettingActivity"/>
-        <activity
-            android:name=".GraphActivity"/>
+            android:name=".AddCategoryActivity"
+            android:exported="false" />
+        <activity android:name=".AddOrEditActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".PropertyActivity" />
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".BackUpActivity" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".GraphActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -33,8 +38,4 @@
         </activity>
     </application>
 
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>
