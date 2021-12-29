@@ -1,9 +1,13 @@
 package com.example.pocketmanager;
 
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import com.google.api.client.http.FileContent;
@@ -15,8 +19,9 @@ public class GoogleDriveUtil {
 
 
 //    會改為資料庫的路徑
-    private static String appFolderRootPath = "data/data/com.example.pocketmanager/databases/";
-    private static String testFolderRootPath = "data/data/com.example.pocketmanager/shared_prefs/";
+    private static String rootPath = Environment.getDataDirectory().getPath();
+    private static String appFolderPath = "/data/com.example.pocketmanager/databases/";
+    private static String testFolderRootPath = "/data/com.example.pocketmanager/shared_prefs/";
 //    會改為DB file name
     private static String dbFileName = "account_database";
     private static String testFileName = "Account_Data.xml";
@@ -36,7 +41,7 @@ public class GoogleDriveUtil {
 
 //                實際檔案位置
 //        java.io.File filePath = new java.io.File(appFolderRootPath + dbFileName);
-        java.io.File filePath = new java.io.File(testFolderRootPath + testFileName);
+        java.io.File filePath = new java.io.File(rootPath + testFolderRootPath + testFileName);
 //                設定檔案內容
         FileContent mediaContent = new FileContent(testMineType, filePath);
 //                type表格：https://blog.csdn.net/github_35631540/article/details/103228868
@@ -69,7 +74,7 @@ public class GoogleDriveUtil {
 
 //                實際檔案位置
 //        java.io.File filePath = new java.io.File(appFolderRootPath + dbFileName);
-            java.io.File filePath = new java.io.File(testFolderRootPath + testFileName);
+            java.io.File filePath = new java.io.File(rootPath +testFolderRootPath + testFileName);
 //                設定檔案內容
             FileContent mediaContent = new FileContent(testMineType, filePath);
             //                    新增檔案，要求：檔案資訊和檔案內容
@@ -88,10 +93,18 @@ public class GoogleDriveUtil {
                     public void run(){
                         try {
                             if(fileId != null) {
-                                // image/jpeg：jpg檔
-                                File file = driveService.files().get(fileId)
-                                        .execute();
-                                Log.i("info", "download success");
+
+
+                                OutputStream outputStream = new ByteArrayOutputStream();
+                                driveService.files().get(fileId)
+                                        .executeMediaAndDownloadTo(outputStream);
+                                Log.i("download file context", outputStream.toString());
+
+                                java.io.File dbFile = new java.io.File(rootPath + testFolderRootPath + testFileName);
+                                FileOutputStream dbFileOutputStream = new FileOutputStream(dbFile);
+                                dbFileOutputStream.write(outputStream.toString().getBytes());
+                                dbFileOutputStream.close();
+                                Log.i("download", "finish");
                             }
                         }catch(IOException e){
                             if(e.getMessage() == "416") {

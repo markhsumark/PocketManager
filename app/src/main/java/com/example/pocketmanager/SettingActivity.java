@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,18 +13,13 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class SettingActivity extends AppCompatActivity {
+    //if user is login
     private Boolean isLogIn = false;
+
     private GoogleDriveService mGDS = new GoogleDriveService();
-    /*
-    interpret function
-
-    GoogleDriveService.backUpToDrive(SettingActivity.this);
-    :return  void
-    :if you need upload file to drive, call this funciton.
-
-
-     */
 
     private SharedPreferences accountData;
 
@@ -128,11 +124,17 @@ public class SettingActivity extends AppCompatActivity {
                 if(mGDS.handleSignInResult(data , SettingActivity.this)){
                     Toast.makeText(SettingActivity.this, "登入成功", Toast.LENGTH_SHORT);
                     Log.i("sign in", "Sign in success");
-//                    mGDS.backUpToDrive(SettingActivity.this);
+
 //                    mGDS.deleteAllBackupFromDrive(SettingActivity.this);
+//                    mGDS.backUpToDrive(SettingActivity.this);
+//                    mGDS.restoreFileFromDrive(SettingActivity.this);
+
                     accountData = mGDS.setAccountData(accountData);
                     mGDS.requestStoragePremission(this);
                     google_button.setText(accountData.getString("email", "已登入"));
+
+//                    File tfile  = Environment.getDataDirectory();
+//                    Log.i("root", tfile.getAbsolutePath());
                     isLogIn = true;
                 }
                 else{

@@ -157,6 +157,22 @@ public class GoogleDriveService {
         });
         thr.start();
     }
+    public void restoreFileFromDrive(Context context){
+        driveService= getDriveService(context);
+        Thread thr = new Thread(() -> {
+            ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService);
+            try{
+                for(String id: ids){
+                    Log.i("download id", id);
+                    GoogleDriveUtil.downloadFileFromDrive(driveService, id);
+                }
+            }catch(NullPointerException e){
+                Log.w("delete id", "there isn't exist file");
+            }
+
+        });
+        thr.start();
+    }
     private Drive getDriveService(Context context){
         GoogleAccountCredential credential = GoogleAccountCredential
                 .usingOAuth2(context, Collections.singleton(DriveScopes.DRIVE_FILE));
