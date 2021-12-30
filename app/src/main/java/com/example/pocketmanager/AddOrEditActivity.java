@@ -134,7 +134,14 @@ public class AddOrEditActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {  //刪除現有資料
             @Override
             public void onClick(View v) {
-                //TODO
+                accountViewModel.deleteAccounts(new Account(
+                        intent.getIntExtra("Id",0),
+                        "來源",
+                        "收支",
+                        Integer.parseInt(money.getText().toString()),
+                        "類別",
+                        "子類別",
+                        description.getText().toString()));
                 finish();
             }
         });
