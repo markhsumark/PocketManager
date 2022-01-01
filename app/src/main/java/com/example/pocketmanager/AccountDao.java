@@ -26,7 +26,6 @@ public interface AccountDao {
     void deleteAllAccounts();
 
     @Query("SELECT * FROM ACCOUNT ORDER BY ID DESC")
-        //List<Account> getAllAccounts();
     LiveData<List<Account>> getAllAccountsLive();
 
 }

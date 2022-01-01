@@ -5,24 +5,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,24 +27,16 @@ import com.kal.rackmonthpicker.listener.OnCancelMonthDialogListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
     private TextView month;
     private ImageButton monthPicker;
     private FloatingActionButton previousStep, nextStep, editor, adder;
-/*TODO assetLine
-    private Spinner assetName;
-    private TextView assetBalance;
-*/
     private RecyclerView externalRecyclerView, internalRecyclerView;
     private RecyclerView.LayoutManager exLayoutManager, inLayoutManager;
     private ExAdapter exAdapter;
-    //private InAdapter inAdapter;
     List<Account> data = new ArrayList<>();
     AccountViewModel accountViewModel;
 
@@ -89,16 +76,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 Log.e("size",Integer.toString(accounts.size()));
                 exAdapter.notifyDataSetChanged();
-                /*StringBuilder text = new StringBuilder();
-                for (int i = 0; i < accounts.size(); i++) {
-                    Account account = accounts.get(i);
-                    text.append("id:").append(account.getId())
-                            .append(",類別:").append(account.getInOut())
-                            .append(",金額:").append(account.getPrice())
-                            .append(",摘要:").append(account.getNotation())
-                            .append('\n');
-                }
-                textView.setText(text.toString());*/
             }
         });
         ///*  點選新增按鈕會跳轉頁面
@@ -132,13 +109,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        /*TODO assetLine
-                assetName = findViewById(R.id.assetChooser);
-                assetBalance = findViewById(R.id.assetBalance);
-        */
-
-
-
     }
 
     public void rackMonthPicker(View v, TextView t){
@@ -172,7 +142,7 @@ public class HomeActivity extends AppCompatActivity {
                 }).show();
     }
 
-//  顯示RecyclerView
+    // 顯示RecyclerView
     private class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
 
         class MyViewHolder extends RecyclerView.ViewHolder{
@@ -198,13 +168,9 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-            //Resources res=getResources();
-            /*holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(data.get(position).get("category"))]);
-            holder.description.setText(data.get(position).get("description"));
-            holder.money.setText(data.get(position).get("money"));*/
-            holder.category.setText(data.get(position).getCategoryName());
-            holder.description.setText(data.get(position).getDescription());
-            holder.money.setText(Integer.toString(data.get(position).getPrice()));
+            holder.category.setText(data.get(position).getCategory());
+            holder.description.setText(data.get(position).getNote());
+            holder.money.setText(Integer.toString(data.get(position).getAmount()));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -213,10 +179,15 @@ public class HomeActivity extends AppCompatActivity {
                     intent.putExtra("Id", data.get(position).getId());
                     intent.putExtra("Property", data.get(position).getProperty());
                     intent.putExtra("InOut", data.get(position).getInOut());
-                    intent.putExtra("Price", Integer.toString(data.get(position).getPrice()));
-                    intent.putExtra("CategoryName", data.get(position).getCategoryName());
-                    intent.putExtra("SubCategoryName", data.get(position).getSubCategoryName());
-                    intent.putExtra("Description", data.get(position).getDescription());
+                    intent.putExtra("Price", Integer.toString(data.get(position).getAmount()));
+                    intent.putExtra("Category", data.get(position).getCategory());
+                    intent.putExtra("SubCategory", data.get(position).getSubCategory());
+                    intent.putExtra("Year", data.get(position).getYear());
+                    intent.putExtra("Month", data.get(position).getMonth());
+                    intent.putExtra("Day", data.get(position).getDay());
+                    intent.putExtra("Hour", data.get(position).getHour());
+                    intent.putExtra("Minute", data.get(position).getMinute());
+                    intent.putExtra("Note", data.get(position).getNote());
                     startActivity(intent);
                 }
             });
