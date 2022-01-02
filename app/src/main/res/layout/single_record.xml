@@ -12,19 +12,19 @@
         android:layout_marginStart="32dp"
         android:layout_weight="1"
         android:autoSizeTextType="uniform"
-        android:text="食物/三餐"
+        android:text="食物"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/asset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:autoSizeTextType="uniform"
-        android:text="吃飯飯" />
+        android:text="現金" />
 
     <TextView
-        android:id="@+id/money"
+        android:id="@+id/amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

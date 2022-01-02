@@ -4,14 +4,12 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.Calendar;
-
 @Entity
 public class Account {
     @PrimaryKey(autoGenerate = true)
     private int Id;
-    private String Property;
-    private String InOut;
+    private String Asset;
+    private String Type;
     private int Amount;
     private String Category;
     private String SubCategory;
@@ -21,12 +19,13 @@ public class Account {
     private int Day;
     private int Hour;
     private int Minute;
+
     private String Note;
 
     @Ignore
-    public Account(String property, String inOut, int amount, String category, String subCategory, int year, int month, int day, int hour, int minute, String note) {
-        Property = property;
-        InOut = inOut;
+    public Account(String asset, String type, int amount, String category, String subCategory, int year, int month, int day, int hour, int minute, String note) {
+        Asset = asset;
+        Type = type;
         Amount = amount;
         Category = category;
         SubCategory = subCategory;
@@ -39,10 +38,10 @@ public class Account {
     }
 
     @Ignore
-    public Account(int id, String property, String inOut, int amount, String category, String subCategory, int year, int month, int day, int hour, int minute, String note) {
+    public Account(int id, String asset, String type, int amount, String category, String subCategory, int year, int month, int day, int hour, int minute, String note) {
         Id = id;
-        Property = property;
-        InOut = inOut;
+        Asset = asset;
+        Type = type;
         Amount = amount;
         Category = category;
         SubCategory = subCategory;
@@ -64,11 +63,11 @@ public class Account {
     public int getId() {
         return Id;
     }
-    public String getProperty() {
-        return Property;
+    public String getAsset() {
+        return Asset;
     }
-    public String getInOut() {
-        return InOut;
+    public String getType() {
+        return Type;
     }
     public int getAmount() {
         return Amount;
@@ -88,14 +87,14 @@ public class Account {
     public int getHour() { return Hour; }
     public int getMinute() { return Minute; }
 
-    public void setProperty(String property) {
-        Property = property;
+    public void setAsset(String asset) {
+        Asset = asset;
     }
     public void setId(int id) {
         this.Id = id;
     }
-    public void setInOut(String inOut) {
-        InOut = inOut;
+    public void setType(String type) {
+        Type = type;
     }
     public void setAmount(int amount) {
         Amount = amount;

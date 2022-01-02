@@ -94,12 +94,12 @@
         android:layout_marginTop="10dp"
         android:autoSizeTextType="uniform"
         android:text="金額"
-        app:layout_constraintBottom_toBottomOf="@+id/moneyEditor"
+        app:layout_constraintBottom_toBottomOf="@+id/amountEditor"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/categoryText" />
 
     <EditText
-        android:id="@+id/moneyEditor"
+        android:id="@+id/amountEditor"
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
@@ -148,12 +148,12 @@
         android:layout_marginTop="10dp"
         android:autoSizeTextType="uniform"
         android:text="描述"
-        app:layout_constraintBottom_toBottomOf="@+id/descriptionEditor"
+        app:layout_constraintBottom_toBottomOf="@+id/noteEditor"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/moneyText" />
 
     <EditText
-        android:id="@+id/descriptionEditor"
+        android:id="@+id/noteEditor"
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
@@ -162,7 +162,7 @@
         android:text=""
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/moneyEditor" />
+        app:layout_constraintTop_toBottomOf="@+id/amountEditor" />
 
     <Button
         android:id="@+id/done"

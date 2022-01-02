@@ -30,7 +30,7 @@ public class AddOrEditActivity extends AppCompatActivity {
     Button delete, done;
     String mode;
     Spinner typePicker, assetPicker, categoryPicker;
-    EditText description, money;
+    EditText note, amount;
     AccountViewModel accountViewModel;
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -61,8 +61,8 @@ public class AddOrEditActivity extends AppCompatActivity {
         categoryPicker = findViewById(R.id.categoryPicker);
         datePickButton = findViewById(R.id.datePickButton);
         timePickButton = findViewById(R.id.timePickButton);
-        description = findViewById(R.id.descriptionEditor);
-        money = findViewById(R.id.moneyEditor);
+        note = findViewById(R.id.noteEditor);
+        amount = findViewById(R.id.amountEditor);
         delete = findViewById(R.id.delete);
         done = findViewById(R.id.done);
         calendar.set(Calendar.YEAR, intent.getIntExtra("Year",Calendar.getInstance().get(Calendar.YEAR)));
@@ -107,8 +107,8 @@ public class AddOrEditActivity extends AppCompatActivity {
             typePicker.setSelection(types.indexOf(intent.getStringExtra("InOut")));
             assetPicker.setSelection(assets.indexOf(intent.getStringExtra("Property")));
             categoryPicker.setSelection(categories.indexOf(intent.getStringExtra("Category")));
-            description.setText(intent.getStringExtra("Note"));
-            money.setText(intent.getStringExtra("Price"));
+            note.setText(intent.getStringExtra("Note"));
+            amount.setText(intent.getStringExtra("Price"));
         } else if (mode.equals("add")) {
             //getSupportActionBar().setTitle("新增頁面");
             delete.setVisibility(View.GONE);
@@ -134,7 +134,7 @@ public class AddOrEditActivity extends AppCompatActivity {
                             intent.getIntExtra("Id",0),
                             assetPicker.getSelectedItem().toString(),
                             typePicker.getSelectedItem().toString(),
-                            Integer.parseInt(money.getText().toString()),
+                            Integer.parseInt(amount.getText().toString()),
                             categoryPicker.getSelectedItem().toString(),
                             "子類別",
                             calendar.get(Calendar.YEAR),
@@ -142,13 +142,13 @@ public class AddOrEditActivity extends AppCompatActivity {
                             calendar.get(Calendar.DAY_OF_MONTH),
                             calendar.get(Calendar.HOUR_OF_DAY),
                             calendar.get(Calendar.MINUTE),
-                            description.getText().toString()));
+                            note.getText().toString()));
                 }
                 else if(mode.equals("add")) {
                     accountViewModel.insertAccounts(new Account(
                             assetPicker.getSelectedItem().toString(),
                             typePicker.getSelectedItem().toString(),
-                            Integer.parseInt(money.getText().toString()),
+                            Integer.parseInt(amount.getText().toString()),
                             categoryPicker.getSelectedItem().toString(),
                             "子類別",
                             calendar.get(Calendar.YEAR),
@@ -156,7 +156,7 @@ public class AddOrEditActivity extends AppCompatActivity {
                             calendar.get(Calendar.DAY_OF_MONTH),
                             calendar.get(Calendar.HOUR_OF_DAY),
                             calendar.get(Calendar.MINUTE),
-                            description.getText().toString()));
+                            note.getText().toString()));
                 }
                 finish();
             }

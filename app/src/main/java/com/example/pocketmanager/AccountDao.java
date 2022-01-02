@@ -28,4 +28,7 @@ public interface AccountDao {
     @Query("SELECT * FROM ACCOUNT ORDER BY ID DESC")
     LiveData<List<Account>> getAllAccountsLive();
 
+    @Query("SELECT * FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month ORDER BY ID DESC")
+    LiveData<List<Account>> getAccounts(int year, int month);
+
 }

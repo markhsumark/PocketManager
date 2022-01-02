@@ -6,40 +6,18 @@
     android:layout_height="match_parent">
 
 
-    <ImageButton
-        android:id="@+id/monthPicker"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@color/white"
-        android:rotation="90"
-        android:src="@android:drawable/ic_media_play"
-        android:textSize="8dp"
-        app:layout_constraintStart_toEndOf="@+id/month"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/month"
-        android:layout_width="130dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:autoSizeTextType="uniform"
-        android:text="年月"
-        android:gravity="center|center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/income"
         android:layout_width="133dp"
         android:layout_height="25dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="2dp"
         android:layout_weight="1"
         android:autoSizeTextType="uniform"
         android:gravity="center|center_vertical"
         android:text="收入"
         android:textColor="@color/blue"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/month" />
+        app:layout_constraintTop_toBottomOf="@+id/monthPicker" />
 
     <TextView
         android:id="@+id/inMoney"
@@ -121,8 +99,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/externalRecyclerView"
         android:layout_width="340dp"
-        android:layout_height="480dp"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
@@ -195,5 +174,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
+
+    <Button
+        android:id="@+id/monthPicker"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:onClick="rackMonthPicker"
+        android:text="年月"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
