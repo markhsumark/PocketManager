@@ -148,7 +148,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
             holder.category.setText(data.get(position).getCategory());
-            holder.asset.setText(data.get(position).getNote());
+            holder.asset.setText(data.get(position).getAsset());
             holder.amount.setText(Integer.toString(data.get(position).getAmount()));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
