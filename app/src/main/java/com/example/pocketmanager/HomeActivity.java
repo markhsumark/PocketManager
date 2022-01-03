@@ -3,6 +3,7 @@ package com.example.pocketmanager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kal.rackmonthpicker.MonthType;
 import com.kal.rackmonthpicker.RackMonthPicker;
 import com.kal.rackmonthpicker.listener.DateMonthDialogListener;
 import com.kal.rackmonthpicker.listener.OnCancelMonthDialogListener;
@@ -40,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MM月");
     private Calendar date = Calendar.getInstance();
 
+    public HomeActivity() { }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,14 +58,10 @@ public class HomeActivity extends AppCompatActivity {
         exAdapter = new ExAdapter();
         externalRecyclerView.setAdapter(exAdapter);
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
-        accountViewModel.getAccountsLive(date.get(Calendar.YEAR),date.get(Calendar.MONTH)).observe(this, new Observer<List<Account>>() {
+        accountViewModel.getAllAccountsLive().observe(this, new Observer<List<Account>>() {
             @Override
             public void onChanged(List<Account> accounts) {
-                data = accounts;
-                /*data = new ArrayList<>();
-                for (int i = 0; i < accounts.size(); i++) {
-                    data.add(accounts.get(i));
-                }*/
+                data = accountViewModel.getAccounts(date.get(Calendar.YEAR),date.get(Calendar.MONTH));
                 Log.e("size",Integer.toString(accounts.size()));
                 exAdapter.notifyDataSetChanged();
             }
@@ -100,17 +100,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void rackMonthPicker(View v){
-
         new RackMonthPicker(this)
                 .setLocale(Locale.TRADITIONAL_CHINESE)
-                .setSelectedMonth(5)
-                .setSelectedYear(2019)
+                .setSelectedMonth(date.get(Calendar.MONTH))
+                .setSelectedYear(date.get(Calendar.YEAR))
+                .setNegativeText("取消")
+                .setPositiveText("確認")
                 .setPositiveButton(new DateMonthDialogListener() {
                     @Override
                     public void onDateMonth(int month, int startDate, int endDate, int year, String monthLabel) {
                         date.set(Calendar.YEAR, year);
                         date.set(Calendar.MONTH, month-1);
                         monthPicker.setText(dateFormat.format(date.getTime()));
+                        data = accountViewModel.getAccounts(date.get(Calendar.YEAR),date.get(Calendar.MONTH));
+                        exAdapter.notifyDataSetChanged();
                     }
                 })
                 .setNegativeButton(new OnCancelMonthDialogListener() {

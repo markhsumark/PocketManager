@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Calendar;
+
 @Entity
 public class Account {
     @PrimaryKey(autoGenerate = true)
@@ -14,6 +16,7 @@ public class Account {
     private String Category;
     private String SubCategory;
 
+    private long Time;
     private int Year;
     private int Month;
     private int Day;
@@ -23,33 +26,35 @@ public class Account {
     private String Note;
 
     @Ignore
-    public Account(String asset, String type, int amount, String category, String subCategory, int year, int month, int day, int hour, int minute, String note) {
+    public Account(String asset, String type, int amount, String category, String subCategory, Calendar time, String note) {
         Asset = asset;
         Type = type;
         Amount = amount;
         Category = category;
         SubCategory = subCategory;
-        Year = year;
-        Month = month;
-        Day = day;
-        Hour = hour;
-        Minute = minute;
+        Time = time.getTimeInMillis();
+        Year = time.get(Calendar.YEAR);
+        Month = time.get(Calendar.MONTH);
+        Day = time.get(Calendar.DAY_OF_MONTH);
+        Hour = time.get(Calendar.HOUR_OF_DAY);
+        Minute = time.get(Calendar.MINUTE);
         Note = note;
     }
 
     @Ignore
-    public Account(int id, String asset, String type, int amount, String category, String subCategory, int year, int month, int day, int hour, int minute, String note) {
+    public Account(int id, String asset, String type, int amount, String category, String subCategory, Calendar time, String note) {
         Id = id;
         Asset = asset;
         Type = type;
         Amount = amount;
         Category = category;
         SubCategory = subCategory;
-        Year = year;
-        Month = month;
-        Day = day;
-        Hour = hour;
-        Minute = minute;
+        Time = time.getTimeInMillis();
+        Year = time.get(Calendar.YEAR);
+        Month = time.get(Calendar.MONTH);
+        Day = time.get(Calendar.DAY_OF_MONTH);
+        Hour = time.get(Calendar.HOUR_OF_DAY);
+        Minute = time.get(Calendar.MINUTE);
         Note = note;
     }
 
@@ -81,6 +86,7 @@ public class Account {
     public String getNote() {
         return Note;
     }
+    public long getTime() { return Time; }
     public int getYear() { return Year; }
     public int getMonth() { return Month; }
     public int getDay() { return Day; }
@@ -108,6 +114,7 @@ public class Account {
     public void setNote(String note) {
         Note = note;
     }
+    public void setTime(long time) { Time = time; }
     public void setYear(int year) { Year = year; }
     public void setMonth(int month) { Month = month; }
     public void setDay(int day) { Day = day; }

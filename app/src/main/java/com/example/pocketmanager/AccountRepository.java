@@ -20,7 +20,7 @@ public class AccountRepository {
         return allAccountsLive;
     }
 
-    public LiveData<List<Account>> getAccountsLive(int year, int month) {
+    public List<Account> getAccounts(int year, int month) {
         return accountDao.getAccounts(year, month);
     }
 
