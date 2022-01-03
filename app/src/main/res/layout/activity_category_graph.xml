@@ -6,37 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".CategoryGraphActivity">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/catetogyincomePieChart"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="112dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintTop_toTopOf="@+id/guideline8"
-        tools:ignore="MissingConstraints" />
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/catetogyexpensePieChart"
-        android:layout_width="180dp"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
         android:layout_height="180dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="112dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintTop_toBottomOf="@+id/catetogyincomePieChart"
-        tools:ignore="MissingConstraints" />
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/incomeBarChart"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:visibility="gone" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/categoryIncomePieChart"
+            android:layout_width="180dp"
+            android:layout_height="180dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/incomeRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/expenseBarChart"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:visibility="gone" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/categoryExpensePieChart"
+            android:layout_width="180dp"
+            android:layout_height="180dp"></com.github.mikephil.charting.charts.PieChart>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/expenseRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 
     <TextView
         android:id="@+id/monthEditTextView"
         android:layout_width="112dp"
         android:layout_height="55dp"
+        android:layout_marginTop="40dp"
         android:text="XX月"
         android:textSize="48sp"
-        tools:layout_editor_absoluteX="149dp"
-        tools:layout_editor_absoluteY="34dp"
+        app:layout_constraintEnd_toStartOf="@+id/categoryChartToggleButton"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
-
 
     <ToggleButton
         android:id="@+id/categoryChartToggleButton"
