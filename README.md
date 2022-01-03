@@ -15,10 +15,10 @@
 android 手機
 
 # 開發人員
-徐易中 tulsa0415@gmail.com
-張治尹 changchiyin＠gmail.com
-陳冠宇 a0973471825@gmail.com
-柳嘉祐 q892000@gmail.com
-邱敏傑 q1234565701@gmail.com
-彭允輝 a25203271@yahoo.com.tw
+- 徐易中 tulsa0415@gmail.com
+- 張治尹 changchiyin＠gmail.com
+- 陳冠宇 a0973471825@gmail.com
+- 柳嘉祐 q892000@gmail.com
+- 邱敏傑 q1234565701@gmail.com
+- 彭允輝 a25203271@yahoo.com.tw
 
