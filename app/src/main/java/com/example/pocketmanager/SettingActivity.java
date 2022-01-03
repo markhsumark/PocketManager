@@ -25,6 +25,9 @@ public class SettingActivity extends AppCompatActivity {
     private SharedPreferences accountData;
     Button connectGoogle,handBackup,autoBackup,editCategory,property;
     Switch remindSwitch,speakSwitch,noticeSwitch;
+    SharedPreferences sharedPreferences;
+    SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,43 +72,51 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+        preferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+
+        boolean remind = remindSwitch.isChecked();
+        remind = preferences.getBoolean("remind",false);
+        remindSwitch.setChecked(remind);
+
+
         remindSwitch=findViewById(R.id.remindSwitch);
         remindSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
 
-                }
-                else{
-
-                }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("remind",remind);
+                editor.apply();
             }
         });
+
+
         speakSwitch=findViewById(R.id.speakSwitch);
         speakSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                boolean speak = speakSwitch.isChecked();
 
-                }
-                else{
-
-                }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("speak",speak);
+                editor.apply();
             }
         });
         noticeSwitch=findViewById(R.id.noticeSwitch);
         noticeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                boolean notice = noticeSwitch.isChecked();
 
-                }
-                else{
-
-                }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("notice",notice);
+                editor.apply();
             }
         });
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){

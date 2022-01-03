@@ -29,30 +29,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/handBackup"
-        android:layout_width="184dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="8dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
         android:layout_marginTop="164dp"
-        android:text="@string/hand_backup"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/autoBackup"
-        android:layout_width="186dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="164dp"
-        android:layout_marginEnd="4dp"
-        android:text="@string/auto_backup"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="手動備份" />
+
+        <Button
+            android:id="@+id/autoBackup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="自動備份" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/editCatogory"
-        android:layout_width="403dp"
-        android:layout_height="81dp"
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="260dp"
         android:text="@string/edit_category"
@@ -103,7 +108,7 @@
 
     <Button
         android:id="@+id/connectGoogle"
-        android:layout_width="408dp"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginTop="16dp"
         android:text="連結Google"

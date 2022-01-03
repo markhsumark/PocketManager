@@ -1,6 +1,7 @@
 package com.example.pocketmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class BackUpActivity extends AppCompatActivity {
     Button back;
     RadioGroup backup_group;
+    SharedPreferences sharedPreferences;
+    SharedPreferences preferences;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -40,11 +43,19 @@ public class BackUpActivity extends AppCompatActivity {
             }
         });
          */
+        sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+        preferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+
+
         backup_group = findViewById(R.id.backup_group);
         backup_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int backUp = checkedId;
 
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("backUp",backUp);
+                editor.apply();
             }
         });
     }
