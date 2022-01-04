@@ -20,8 +20,8 @@ public class AccountRepository {
         return allAccountsLive;
     }
 
-    public List<Account> getAccounts(int year, int month) {
-        return accountDao.getAccounts(year, month);
+    public LiveData<List<Account>> getAccountsLive(int year, int month) {
+        return accountDao.getAccountsLive(year, month);
     }
 
     void insertAccounts(Account... accounts) {

@@ -30,6 +30,6 @@ public interface AccountDao {
     LiveData<List<Account>> getAllAccountsLive();
 
     @Query("SELECT * FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month ORDER BY TIME DESC")
-    List<Account> getAccounts(int year, int month);
+    LiveData<List<Account>> getAccountsLive(int year, int month);
 
 }
