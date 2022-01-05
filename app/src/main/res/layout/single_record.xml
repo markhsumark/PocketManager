@@ -13,6 +13,7 @@
         android:layout_weight="1"
         android:autoSizeTextType="uniform"
         android:text="食物"
+        android:textColor="@color/midGray"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
@@ -21,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:autoSizeTextType="uniform"
-        android:text="現金" />
+        android:text="現金"
+        android:textColor="@color/midGray"/>
 
     <TextView
         android:id="@+id/amount"
@@ -32,5 +34,6 @@
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
         android:autoSizeTextType="uniform"
-        android:text="123" />
+        android:text="123"
+        android:textColor="@color/midGray"/>
 </LinearLayout>

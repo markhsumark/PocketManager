@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +13,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -129,36 +132,43 @@ public class AddOrEditActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {  //新增OR編輯完成
             @Override
             public void onClick(View v) {
-                if(mode.equals("edit")) {
-                    accountViewModel.updateAccounts(new Account(
-                            intent.getIntExtra("Id",0),
-                            assetPicker.getSelectedItem().toString(),
-                            typePicker.getSelectedItem().toString(),
-                            Integer.parseInt(amount.getText().toString()),
-                            categoryPicker.getSelectedItem().toString(),
-                            "子類別",
-                            calendar.get(Calendar.YEAR),
-                            calendar.get(Calendar.MONTH),
-                            calendar.get(Calendar.DAY_OF_MONTH),
-                            calendar.get(Calendar.HOUR_OF_DAY),
-                            calendar.get(Calendar.MINUTE),
-                            note.getText().toString()));
+                if(TextUtils.isEmpty(amount.getText())){
+                    Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
                 }
-                else if(mode.equals("add")) {
-                    accountViewModel.insertAccounts(new Account(
-                            assetPicker.getSelectedItem().toString(),
-                            typePicker.getSelectedItem().toString(),
-                            Integer.parseInt(amount.getText().toString()),
-                            categoryPicker.getSelectedItem().toString(),
-                            "子類別",
-                            calendar.get(Calendar.YEAR),
-                            calendar.get(Calendar.MONTH),
-                            calendar.get(Calendar.DAY_OF_MONTH),
-                            calendar.get(Calendar.HOUR_OF_DAY),
-                            calendar.get(Calendar.MINUTE),
-                            note.getText().toString()));
+                else if(amount.getText().toString().startsWith("0") || amount.getText().toString().startsWith("-")){
+                    Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
                 }
-                finish();
+                else {
+                    if (mode.equals("edit")) {
+                        accountViewModel.updateAccounts(new Account(
+                                intent.getIntExtra("Id", 0),
+                                assetPicker.getSelectedItem().toString(),
+                                typePicker.getSelectedItem().toString(),
+                                Integer.parseInt(amount.getText().toString()),
+                                categoryPicker.getSelectedItem().toString(),
+                                "子類別",
+                                calendar.get(Calendar.YEAR),
+                                calendar.get(Calendar.MONTH),
+                                calendar.get(Calendar.DAY_OF_MONTH),
+                                calendar.get(Calendar.HOUR_OF_DAY),
+                                calendar.get(Calendar.MINUTE),
+                                note.getText().toString()));
+                    } else if (mode.equals("add")) {
+                        accountViewModel.insertAccounts(new Account(
+                                assetPicker.getSelectedItem().toString(),
+                                typePicker.getSelectedItem().toString(),
+                                Integer.parseInt(amount.getText().toString()),
+                                categoryPicker.getSelectedItem().toString(),
+                                "子類別",
+                                calendar.get(Calendar.YEAR),
+                                calendar.get(Calendar.MONTH),
+                                calendar.get(Calendar.DAY_OF_MONTH),
+                                calendar.get(Calendar.HOUR_OF_DAY),
+                                calendar.get(Calendar.MINUTE),
+                                note.getText().toString()));
+                    }
+                    finish();
+                }
             }
         });
     }

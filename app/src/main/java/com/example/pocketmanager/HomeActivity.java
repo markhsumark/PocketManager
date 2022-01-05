@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,13 +33,14 @@ import java.util.Locale;
 public class HomeActivity extends AppCompatActivity {
     private Button monthPicker;
     private FloatingActionButton previousStep, nextStep, editor, adder;
-    private RecyclerView externalRecyclerView, internalRecyclerView;
-    private RecyclerView.LayoutManager exLayoutManager, inLayoutManager;
+    private RecyclerView externalRecyclerView;
+    private RecyclerView.LayoutManager exLayoutManager;
     private ExAdapter exAdapter;
     private List<Account> data = new ArrayList<>();
     private AccountViewModel accountViewModel;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MM月");
     private Calendar date = Calendar.getInstance();
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         externalRecyclerView.setHasFixedSize(true);
         exLayoutManager = new LinearLayoutManager(this);
         externalRecyclerView.setLayoutManager(exLayoutManager);
-        exAdapter = new ExAdapter();
-        externalRecyclerView.setAdapter(exAdapter);
+        context = externalRecyclerView.getContext();
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         accountViewModel.getAccountsLive(date.get(Calendar.YEAR),date.get(Calendar.MONTH)).observe(this, new Observer<List<Account>>() {
             @Override
@@ -63,6 +64,8 @@ public class HomeActivity extends AppCompatActivity {
                     data.add(accounts.get(i));
                 }*/
                 Log.e("size",Integer.toString(accounts.size()));
+                exAdapter = new ExAdapter(data ,R.layout.add_or_edit_page, context);
+                externalRecyclerView.setAdapter(exAdapter);
                 exAdapter.notifyDataSetChanged();
             }
         });
@@ -122,59 +125,5 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     // 顯示RecyclerView
-    private class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
 
-        class MyViewHolder extends RecyclerView.ViewHolder{
-            public View itemView;
-            public TextView asset, amount, category;
-
-            public MyViewHolder(View v){
-                super(v);
-                itemView = v;
-                category = itemView.findViewById(R.id.category);
-                asset = itemView.findViewById(R.id.asset);
-                amount = itemView.findViewById(R.id.amount);
-            }
-        }
-
-        @NonNull
-        @Override
-        public ExAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from((parent.getContext()))
-                    .inflate(R.layout.single_record, parent,false);
-            return new MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-            holder.category.setText(data.get(position).getCategory());
-            holder.asset.setText(data.get(position).getAsset());
-            holder.amount.setText(Integer.toString(data.get(position).getAmount()));
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(HomeActivity.this, AddOrEditActivity.class);
-                    intent.putExtra("mode", "edit");
-                    intent.putExtra("Id", data.get(position).getId());
-                    intent.putExtra("Property", data.get(position).getAsset());
-                    intent.putExtra("InOut", data.get(position).getType());
-                    intent.putExtra("Price", Integer.toString(data.get(position).getAmount()));
-                    intent.putExtra("Category", data.get(position).getCategory());
-                    intent.putExtra("SubCategory", data.get(position).getSubCategory());
-                    intent.putExtra("Year", data.get(position).getYear());
-                    intent.putExtra("Month", data.get(position).getMonth());
-                    intent.putExtra("Day", data.get(position).getDay());
-                    intent.putExtra("Hour", data.get(position).getHour());
-                    intent.putExtra("Minute", data.get(position).getMinute());
-                    intent.putExtra("Note", data.get(position).getNote());
-                    startActivity(intent);
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-    }
 }
