@@ -20,14 +20,15 @@
         app:layout_constraintTop_toBottomOf="@+id/monthPicker" />
 
     <TextView
-        android:id="@+id/inMoney"
+        android:id="@+id/inAmount"
         android:layout_width="133dp"
         android:layout_height="30dp"
         android:layout_weight="2"
         android:autoSizeTextType="uniform"
         android:gravity="center|center_vertical"
         android:text="123456"
-        app:layout_constraintEnd_toStartOf="@+id/outMoney"
+        android:textColor="@color/blue"
+        app:layout_constraintEnd_toStartOf="@+id/outAmount"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/income" />
@@ -46,18 +47,19 @@
         app:layout_constraintTop_toTopOf="@+id/income" />
 
     <TextView
-        android:id="@+id/outMoney"
+        android:id="@+id/outAmount"
         android:layout_width="133dp"
         android:layout_height="30dp"
         android:layout_weight="2"
         android:autoSizeTextType="uniform"
         android:gravity="center|center_vertical"
         android:text="123456"
-        app:layout_constraintBottom_toBottomOf="@+id/inMoney"
-        app:layout_constraintEnd_toStartOf="@+id/sumMoney"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="@+id/inAmount"
+        app:layout_constraintEnd_toStartOf="@+id/sumAmount"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/inMoney"
-        app:layout_constraintTop_toTopOf="@+id/inMoney" />
+        app:layout_constraintStart_toEndOf="@+id/inAmount"
+        app:layout_constraintTop_toTopOf="@+id/inAmount" />
 
     <TextView
         android:id="@+id/sum"
@@ -67,23 +69,25 @@
         android:autoSizeTextType="uniform"
         android:gravity="center|center_vertical"
         android:text="總計"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/expenses"
         app:layout_constraintStart_toEndOf="@+id/expenses"
         app:layout_constraintTop_toTopOf="@+id/expenses" />
 
     <TextView
-        android:id="@+id/sumMoney"
+        android:id="@+id/sumAmount"
         android:layout_width="133dp"
         android:layout_height="30dp"
         android:layout_weight="2"
         android:autoSizeTextType="uniform"
         android:gravity="center|center_vertical"
         android:text="123456"
-        app:layout_constraintBottom_toBottomOf="@+id/outMoney"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/outAmount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/outMoney"
-        app:layout_constraintTop_toTopOf="@+id/outMoney" />
+        app:layout_constraintStart_toEndOf="@+id/outAmount"
+        app:layout_constraintTop_toTopOf="@+id/outAmount" />
     <!--
     <include
         android:id="@+id/assetInfo"
@@ -93,7 +97,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outMoney" />
+        app:layout_constraintTop_toBottomOf="@+id/outAmount" />
 -->
 
     <androidx.recyclerview.widget.RecyclerView
@@ -105,7 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outMoney" />
+        app:layout_constraintTop_toBottomOf="@+id/outAmount" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/previousStep"

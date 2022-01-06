@@ -3,6 +3,8 @@ package com.example.pocketmanager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,14 +57,15 @@ public class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.date.setText("幾號");
-        holder.dayOfTheWeek.setText("星期幾");
-        holder.yearAndMonth.setText("幾年幾月");
+        //深色模式-->換字色
+        if((context.getResources().getConfiguration().uiMode& Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES)
+            holder.date.setTextColor(Color.parseColor("#FFFFFF"));
+        holder.date.setText("26");
+        holder.dayOfTheWeek.setText("星期一");
+        holder.yearAndMonth.setText("2000.01");
         holder.dailyInAmount.setText("$ " + Integer.toString(data.get(position).getAmount()));
         holder.dailyOutAmount.setText("$ " + Integer.toString(data.get(position).getAmount()));
 
-        LinearLayoutManager manager = new LinearLayoutManager(context);
-        holder.internalRecyclerView.setLayoutManager(manager);
         holder.internalRecyclerView.setAdapter(new InAdapter(data, layoutId, context));
     }
 

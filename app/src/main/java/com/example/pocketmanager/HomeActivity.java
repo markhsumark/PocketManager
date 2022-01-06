@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +43,7 @@ public class HomeActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MM月");
     private Calendar date = Calendar.getInstance();
     private Context context;
+    private TextView sum, sumAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,14 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        sum = findViewById(R.id.sum);
+        sumAmount = findViewById(R.id.sumAmount);
+        //深色模式-->換字色
+        if((getBaseContext().getResources().getConfiguration().uiMode& Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES){
+            sum.setTextColor(Color.parseColor("#FFFFFF"));
+            sumAmount.setTextColor(Color.parseColor("#FFFFFF"));
+        }
     }
 
     public void rackMonthPicker(View v){

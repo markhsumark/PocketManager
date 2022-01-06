@@ -35,5 +35,5 @@
         android:layout_weight="1"
         android:autoSizeTextType="uniform"
         android:text="123"
-        android:textColor="@color/midGray"/>
+        android:textColor="@color/black"/>
 </LinearLayout>

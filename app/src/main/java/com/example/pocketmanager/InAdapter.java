@@ -3,6 +3,8 @@ package com.example.pocketmanager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,13 @@ public class InAdapter extends RecyclerView.Adapter<InAdapter.MyViewHolder>{
         holder.category.setText(data.get(position).getCategory());
         holder.asset.setText(data.get(position).getAsset());
         holder.amount.setText(Integer.toString(data.get(position).getAmount()));
+        //深色模式-->換字色
+        if((context.getResources().getConfiguration().uiMode& Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES)
+            holder.amount.setTextColor(Color.parseColor("#FFFFFF"));
+        if(data.get(position).getType().equals("收入"))
+            holder.amount.setTextColor(Color.parseColor("#0072E3"));
+        else if(data.get(position).getType().equals("支出"))
+            holder.amount.setTextColor(Color.parseColor("#FF0000"));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
