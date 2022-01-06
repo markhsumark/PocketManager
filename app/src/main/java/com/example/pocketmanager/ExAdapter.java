@@ -21,12 +21,10 @@ import java.util.List;
 public class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
 
     private List<Account> data;
-    private int layoutId;
     private Context context;
 
-    public ExAdapter(List<Account> data, int layoutId, Context context){
+    public ExAdapter(List<Account> data, Context context){
         this.data = data;
-        this.layoutId = layoutId;
         this.context = context;
     }
 
@@ -66,7 +64,7 @@ public class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder>{
         holder.dailyInAmount.setText("$ " + Integer.toString(data.get(position).getAmount()));
         holder.dailyOutAmount.setText("$ " + Integer.toString(data.get(position).getAmount()));
 
-        holder.internalRecyclerView.setAdapter(new InAdapter(data, layoutId, context));
+        holder.internalRecyclerView.setAdapter(new InAdapter(data, context));
     }
 
     @Override

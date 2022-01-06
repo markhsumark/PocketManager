@@ -20,11 +20,9 @@ import java.util.List;
 public class InAdapter extends RecyclerView.Adapter<InAdapter.MyViewHolder>{
 
     private List<Account> data;
-    private int layoutId;
     private Context context;
-    public InAdapter(List<Account> data, int layoutId, Context context){
+    public InAdapter(List<Account> data, Context context){
         this.data = data;
-        this.layoutId = layoutId;
         this.context = context;
     }
     class MyViewHolder extends RecyclerView.ViewHolder{

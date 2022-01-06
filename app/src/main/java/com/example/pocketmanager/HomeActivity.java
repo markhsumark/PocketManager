@@ -67,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                     data.add(accounts.get(i));
                 }*/
                 Log.e("size",Integer.toString(accounts.size()));
-                exAdapter = new ExAdapter(data ,R.layout.add_or_edit_page, context);
+                exAdapter = new ExAdapter(data, context);
                 externalRecyclerView.setAdapter(exAdapter);
                 exAdapter.notifyDataSetChanged();
             }
