@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
+        android:text="桌面小工具"
         android:layout_marginStart="30dp"
         android:layout_marginTop="100dp"
         android:textSize="24sp"
@@ -37,4 +37,14 @@
         android:layout_marginStart="156dp"
         android:layout_marginTop="448dp"
         android:text="圖表" />
+    <TextView
+        android:id="@+id/appwidget_text2"
+        style="@style/Widget.PocketManager.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10000"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="300dp"
+        android:textSize="24sp"
+        android:textStyle="bold|italic" />
 </RelativeLayout>
