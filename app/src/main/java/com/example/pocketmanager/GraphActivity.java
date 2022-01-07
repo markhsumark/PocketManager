@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -59,9 +60,12 @@ public class GraphActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager incomeLayoutManager,expenseLayoutManager;
     private GraphActivity.incomeGraphAdapter incomeGraphAdapter;
     private GraphActivity.expenseGraphAdapter expenseGraphAdapter;
-    private LinkedList<HashMap<String,String>> data;//長條圖data
-    private ArrayList<BarEntry> values = new ArrayList<>();//
-    private List<PieEntry> piedata;
+    private LinkedList<HashMap<String,String>> InData,ExData;//data
+    private ArrayList<BarEntry> values = new ArrayList<>();
+    private ArrayList<BarEntry> InValues = new ArrayList<>();
+    private ArrayList<BarEntry> ExValues = new ArrayList<>();
+    List<PieEntry> InPielist = new ArrayList<>() ;
+    List<PieEntry> ExPielist = new ArrayList<>() ;
     Button categoryButton;
     ToggleButton toggleButton;
     PieChart incomePieChart,expensePieChart;//圖表
@@ -89,12 +93,12 @@ public class GraphActivity extends AppCompatActivity {
         inBarChart = (View) findViewById(R.id.incomeBarChart);
         exBarChart = (View) findViewById(R.id.expenseBarChart);
 
+        MakeReData();
 
         //incomeRecycleView
         incomeRecyclerView.setHasFixedSize(true);
         incomeLayoutManager = new LinearLayoutManager(this);
         incomeRecyclerView.setLayoutManager(incomeLayoutManager);
-        makeData();
         incomeGraphAdapter = new GraphActivity.incomeGraphAdapter();
         incomeRecyclerView.setAdapter(incomeGraphAdapter);
         //expenseRecycleView
@@ -221,31 +225,10 @@ public class GraphActivity extends AppCompatActivity {
         incomePieChart.setEntryLabelColor(Color.WHITE);
         //設定入口標籤的大小。預設值:13dp
         incomePieChart.setEntryLabelTextSize(12f);
-        //模擬的資料來源
-        PieEntry x1 = new PieEntry(15.8f , "one" , R.color.darkGreen) ;
-        PieEntry x2 = new PieEntry(15.8f , "two") ;
-        PieEntry x3 = new PieEntry(15.8f , "three") ;
-        PieEntry x4 = new PieEntry(15.8f , "four") ;
-        PieEntry x5 = new PieEntry(15.8f , "five") ;
-        PieEntry x6 = new PieEntry(15.8f , "six") ;
-        PieEntry x7 = new PieEntry(15.8f , "seven") ;
-        PieEntry x8 = new PieEntry(15.8f , "eight") ;
-        PieEntry x9 = new PieEntry(15.8f , "nine") ;
-        PieEntry x10 = new PieEntry(15.8f , "ten") ;
-        //新增到List集合
-        List<PieEntry> list = new ArrayList<>() ;
-        list.add(x1) ;
-        list.add(x2) ;
-        list.add(x3) ;
-        list.add(x4) ;
-        list.add(x5) ;
-        list.add(x6) ;
-        list.add(x7) ;
-        list.add(x8) ;
-        list.add(x9) ;
-        list.add(x10) ;
+
+        PieData(0);
         //設定到PieDataSet物件
-        PieDataSet set = new PieDataSet(list , "表一") ;
+        PieDataSet set = new PieDataSet(InPielist , "表一") ;
         set.setDrawValues(false);//設定為true,在圖表繪製y
         set.setAxisDependency(YAxis.AxisDependency.LEFT);//設定Y軸,這個資料集應該被繪製(左或右)。預設值:左
         set.setAutomaticallyDisableSliceSpacing(false);//當啟用時,片間距將是0時,最小值要小於片間距本身
@@ -331,31 +314,9 @@ public class GraphActivity extends AppCompatActivity {
         expensePieChart.setEntryLabelColor(Color.WHITE);
         //設定入口標籤的大小。預設值:13dp
         expensePieChart.setEntryLabelTextSize(12f);
-        //模擬的資料來源
-        PieEntry x1 = new PieEntry(15.8f , "one" , R.color.darkGreen) ;
-        PieEntry x2 = new PieEntry(15.8f , "two") ;
-        PieEntry x3 = new PieEntry(15.8f , "three") ;
-        PieEntry x4 = new PieEntry(15.8f , "four") ;
-        PieEntry x5 = new PieEntry(15.8f , "five") ;
-        PieEntry x6 = new PieEntry(15.8f , "six") ;
-        PieEntry x7 = new PieEntry(15.8f , "seven") ;
-        PieEntry x8 = new PieEntry(15.8f , "eight") ;
-        PieEntry x9 = new PieEntry(15.8f , "nine") ;
-        PieEntry x10 = new PieEntry(15.8f , "ten") ;
-        //新增到List集合
-        List<PieEntry> list = new ArrayList<>() ;
-        list.add(x1) ;
-        list.add(x2) ;
-        list.add(x3) ;
-        list.add(x4) ;
-        list.add(x5) ;
-        list.add(x6) ;
-        list.add(x7) ;
-        list.add(x8) ;
-        list.add(x9) ;
-        list.add(x10) ;
+        PieData(1);
         //設定到PieDataSet物件
-        PieDataSet set = new PieDataSet(list , "表一") ;
+        PieDataSet set = new PieDataSet(ExPielist , "表二") ;
         set.setDrawValues(false);//設定為true,在圖表繪製y
         set.setAxisDependency(YAxis.AxisDependency.LEFT);//設定Y軸,這個資料集應該被繪製(左或右)。預設值:左
         set.setAutomaticallyDisableSliceSpacing(false);//當啟用時,片間距將是0時,最小值要小於片間距本身
@@ -389,6 +350,24 @@ public class GraphActivity extends AppCompatActivity {
 
     }
 
+    private void PieData(int flag){
+        int i;
+        //模擬的資料來源
+        if(flag==0)//income
+        {
+            for(i=0;i<10;i++) {
+                PieEntry row = new PieEntry(15.8f, "N" + i);
+                InPielist.add(row);
+            }
+        }
+        else if(flag==1)
+        {
+            for(i=0;i<10;i++) {
+                PieEntry row = new PieEntry(15.8f, "M" + i);
+                ExPielist.add(row);
+            }
+        }
+    }
 
     private void monthChartShow() {
         monthBarChart.getDescription().setEnabled(false);
@@ -426,7 +405,7 @@ public class GraphActivity extends AppCompatActivity {
 //設置動畫時間
         // monthBarChart.animateXY(600,600);
         monthBarChart.getLegend().setEnabled(true);
-        getData();
+        MonthBarData();
 
         if (monthBarChart.getData() != null &&
                 monthBarChart.getData().getDataSetCount() > 0) {
@@ -495,7 +474,7 @@ public class GraphActivity extends AppCompatActivity {
         // monthBarChart.animateXY(600,600);
         incomeBarChart.getLegend().setEnabled(true);
         //取得data
-        getData();
+        BarData();
         if (incomeBarChart.getData() != null &&
                 incomeBarChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) incomeBarChart.getData().getDataSetByIndex(0);
@@ -561,7 +540,7 @@ public class GraphActivity extends AppCompatActivity {
         // monthBarChart.animateXY(600,600);
         expenseBarChart.getLegend().setEnabled(true);
         //取得data
-        getData();
+        BarData();
         if (expenseBarChart.getData() != null &&
                 expenseBarChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) expenseBarChart.getData().getDataSetByIndex(0);
@@ -586,23 +565,38 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
-    public void getData(){
-        Float aFloat = Float.valueOf("1");
-        Log.v("xue","aFloat+++++"+aFloat);
-        BarEntry barEntry = new BarEntry(aFloat,Float.valueOf("100"));
-        BarEntry barEntry1 = new BarEntry(Float.valueOf("2"),Float.valueOf("210"));
-        BarEntry barEntry2 = new BarEntry(Float.valueOf("3"),Float.valueOf("300"));
-        BarEntry barEntry3 = new BarEntry(Float.valueOf("4"),Float.valueOf("450"));
-        BarEntry barEntry4 = new BarEntry(Float.valueOf("5"),Float.valueOf("300"));
-        BarEntry barEntry5 = new BarEntry(Float.valueOf("6"),Float.valueOf("650"));
-        BarEntry barEntry6 = new BarEntry(Float.valueOf("7"),Float.valueOf("740"));
-        values.add(barEntry);
-        values.add(barEntry1);
-        values.add(barEntry2);
-        values.add(barEntry3);
-        values.add(barEntry4);
-        values.add(barEntry5);
-        values.add(barEntry6);
+    private void MonthBarData(){
+        int i;
+        int Date_count = 1;
+        int InExMoney = 100;
+        //Log.v("xue","aFloat+++++"+Date_count);
+        for(i=0;i<7;i++)
+        {
+            BarEntry barEntry = new BarEntry(Date_count,InExMoney);
+            values.add(barEntry);
+            Date_count++;
+            InExMoney=InExMoney+100;
+        }
+    }
+
+    private void BarData(){
+        int i;
+        int InData = 100,ExData = 1000;
+        //Log.v("xue","aFloat+++++"+Date_count);
+        for(i=0;i<7;i++)
+        {
+            BarEntry barInEntry = new BarEntry(i,InData);
+            InValues.add(barInEntry);
+            i++;
+            InData=InData+100;
+        }
+        for(i=0;i<7;i++)
+        {
+            BarEntry barExEntry = new BarEntry(i,ExData);
+            ExValues.add(barExEntry);
+            i++;
+            ExData=ExData+100;
+        }
     }
 
     private AdapterView.OnItemSelectedListener spnOnItemSelected
@@ -622,16 +616,26 @@ public class GraphActivity extends AppCompatActivity {
     };
 
 
-    private void makeData(){
-        data = new LinkedList<>();
+    private void MakeReData(){
+        InData = new LinkedList<>();
+        ExData = new LinkedList<>();
         for(int i=1; i<20; i++){
-            HashMap<String, String> row = new HashMap<>();
-            row.put("type", String.valueOf(i/10));
-            row.put("asset", String.valueOf(i/8));
-            row.put("category", String.valueOf(i/5));
-            row.put("description", "i=" + i);
-            row.put("money", "123" + i);
-            data.add(row);
+            HashMap<String, String> InRow = new HashMap<>();
+            InRow.put("type", String.valueOf(i/10));
+            InRow.put("asset", String.valueOf(i/8));
+            InRow.put("category", String.valueOf(i/5));
+            InRow.put("description", "i=" + i);
+            InRow.put("money", "0" + i);
+            InData.add(InRow);
+        }
+        for(int i=1; i<20; i++){
+            HashMap<String, String> ExRow = new HashMap<>();
+            ExRow.put("type", String.valueOf(i/6));
+            ExRow.put("asset", String.valueOf(i/8));
+            ExRow.put("category", String.valueOf(i/4));
+            ExRow.put("description", "i=" + i);
+            ExRow.put("money", "123" + i);
+            ExData.add(ExRow);
         }
     }
 
@@ -659,27 +663,22 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, int position) {
+        public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             Resources res=getResources();
-            holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(data.get(position).get("category"))]);
-            holder.description.setText(data.get(position).get("description"));
-            holder.money.setText(data.get(position).get("money"));
+            holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(InData.get(position).get("category"))]);
+            holder.description.setText(InData.get(position).get("description"));
+            holder.money.setText(InData.get(position).get("money"));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String type = data.get(position).get("type");
-                    String assets = data.get(position).get("asset");
-                    String category = data.get(position).get("category");
-                    String description = data.get(position).get("description");
-                    String money = data.get(position).get("money");
+                    String type = InData.get(position).get("type");
+                    String assets = InData.get(position).get("asset");
+                    String category = InData.get(position).get("category");
+                    String description = InData.get(position).get("description");
+                    String money = InData.get(position).get("money");
                     Intent intent = new Intent(GraphActivity.this, CategoryGraphActivity.class);
-                    /*intent.putExtra("type", type);
-                    intent.putExtra("asset", assets);
-                    intent.putExtra("category", category);
-                    intent.putExtra("description", description);
-                    intent.putExtra("money", money);
-                    intent.putExtra("mode", true); */
+
                     startActivity(intent);
                 }
             });
@@ -687,7 +686,7 @@ public class GraphActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return data.size();
+            return InData.size();
         }
     }
 
@@ -715,27 +714,21 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, int position) {
+        public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             Resources res=getResources();
-            holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(data.get(position).get("category"))]);
-            holder.description.setText(data.get(position).get("description"));
-            holder.money.setText(data.get(position).get("money"));
+            holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(ExData.get(position).get("category"))]);
+            holder.description.setText(ExData.get(position).get("description"));
+            holder.money.setText(ExData.get(position).get("money"));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String type = data.get(position).get("type");
-                    String assets = data.get(position).get("asset");
-                    String category = data.get(position).get("category");
-                    String description = data.get(position).get("description");
-                    String money = data.get(position).get("money");
+                    String type = ExData.get(position).get("type");
+                    String assets = ExData.get(position).get("asset");
+                    String category = ExData.get(position).get("category");
+                    String description = ExData.get(position).get("description");
+                    String money = ExData.get(position).get("money");
                     Intent intent = new Intent(GraphActivity.this, CategoryGraphActivity.class);
-                    /*intent.putExtra("type", type);
-                    intent.putExtra("asset", assets);
-                    intent.putExtra("category", category);
-                    intent.putExtra("description", description);
-                    intent.putExtra("money", money);
-                    intent.putExtra("mode", true); */
                     startActivity(intent);
                 }
             });
@@ -743,7 +736,7 @@ public class GraphActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return data.size();
+            return ExData.size();
         }
     }
 
