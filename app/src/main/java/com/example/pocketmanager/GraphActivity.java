@@ -598,7 +598,6 @@ public class GraphActivity extends AppCompatActivity {
             ExData=ExData+100;
         }
     }
-
     private AdapterView.OnItemSelectedListener spnOnItemSelected
             = new AdapterView.OnItemSelectedListener() {
         public void onItemSelected(AdapterView<?> parent, View view,
