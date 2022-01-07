@@ -33,6 +33,7 @@ import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
     private Button monthPicker;
+    private TextView inAmount, outAmount, sumAmount;
     private RecyclerView externalRecyclerView;
     private ExAdapter exAdapter;
     private List<Account> data = new ArrayList<>();
@@ -42,13 +43,12 @@ public class HomeActivity extends AppCompatActivity {
     private final Calendar date = Calendar.getInstance();
     private LiveData<List<Account>> listLiveData = null;
     private Context context;
-    private TextView sum, sumAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
-        sum = findViewById(R.id.sum);
+        TextView sum = findViewById(R.id.sum);
         sumAmount = findViewById(R.id.sumAmount);
         //深色模式-->換字色
         if((getBaseContext().getResources().getConfiguration().uiMode& Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES){
@@ -57,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
         }
         ImageButton lastMonth = findViewById(R.id.lastMonth);
         ImageButton nextMonth = findViewById(R.id.nextMonth);
+        inAmount = findViewById(R.id.inAmount);
+        outAmount = findViewById(R.id.outAmount);
         monthPicker = findViewById(R.id.monthPicker);
         monthPicker.setText(dateFormat.format(date.getTime()));
         externalRecyclerView = findViewById(R.id.externalRecyclerView);
@@ -101,13 +103,20 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     private void resetLiveData(){
+
         if(listLiveData != null && listLiveData.hasActiveObservers()){
             listLiveData.removeObservers(HomeActivity.this);
         }
         listLiveData = accountViewModel.getAccountsLive(date.get(Calendar.YEAR),date.get(Calendar.MONTH));
         listLiveData.observe(HomeActivity.this, accounts -> {
+            long inAmountValue = accountViewModel.getMonthAmount(date.get(Calendar.YEAR),date.get(Calendar.MONTH),"收入");
+            long outAmountValue = accountViewModel.getMonthAmount(date.get(Calendar.YEAR),date.get(Calendar.MONTH),"支出");
+            long sumAmountValue = inAmountValue - outAmountValue;
+            inAmount.setText(Long.toString(inAmountValue));
+            outAmount.setText(Long.toString(outAmountValue));
+            sumAmount.setText(Long.toString(sumAmountValue));
             data = accounts;
             Log.e("size",Integer.toString(accounts.size()));
             exAdapter = new ExAdapter(data, context, accountViewModel);

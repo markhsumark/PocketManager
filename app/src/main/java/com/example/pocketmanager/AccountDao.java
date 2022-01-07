@@ -10,7 +10,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
-import java.util.concurrent.Flow;
 
 @Dao
 public interface AccountDao {
@@ -34,4 +33,7 @@ public interface AccountDao {
 
     @Query("SELECT SUM(Amount) FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month AND DAY = :day AND TYPE = :type")
     long getDayAmount(int year, int month, int day, String type);
+
+    @Query("SELECT SUM(Amount) FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month AND TYPE = :type")
+    long getMonthAmount(int year, int month, String type);
 }

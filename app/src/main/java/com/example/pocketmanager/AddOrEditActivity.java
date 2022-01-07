@@ -1,5 +1,6 @@
 package com.example.pocketmanager;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -33,7 +34,9 @@ public class AddOrEditActivity extends AppCompatActivity {
     EditText note, amount;
     AccountViewModel accountViewModel;
     Calendar calendar = Calendar.getInstance();
+    @SuppressLint("SimpleDateFormat")
     SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+    @SuppressLint("SimpleDateFormat")
     SimpleDateFormat time = new SimpleDateFormat("a hh:mm");
     List<String> assets = Arrays.asList("現金", "帳戶");
     List<String> types = Arrays.asList("收入", "支出", "轉帳");

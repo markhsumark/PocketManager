@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountViewModel extends AndroidViewModel {
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     public AccountViewModel(@NonNull Application application) {
         super(application);
@@ -27,6 +27,10 @@ public class AccountViewModel extends AndroidViewModel {
 
     public long getDayAmount(int year, int month, int day, String type) {
         return accountRepository.getDayAmount(year, month, day, type);
+    }
+
+    public long getMonthAmount(int year, int month, String type) {
+        return accountRepository.getMonthAmount(year, month, type);
     }
 
     void insertAccounts(Account... accounts) {

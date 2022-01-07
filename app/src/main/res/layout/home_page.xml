@@ -15,7 +15,7 @@
         android:autoSizeTextType="uniform"
         android:gravity="center|center_vertical"
         android:text="收入"
-        android:textColor="@color/blue"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/monthPicker" />
 
@@ -28,9 +28,10 @@
         android:gravity="center|center_vertical"
         android:text="123456"
         android:textColor="@color/blue"
+        app:layout_constraintEnd_toEndOf="@+id/income"
         app:layout_constraintEnd_toStartOf="@+id/outAmount"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/income"
         app:layout_constraintTop_toBottomOf="@+id/income" />
 
     <TextView
@@ -41,7 +42,7 @@
         android:autoSizeTextType="uniform"
         android:gravity="center|center_vertical"
         android:text="支出"
-        android:textColor="#FF0000"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/income"
         app:layout_constraintStart_toEndOf="@+id/income"
         app:layout_constraintTop_toTopOf="@+id/income" />
@@ -56,9 +57,11 @@
         android:text="123456"
         android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="@+id/inAmount"
+        app:layout_constraintEnd_toEndOf="@+id/expenses"
         app:layout_constraintEnd_toStartOf="@+id/sumAmount"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/inAmount"
+        app:layout_constraintStart_toStartOf="@+id/expenses"
         app:layout_constraintTop_toTopOf="@+id/inAmount" />
 
     <TextView
@@ -68,7 +71,7 @@
         android:layout_weight="1"
         android:autoSizeTextType="uniform"
         android:gravity="center|center_vertical"
-        android:text="總計"
+        android:text="總額"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/expenses"
         app:layout_constraintStart_toEndOf="@+id/expenses"
@@ -84,9 +87,10 @@
         android:text="123456"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/outAmount"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/sum"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/outAmount"
+        app:layout_constraintStart_toStartOf="@+id/sum"
         app:layout_constraintTop_toTopOf="@+id/outAmount" />
 
     <androidx.recyclerview.widget.RecyclerView
