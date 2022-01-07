@@ -71,7 +71,7 @@ public class GraphActivity extends AppCompatActivity {
     PieChart incomePieChart,expensePieChart;//圖表
     BarChart monthBarChart,incomeBarChart,expenseBarChart;
     View inPieChart,exPieChart,inBarChart,exBarChart;
-    BarDataSet set1;
+    BarDataSet MonthSet,IncomeSet,ExpenseSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -409,17 +409,17 @@ public class GraphActivity extends AppCompatActivity {
 
         if (monthBarChart.getData() != null &&
                 monthBarChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) monthBarChart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
+            MonthSet = (BarDataSet) monthBarChart.getData().getDataSetByIndex(0);
+            MonthSet.setValues(values);
             monthBarChart.getData().notifyDataChanged();
             monthBarChart.notifyDataSetChanged();
         }
         else {
-            set1 = new BarDataSet(values, "日期");
-            set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            set1.setDrawValues(false);
+            MonthSet = new BarDataSet(values, "日期");
+            MonthSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            MonthSet.setDrawValues(false);
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
+            dataSets.add(MonthSet);
             BarData data = new BarData(dataSets);
             monthBarChart.setData(data);
             monthBarChart.setFitBars(true);
@@ -477,17 +477,17 @@ public class GraphActivity extends AppCompatActivity {
         BarData();
         if (incomeBarChart.getData() != null &&
                 incomeBarChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) incomeBarChart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
+            IncomeSet = (BarDataSet) incomeBarChart.getData().getDataSetByIndex(0);
+            IncomeSet.setValues(InValues);
             incomeBarChart.getData().notifyDataChanged();
             incomeBarChart.notifyDataSetChanged();
         }
         else {
-            set1 = new BarDataSet(values, "類別");
-            set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            set1.setDrawValues(false);
+            IncomeSet = new BarDataSet(InValues, "類別1");
+            IncomeSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            IncomeSet.setDrawValues(false);
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
+            dataSets.add(IncomeSet);
             BarData data = new BarData(dataSets);
             incomeBarChart.setData(data);
             incomeBarChart.setFitBars(false);
@@ -502,7 +502,6 @@ public class GraphActivity extends AppCompatActivity {
 
     private void exShow() {
         expenseBarChart.getDescription().setEnabled(false);
-
         //設置最大值條目，超出之後不會有值
         expenseBarChart.setMaxVisibleValueCount(60);
         //分別在x軸和y軸上進行縮放
@@ -543,17 +542,17 @@ public class GraphActivity extends AppCompatActivity {
         BarData();
         if (expenseBarChart.getData() != null &&
                 expenseBarChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) expenseBarChart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
+            ExpenseSet = (BarDataSet) expenseBarChart.getData().getDataSetByIndex(0);
+            ExpenseSet.setValues(ExValues);
             expenseBarChart.getData().notifyDataChanged();
             expenseBarChart.notifyDataSetChanged();
         }
         else {
-            set1 = new BarDataSet(values, "類別");
-            set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            set1.setDrawValues(false);
+            ExpenseSet = new BarDataSet(ExValues, "類別");
+            ExpenseSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            ExpenseSet.setDrawValues(false);
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
+            dataSets.add(ExpenseSet);
             BarData data = new BarData(dataSets);
             expenseBarChart.setData(data);
             expenseBarChart.setFitBars(true);
@@ -581,21 +580,19 @@ public class GraphActivity extends AppCompatActivity {
 
     private void BarData(){
         int i;
-        int InData = 100,ExData = 1000;
+        int InData = 100,ExData = 800;
         //Log.v("xue","aFloat+++++"+Date_count);
         for(i=0;i<7;i++)
         {
             BarEntry barInEntry = new BarEntry(i,InData);
             InValues.add(barInEntry);
-            i++;
             InData=InData+100;
         }
         for(i=0;i<7;i++)
         {
             BarEntry barExEntry = new BarEntry(i,ExData);
             ExValues.add(barExEntry);
-            i++;
-            ExData=ExData+100;
+            ExData=ExData-100;
         }
     }
     private AdapterView.OnItemSelectedListener spnOnItemSelected
@@ -647,8 +644,8 @@ public class GraphActivity extends AppCompatActivity {
                 super(v);
                 itemView = v;
                 category = itemView.findViewById(R.id.category);
-                description = itemView.findViewById(R.id.description);
-                money = itemView.findViewById(R.id.money);
+                description = itemView.findViewById(R.id.asset);
+                money = itemView.findViewById(R.id.amount);
             }
         }
 
@@ -662,7 +659,7 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
+        public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, int position) {
             Resources res=getResources();
             holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(InData.get(position).get("category"))]);
             holder.description.setText(InData.get(position).get("description"));
@@ -698,8 +695,8 @@ public class GraphActivity extends AppCompatActivity {
                 super(v);
                 itemView = v;
                 category = itemView.findViewById(R.id.category);
-                description = itemView.findViewById(R.id.description);
-                money = itemView.findViewById(R.id.money);
+                description = itemView.findViewById(R.id.asset);
+                money = itemView.findViewById(R.id.amount);
             }
         }
 
@@ -713,7 +710,7 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
+        public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, int position) {
             Resources res=getResources();
             holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(ExData.get(position).get("category"))]);
             holder.description.setText(ExData.get(position).get("description"));
