@@ -8,77 +8,89 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class AccountRepository {
-    private LiveData<List<com.example.pocketmanager.Account>> allAccountsLive;
-    private com.example.pocketmanager.AccountDao accountDao;
+    private final LiveData<List<Account>> allAccountsLive;
+    private final AccountDao accountDao;
     public AccountRepository(Context context) {
-        com.example.pocketmanager.AccountDatabase accountDatabase = com.example.pocketmanager.AccountDatabase.getDatabase(context.getApplicationContext());
+        AccountDatabase accountDatabase = AccountDatabase.getDatabase(context.getApplicationContext());
         accountDao = accountDatabase.getAccountDao();
         allAccountsLive = accountDao.getAllAccountsLive();
     }
 
-    public LiveData<List<com.example.pocketmanager.Account>> getAllAccountsLive() {
+    public LiveData<List<Account>> getAllAccountsLive() {
         return allAccountsLive;
     }
 
-    void insertAccounts(com.example.pocketmanager.Account... accounts) {
+    public LiveData<List<Account>> getAccountsLive(int year, int month) {
+        return accountDao.getAccountsLive(year, month);
+    }
+
+    public long getDayAmount(int year, int month, int day, String type) {
+        return accountDao.getDayAmount(year, month, day, type);
+    }
+
+    public long getMonthAmount(int year, int month, String type) {
+        return accountDao.getMonthAmount(year, month, type);
+    }
+
+    void insertAccounts(Account... accounts) {
         new InsertAsyncTask(accountDao).execute(accounts);
     }
-    void updateAccounts(com.example.pocketmanager.Account... accounts) {
+    void updateAccounts(Account... accounts) {
         new UpdateAsyncTask(accountDao).execute(accounts);
     }
-    void deleteAccounts(com.example.pocketmanager.Account... accounts) {
+    void deleteAccounts(Account... accounts) {
         new DeleteAsyncTask(accountDao).execute(accounts);
     }
     void deleteAllAccounts() {
         new DeleteAllAsyncTask(accountDao).execute();
     }
 
-    static class InsertAsyncTask extends AsyncTask<com.example.pocketmanager.Account,Void,Void> {
-        private com.example.pocketmanager.AccountDao accountDao;
+    static class InsertAsyncTask extends AsyncTask<Account,Void,Void> {
+        private final AccountDao accountDao;
 
-        public InsertAsyncTask(com.example.pocketmanager.AccountDao accountDao) {
+        public InsertAsyncTask(AccountDao accountDao) {
             this.accountDao = accountDao;
         }
 
         @Override
-        protected Void doInBackground(com.example.pocketmanager.Account... accounts) {
+        protected Void doInBackground(Account... accounts) {
             accountDao.insertAccounts(accounts);
             return null;
         }
     }
 
-    static class UpdateAsyncTask extends AsyncTask<com.example.pocketmanager.Account,Void,Void> {
-        private com.example.pocketmanager.AccountDao accountDao;
+    static class UpdateAsyncTask extends AsyncTask<Account,Void,Void> {
+        private final AccountDao accountDao;
 
-        public UpdateAsyncTask(com.example.pocketmanager.AccountDao accountDao) {
+        public UpdateAsyncTask(AccountDao accountDao) {
             this.accountDao = accountDao;
         }
 
         @Override
-        protected Void doInBackground(com.example.pocketmanager.Account... accounts) {
+        protected Void doInBackground(Account... accounts) {
             accountDao.updateAccounts(accounts);
             return null;
         }
     }
 
-    static class DeleteAsyncTask extends AsyncTask<com.example.pocketmanager.Account,Void,Void> {
-        private com.example.pocketmanager.AccountDao accountDao;
+    static class DeleteAsyncTask extends AsyncTask<Account,Void,Void> {
+        private final AccountDao accountDao;
 
-        public DeleteAsyncTask(com.example.pocketmanager.AccountDao accountDao) {
+        public DeleteAsyncTask(AccountDao accountDao) {
             this.accountDao = accountDao;
         }
 
         @Override
-        protected Void doInBackground(com.example.pocketmanager.Account... accounts) {
+        protected Void doInBackground(Account... accounts) {
             accountDao.deleteAccounts(accounts);
             return null;
         }
     }
 
     static class DeleteAllAsyncTask extends AsyncTask<Void,Void,Void> {
-        private com.example.pocketmanager.AccountDao accountDao;
+        private final AccountDao accountDao;
 
-        public DeleteAllAsyncTask(com.example.pocketmanager.AccountDao accountDao) {
+        public DeleteAllAsyncTask(AccountDao accountDao) {
             this.accountDao = accountDao;
         }
 

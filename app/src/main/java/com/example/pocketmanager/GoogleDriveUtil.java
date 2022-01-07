@@ -31,23 +31,23 @@ public class GoogleDriveUtil {
 
     public static String createFileToDrive(Drive driveService){
         String fileId;
-//                create new file object
+        //  create new file object
         File fileMetadata = new File();
-//        fileMetadata.setName(dbFileName);
+        //  fileMetadata.setName(dbFileName);
         fileMetadata.setName(testFileName);
 
-//                設定為上傳到app專用的Drive目錄
-//                fileMetadata.setParents(Collections.singletonList("appDataFolder"));
+        //  設定為上傳到app專用的Drive目錄
+        //  ileMetadata.setParents(Collections.singletonList("appDataFolder"));
 
-//                實際檔案位置
-//        java.io.File filePath = new java.io.File(appFolderRootPath + dbFileName);
+        //  實際檔案位置
+        //  java.io.File filePath = new java.io.File(appFolderRootPath + dbFileName);
         java.io.File filePath = new java.io.File(rootPath + testFolderRootPath + testFileName);
-//                設定檔案內容
+        //  設定檔案內容
         FileContent mediaContent = new FileContent(testMineType, filePath);
-//                type表格：https://blog.csdn.net/github_35631540/article/details/103228868
+        //  type表格：https://blog.csdn.net/github_35631540/article/details/103228868
         Log.i("Createfile: ", "create start");
         try {
-            //                    新增檔案，要求：檔案資訊和檔案內容
+            //  新增檔案，要求：檔案資訊和檔案內容
             File file = driveService.files().create(fileMetadata, mediaContent)
                     .setFields("id")
                     .execute();
@@ -58,26 +58,25 @@ public class GoogleDriveUtil {
             fileId = null;
             Log.e("err when create file", e.getMessage());
         }
-
         return fileId;
     }
 
     public static void uploadFileToDrive(Drive driveService, String fileId){
         try {
-            //                create new file object
+            //  create new file object
             File fileMetadata = new File();
-//        fileMetadata.setName(dbFileName);
+            //  fileMetadata.setName(dbFileName);
             fileMetadata.setName(testFileName);
 
-//                設定為上傳到app專用的Drive目錄
-//                fileMetadata.setParents(Collections.singletonList("appDataFolder"));
+            //  設定為上傳到app專用的Drive目錄
+            //  fileMetadata.setParents(Collections.singletonList("appDataFolder"));
 
-//                實際檔案位置
-//        java.io.File filePath = new java.io.File(appFolderRootPath + dbFileName);
+            //  實際檔案位置
+            //  java.io.File filePath = new java.io.File(appFolderRootPath + dbFileName);
             java.io.File filePath = new java.io.File(rootPath +testFolderRootPath + testFileName);
-//                設定檔案內容
+            //  設定檔案內容
             FileContent mediaContent = new FileContent(testMineType, filePath);
-            //                    新增檔案，要求：檔案資訊和檔案內容
+            //  新增檔案，要求：檔案資訊和檔案內容
             File file = driveService.files().update(fileId, fileMetadata, mediaContent)
                     .execute();
             Log.i("Uploadfile: ", "upload to :"+file.getId());
@@ -89,33 +88,32 @@ public class GoogleDriveUtil {
     }
     public static void downloadFileFromDrive(Drive driveService, String fileId){
         Thread thr = new Thread(){
-                    @Override
-                    public void run(){
-                        try {
-                            if(fileId != null) {
+            @Override
+            public void run(){
+                try {
+                    if(fileId != null) {
 
+                        OutputStream outputStream = new ByteArrayOutputStream();
+                        driveService.files().get(fileId)
+                                .executeMediaAndDownloadTo(outputStream);
+                        Log.i("download file context", outputStream.toString());
 
-                                OutputStream outputStream = new ByteArrayOutputStream();
-                                driveService.files().get(fileId)
-                                        .executeMediaAndDownloadTo(outputStream);
-                                Log.i("download file context", outputStream.toString());
-
-                                java.io.File dbFile = new java.io.File(rootPath + testFolderRootPath + testFileName);
-                                FileOutputStream dbFileOutputStream = new FileOutputStream(dbFile);
-                                dbFileOutputStream.write(outputStream.toString().getBytes());
-                                dbFileOutputStream.close();
-                                Log.i("download", "finish");
-                            }
-                        }catch(IOException e){
-                            if(e.getMessage() == "416") {
-                                Log.e("Error!!the file might empty", e.getMessage());
-                            }else{
-                                Log.e("Error", e.getMessage());
-                            }
-                        }
+                        java.io.File dbFile = new java.io.File(rootPath + testFolderRootPath + testFileName);
+                        FileOutputStream dbFileOutputStream = new FileOutputStream(dbFile);
+                        dbFileOutputStream.write(outputStream.toString().getBytes());
+                        dbFileOutputStream.close();
+                        Log.i("download", "finish");
                     }
-                };
-                thr.start();
+                }catch(IOException e){
+                    if(e.getMessage() == "416") {
+                        Log.e("Error!!the file might empty", e.getMessage());
+                    }else{
+                        Log.e("Error", e.getMessage());
+                    }
+                }
+            }
+        };
+        thr.start();
     }
     public static void deleteFileFromDrive(Drive driveService, String fileId){
         try {

@@ -35,9 +35,7 @@ public class GoogleDriveService {
     public static final int RC_SIGN_IN = 400;
     private GoogleSignInClient client;
     private GoogleSignInAccount account;
-    private final GoogleDriveUtil GDU = new GoogleDriveUtil();
 
-    private String fileId;
     private Drive driveService;
 
 //    return sign in intent
