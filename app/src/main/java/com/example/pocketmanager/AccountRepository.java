@@ -21,7 +21,11 @@ public class AccountRepository {
     }
 
     public LiveData<List<Account>> getAccountsLive(int year, int month) {
-        return accountDao.getAccounts(year, month);
+        return accountDao.getAccountsLive(year, month);
+    }
+
+    public long getDayAmount(int year, int month, int day, String type) {
+        return accountDao.getDayAmount(year, month, day, type);
     }
 
     void insertAccounts(Account... accounts) {

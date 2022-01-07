@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountViewModel extends AndroidViewModel {
@@ -22,6 +23,10 @@ public class AccountViewModel extends AndroidViewModel {
 
     public LiveData<List<Account>> getAccountsLive(int year, int month) {
         return accountRepository.getAccountsLive(year, month);
+    }
+
+    public long getDayAmount(int year, int month, int day, String type) {
+        return accountRepository.getDayAmount(year, month, day, type);
     }
 
     void insertAccounts(Account... accounts) {

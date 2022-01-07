@@ -10,6 +10,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
+import java.util.concurrent.Flow;
 
 @Dao
 public interface AccountDao {
@@ -28,7 +29,9 @@ public interface AccountDao {
     @Query("SELECT * FROM ACCOUNT ORDER BY ID DESC")
     LiveData<List<Account>> getAllAccountsLive();
 
-    @Query("SELECT * FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month ORDER BY ID DESC")
-    LiveData<List<Account>> getAccounts(int year, int month);
+    @Query("SELECT * FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month ORDER BY TIME DESC")
+    LiveData<List<Account>> getAccountsLive(int year, int month);
 
+    @Query("SELECT SUM(Amount) FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month AND DAY = :day AND TYPE = :type")
+    long getDayAmount(int year, int month, int day, String type);
 }

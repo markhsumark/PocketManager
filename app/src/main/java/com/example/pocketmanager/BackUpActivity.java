@@ -31,15 +31,6 @@ public class BackUpActivity extends AppCompatActivity {
         setContentView(R.layout.backup_page);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        /*
-        back = findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-         */
         backup_group = findViewById(R.id.backup_group);
         backup_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
