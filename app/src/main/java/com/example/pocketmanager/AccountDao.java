@@ -22,18 +22,21 @@ public interface AccountDao {
     @Delete
     void deleteAccounts(Account... accounts);
 
-    @Query("DELETE FROM ACCOUNT")
+    @Query("DELETE FROM Account")
     void deleteAllAccounts();
 
-    @Query("SELECT * FROM ACCOUNT ORDER BY ID DESC")
+    @Query("SELECT * FROM Account ORDER BY Id DESC")
     LiveData<List<Account>> getAllAccountsLive();
 
-    @Query("SELECT * FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month ORDER BY TIME DESC")
+    @Query("SELECT * FROM Account WHERE Year = :year AND Month = :month ORDER BY Time DESC")
     LiveData<List<Account>> getAccountsLive(int year, int month);
 
-    @Query("SELECT SUM(Amount) FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month AND DAY = :day AND TYPE = :type")
+    @Query("SELECT SUM(Amount) FROM Account WHERE Year = :year AND Month = :month AND Day = :day AND Type = :type")
     long getDayAmount(int year, int month, int day, String type);
 
-    @Query("SELECT SUM(Amount) FROM ACCOUNT WHERE YEAR = :year AND MONTH = :month AND TYPE = :type")
+    @Query("SELECT SUM(Amount) FROM Account WHERE Year = :year AND Month = :month AND Type = :type")
     long getMonthAmount(int year, int month, String type);
+
+    @Query("SELECT Category, SUM(Amount) as Amount FROM Account WHERE Year = :year AND Month = :month AND Type = :type GROUP BY Category")
+    LiveData<List<CategoryAmount>> getCategoryAmountsLive(int year, int month, String type);
 }
