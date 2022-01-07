@@ -48,17 +48,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
-        TextView sum = findViewById(R.id.sum);
-        sumAmount = findViewById(R.id.sumAmount);
-        //深色模式-->換字色
-        if((getBaseContext().getResources().getConfiguration().uiMode& Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES){
-            sum.setTextColor(Color.parseColor("#FFFFFF"));
-            sumAmount.setTextColor(Color.parseColor("#FFFFFF"));
-        }
         ImageButton lastMonth = findViewById(R.id.lastMonth);
         ImageButton nextMonth = findViewById(R.id.nextMonth);
         inAmount = findViewById(R.id.inAmount);
         outAmount = findViewById(R.id.outAmount);
+        sumAmount = findViewById(R.id.sumAmount);
         monthPicker = findViewById(R.id.monthPicker);
         monthPicker.setText(dateFormat.format(date.getTime()));
         externalRecyclerView = findViewById(R.id.externalRecyclerView);
