@@ -65,15 +65,12 @@ public class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder> {
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull ExAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        //深色模式-->換字色
         String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM");
         Calendar time = Calendar.getInstance();
         time.set(Calendar.YEAR,dataGroupByDay.get(position).get(0).getYear());
         time.set(Calendar.MONTH,dataGroupByDay.get(position).get(0).getMonth());
         time.set(Calendar.DAY_OF_MONTH,dataGroupByDay.get(position).get(0).getDay());
-        if((context.getResources().getConfiguration().uiMode& Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES)
-            holder.date.setTextColor(Color.parseColor("#FFFFFF"));
         holder.date.setText(Integer.toString(time.get(Calendar.DAY_OF_MONTH)));
         holder.dayOfTheWeek.setText(weekDays[time.get(Calendar.DAY_OF_WEEK)-1]);
         holder.yearAndMonth.setText(dateFormat.format(time.getTime()));

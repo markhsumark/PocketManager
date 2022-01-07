@@ -16,13 +16,17 @@
             android:id="@android:id/tabcontent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:src="@color/midGray"/>
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/gray" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 

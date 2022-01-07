@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColor"
             android:gravity="center|center_vertical"/>
         <TextView
             android:id="@+id/dayOfTheWeek"
@@ -67,5 +67,5 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="5dp"/>
 </LinearLayout>

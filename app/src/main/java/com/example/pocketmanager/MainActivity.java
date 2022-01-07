@@ -12,7 +12,6 @@ public class MainActivity extends TabActivity{
 
     TabHost tabHost=null;      //选项卡控制器
     TabHost.TabSpec tabSpecA,tabSpecB, tabSpecC=null;   //选项卡,这里选项卡最好不用混用，有几个选项卡就设置几个对象
-    TabWidget tabWidget;
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +20,6 @@ public class MainActivity extends TabActivity{
         setContentView(R.layout.activity_main);
         //获得TabHost实例；
         tabHost=getTabHost();
-        //深色模式-->改tab背景顏色
-        tabWidget = findViewById(android.R.id.tabs);
-        if((getBaseContext().getResources().getConfiguration().uiMode&Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES)
-            tabWidget.setBackgroundColor(Color.parseColor("#4F4F4F"));
         //获得TabHost.TabSpec对象实例；
         tabSpecA=tabHost.newTabSpec("帳單");
         //为TabSpec对象设置指示器
