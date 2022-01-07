@@ -13,6 +13,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -44,6 +45,11 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 configurations {
     all*.exclude group: 'com.google.guava', module: 'listenablefuture'
@@ -74,4 +80,14 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation 'com.google.android.material:material:1.0.0'
 
+    // Required -- JUnit 4 framework
+    testImplementation 'junit:junit:4.12'
+    // Optional -- Mockito framework（可選，用於模擬一些依賴物件，以達到隔離依賴的效果）
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+
+    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+
+    testImplementation "org.robolectric:robolectric:3.8"
 }
