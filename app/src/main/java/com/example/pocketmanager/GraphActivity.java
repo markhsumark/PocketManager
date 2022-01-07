@@ -1,8 +1,9 @@
 package com.example.pocketmanager;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,11 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -51,62 +50,66 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class GraphActivity extends AppCompatActivity {
     private RecyclerView incomeRecyclerView,expenseRecyclerView;
     private RecyclerView.LayoutManager incomeLayoutManager,expenseLayoutManager;
-    private GraphActivity.incomeGraphAdapter incomeGraphAdapter;
-    private GraphActivity.expenseGraphAdapter expenseGraphAdapter;
-    private LinkedList<HashMap<String,String>> InData,ExData;//data
+    private GraphActivity.incomeGraphAdapter inGraphAdapter;
+    private GraphActivity.expenseGraphAdapter outGraphAdapter;
+    private List<CategoryAmount> inData = new ArrayList<>();
+    private List<CategoryAmount> outData = new ArrayList<>();
+    //private LinkedList<HashMap<String,String>> InData, ExData;//data
     private ArrayList<BarEntry> values = new ArrayList<>();
-    private ArrayList<BarEntry> InValues = new ArrayList<>();
-    private ArrayList<BarEntry> ExValues = new ArrayList<>();
-    List<PieEntry> InPielist = new ArrayList<>() ;
-    List<PieEntry> ExPielist = new ArrayList<>() ;
+    private ArrayList<BarEntry> inValues = new ArrayList<>();
+    private ArrayList<BarEntry> outValues = new ArrayList<>();
+    private AccountViewModel accountViewModel;
+    private LiveData<List<CategoryAmount>> inlistLiveData = null;
+    private LiveData<List<CategoryAmount>> outlistLiveData = null;
+    List<PieEntry> inPielist = new ArrayList<>();
+    List<PieEntry> outPielist = new ArrayList<>();
     Button categoryButton;
     ToggleButton toggleButton;
-    PieChart incomePieChart,expensePieChart;//圖表
-    BarChart monthBarChart,incomeBarChart,expenseBarChart;
-    View inPieChart,exPieChart,inBarChart,exBarChart;
-    BarDataSet MonthSet,IncomeSet,ExpenseSet;
+    PieChart inPieChart, outPieChart;//圖表
+    BarChart monthBarChart, inBarChart, outBarChart;
+    View inPieChartView, outPieChartView, inBarChartView, outBarChartView;
+    BarDataSet monthSet, inSet, outSet;
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-
+        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);;
         categoryButton = findViewById(R.id.categoryButton);
         toggleButton = findViewById(R.id.chart_toggleButton);//圖表切換按鈕
         incomeRecyclerView = findViewById(R.id.incomeRecyclerView);
         expenseRecyclerView = findViewById(R.id.expenseRecyclerView);
         Spinner spinner = (Spinner) findViewById(R.id.categoryspinner);//資產選項
-        incomePieChart = (PieChart) findViewById(R.id.incomePieChart);
-        expensePieChart = (PieChart) findViewById(R.id.expensePieChart);
+        inPieChart = (PieChart) findViewById(R.id.incomePieChart);
+        outPieChart = (PieChart) findViewById(R.id.expensePieChart);
         monthBarChart = (BarChart) findViewById(R.id.monthBarChart);
-        incomeBarChart = (BarChart) findViewById(R.id.incomeBarChart);
-        expenseBarChart = (BarChart) findViewById(R.id.expenseBarChart);
-        inPieChart = (View) findViewById(R.id.incomePieChart);
-        exPieChart = (View) findViewById(R.id.expensePieChart);
-        inBarChart = (View) findViewById(R.id.incomeBarChart);
-        exBarChart = (View) findViewById(R.id.expenseBarChart);
+        inBarChart = (BarChart) findViewById(R.id.incomeBarChart);
+        outBarChart = (BarChart) findViewById(R.id.expenseBarChart);
+        inPieChartView = (View) findViewById(R.id.incomePieChart);
+        outPieChartView = (View) findViewById(R.id.expensePieChart);
+        inBarChartView = (View) findViewById(R.id.incomeBarChart);
+        outBarChartView = (View) findViewById(R.id.expenseBarChart);
 
-        MakeReData();
+        //MakeReData();
 
         //incomeRecycleView
         incomeRecyclerView.setHasFixedSize(true);
         incomeLayoutManager = new LinearLayoutManager(this);
         incomeRecyclerView.setLayoutManager(incomeLayoutManager);
-        incomeGraphAdapter = new GraphActivity.incomeGraphAdapter();
-        incomeRecyclerView.setAdapter(incomeGraphAdapter);
+        inGraphAdapter = new GraphActivity.incomeGraphAdapter();
+        incomeRecyclerView.setAdapter(inGraphAdapter);
         //expenseRecycleView
         expenseRecyclerView.setHasFixedSize(true);
         expenseLayoutManager = new LinearLayoutManager(this);
         expenseRecyclerView.setLayoutManager(expenseLayoutManager);
-        expenseGraphAdapter = new GraphActivity.expenseGraphAdapter();
-        expenseRecyclerView.setAdapter(expenseGraphAdapter);
+        outGraphAdapter = new GraphActivity.expenseGraphAdapter();
+        expenseRecyclerView.setAdapter(outGraphAdapter);
 
 
         //下拉式選單
@@ -132,23 +135,20 @@ public class GraphActivity extends AppCompatActivity {
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                switch (compoundButton.getId()){
-                    case R.id.chart_toggleButton:
-                        if(compoundButton.isChecked()) {
-                            Toast.makeText(GraphActivity.this,"長條圖模式", Toast.LENGTH_SHORT).show();
-                            inPieChart.setVisibility(View.GONE);
-                            exPieChart.setVisibility(View.GONE);
-                            inBarChart.setVisibility(View.VISIBLE);
-                            exBarChart.setVisibility(View.VISIBLE);
-                        }
-                        else{
-                            Toast.makeText(GraphActivity.this,"圓餅圖模式",Toast.LENGTH_SHORT).show();
-                            inPieChart.setVisibility(View.VISIBLE);
-                            exPieChart.setVisibility(View.VISIBLE);
-                            inBarChart.setVisibility(View.GONE);
-                            exBarChart.setVisibility(View.GONE);
-                        }
-                        break;
+                if (compoundButton.getId() == R.id.chart_toggleButton) {
+                    if (compoundButton.isChecked()) {
+                        Toast.makeText(GraphActivity.this, "長條圖模式", Toast.LENGTH_SHORT).show();
+                        inPieChartView.setVisibility(View.GONE);
+                        outPieChartView.setVisibility(View.GONE);
+                        inBarChartView.setVisibility(View.VISIBLE);
+                        outBarChartView.setVisibility(View.VISIBLE);
+                    } else {
+                        Toast.makeText(GraphActivity.this, "圓餅圖模式", Toast.LENGTH_SHORT).show();
+                        inPieChartView.setVisibility(View.VISIBLE);
+                        outPieChartView.setVisibility(View.VISIBLE);
+                        inBarChartView.setVisibility(View.GONE);
+                        outBarChartView.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -167,8 +167,34 @@ public class GraphActivity extends AppCompatActivity {
         //當月收支長條圖
         monthChartShow();
         //圓餅圖介面
-        incomeShow();
-        expenseShow();
+        inlistLiveData = accountViewModel.getCategoryAmountsLive(2022,0,"收入");
+        inlistLiveData.observe(this, categoryAmounts -> {
+            inData = categoryAmounts;
+            Log.e("size",Integer.toString(categoryAmounts.size()));
+            inPielist = new ArrayList<>();
+            for(int i=0;i<categoryAmounts.size();i++){
+                Log.e("category",categoryAmounts.get(i).Category);
+                Log.e("amount",Integer.toString(categoryAmounts.get(i).Amount));
+                inPielist.add(new PieEntry(categoryAmounts.get(i).Amount, categoryAmounts.get(i).Category));
+                Log.e("InPieListSize",Integer.toString(inPielist.size()));
+            }
+            incomeShow();
+            inGraphAdapter.notifyDataSetChanged();
+        });
+        outlistLiveData = accountViewModel.getCategoryAmountsLive(2022,0,"支出");
+        outlistLiveData.observe(this, categoryAmounts -> {
+            outData = categoryAmounts;
+            Log.e("size",Integer.toString(categoryAmounts.size()));
+            outPielist = new ArrayList<>();
+            for(int i=0;i<categoryAmounts.size();i++){
+                Log.e("category",categoryAmounts.get(i).Category);
+                Log.e("amount",Integer.toString(categoryAmounts.get(i).Amount));
+                outPielist.add(new PieEntry(categoryAmounts.get(i).Amount, categoryAmounts.get(i).Category));
+                Log.e("InPieListSize",Integer.toString(inPielist.size()));
+            }
+            expenseShow();
+            outGraphAdapter.notifyDataSetChanged();
+        });
         //長條圖
         inShow();
         exShow();
@@ -176,37 +202,37 @@ public class GraphActivity extends AppCompatActivity {
 
     private void incomeShow() {
         //如果啟用此選項,則圖表中的值將以百分比形式繪製,而不是以原始值繪製
-        incomePieChart.setUsePercentValues(true);
+        inPieChart.setUsePercentValues(true);
         //如果這個元件應該啟用(應該被繪製)FALSE如果沒有。如果禁用,此元件的任何內容將被繪製預設
-        incomePieChart.getDescription().setEnabled(false);
+        inPieChart.getDescription().setEnabled(false);
         //將額外的偏移量(在圖表檢視周圍)附加到自動計算的偏移量
-        incomePieChart.setExtraOffsets(5, 10, 5, 5);
+        inPieChart.setExtraOffsets(5, 10, 5, 5);
         //較高的值表明速度會緩慢下降 例如如果它設定為0,它會立即停止。1是一個無效的值,並將自動轉換為0.999f。
-        incomePieChart.setDragDecelerationFrictionCoef(0.95f);
+        inPieChart.setDragDecelerationFrictionCoef(0.95f);
         //設定中間字型
-        incomePieChart.setCenterText("收入");
+        inPieChart.setCenterText("收入");
         //設定為true將餅中心清空
-        incomePieChart.setDrawHoleEnabled(true);
+        inPieChart.setDrawHoleEnabled(true);
         //套孔,繪製在PieChart中心的顏色
-        incomePieChart.setHoleColor(Color.WHITE);
+        inPieChart.setHoleColor(Color.WHITE);
         //設定透明圓應有的顏色。
-        incomePieChart.setTransparentCircleColor(Color.WHITE);
+        inPieChart.setTransparentCircleColor(Color.WHITE);
         //設定透明度圓的透明度應該有0 =完全透明,255 =完全不透明,預設值為100。
-        incomePieChart.setTransparentCircleAlpha(110);
+        inPieChart.setTransparentCircleAlpha(110);
         //設定在最大半徑的百分比餅圖中心孔半徑(最大=整個圖的半徑),預設為50%
-        incomePieChart.setHoleRadius(58f);
+        inPieChart.setHoleRadius(58f);
         //設定繪製在孔旁邊的透明圓的半徑,在最大半徑的百分比在餅圖*(max =整個圖的半徑),預設55% -> 5%大於中心孔預設
-        incomePieChart.setTransparentCircleRadius(61f);
+        inPieChart.setTransparentCircleRadius(61f);
         //將此設定為true,以繪製顯示在pie chart
-        incomePieChart.setDrawCenterText(true);
+        inPieChart.setDrawCenterText(true);
         //集度的radarchart旋轉偏移。預設270f -->頂(北)
-        incomePieChart.setRotationAngle(0);
+        inPieChart.setRotationAngle(0);
         //設定為true,使旋轉/旋轉的圖表觸控。設定為false禁用它。預設值:true
-        incomePieChart.setRotationEnabled(true);
+        inPieChart.setRotationEnabled(true);
         //將此設定為false,以防止由抽頭姿態突出值。值仍然可以通過拖動或程式設計高亮顯示。預設值:真
-        incomePieChart.setHighlightPerTapEnabled(true);
+        inPieChart.setHighlightPerTapEnabled(true);
         //建立Legend物件
-        Legend l = incomePieChart.getLegend();
+        Legend l = inPieChart.getLegend();
         //設定垂直對齊of the Legend
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         //設定水平of the Legend
@@ -222,13 +248,13 @@ public class GraphActivity extends AppCompatActivity {
         //設定此軸上標籤的所使用的y軸偏移量 更高的偏移意味著作為一個整體的Legend將被放置遠離頂部。
         l.setYOffset(0f);
         //設定入口標籤的顏色。
-        incomePieChart.setEntryLabelColor(Color.WHITE);
+        inPieChart.setEntryLabelColor(Color.WHITE);
         //設定入口標籤的大小。預設值:13dp
-        incomePieChart.setEntryLabelTextSize(12f);
+        inPieChart.setEntryLabelTextSize(12f);
 
-        PieData(0);
+
         //設定到PieDataSet物件
-        PieDataSet set = new PieDataSet(InPielist , "表一") ;
+        PieDataSet set = new PieDataSet(inPielist, "表一") ;
         set.setDrawValues(false);//設定為true,在圖表繪製y
         set.setAxisDependency(YAxis.AxisDependency.LEFT);//設定Y軸,這個資料集應該被繪製(左或右)。預設值:左
         set.setAutomaticallyDisableSliceSpacing(false);//當啟用時,片間距將是0時,最小值要小於片間距本身
@@ -254,48 +280,47 @@ public class GraphActivity extends AppCompatActivity {
         //傳入PieData
         PieData data = new PieData(set);
         //為圖表設定新的資料物件
-        incomePieChart.setData(data);
+        inPieChart.setData(data);
         //重新整理
-        incomePieChart.invalidate();
+        inPieChart.invalidate();
         //動畫圖上指定的動畫時間軸的繪製
         //incomePieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
 
     }
 
     private void expenseShow() {
-
         //如果啟用此選項,則圖表中的值將以百分比形式繪製,而不是以原始值繪製
-        expensePieChart.setUsePercentValues(true);
+        outPieChart.setUsePercentValues(true);
         //如果這個元件應該啟用(應該被繪製)FALSE如果沒有。如果禁用,此元件的任何內容將被繪製預設
-        expensePieChart.getDescription().setEnabled(false);
+        outPieChart.getDescription().setEnabled(false);
         //將額外的偏移量(在圖表檢視周圍)附加到自動計算的偏移量
-        expensePieChart.setExtraOffsets(5, 10, 5, 5);
+        outPieChart.setExtraOffsets(5, 10, 5, 5);
         //較高的值表明速度會緩慢下降 例如如果它設定為0,它會立即停止。1是一個無效的值,並將自動轉換為0.999f。
-        expensePieChart.setDragDecelerationFrictionCoef(0.95f);
+        outPieChart.setDragDecelerationFrictionCoef(0.95f);
         //設定中間字型
-        expensePieChart.setCenterText("支出");
+        outPieChart.setCenterText("支出");
         //設定為true將餅中心清空
-        expensePieChart.setDrawHoleEnabled(true);
+        outPieChart.setDrawHoleEnabled(true);
         //套孔,繪製在PieChart中心的顏色
-        expensePieChart.setHoleColor(Color.WHITE);
+        outPieChart.setHoleColor(Color.WHITE);
         //設定透明圓應有的顏色。
-        expensePieChart.setTransparentCircleColor(Color.WHITE);
+        outPieChart.setTransparentCircleColor(Color.WHITE);
         //設定透明度圓的透明度應該有0 =完全透明,255 =完全不透明,預設值為100。
-        expensePieChart.setTransparentCircleAlpha(110);
+        outPieChart.setTransparentCircleAlpha(110);
         //設定在最大半徑的百分比餅圖中心孔半徑(最大=整個圖的半徑),預設為50%
-        expensePieChart.setHoleRadius(58f);
+        outPieChart.setHoleRadius(58f);
         //設定繪製在孔旁邊的透明圓的半徑,在最大半徑的百分比在餅圖*(max =整個圖的半徑),預設55% -> 5%大於中心孔預設
-        expensePieChart.setTransparentCircleRadius(61f);
+        outPieChart.setTransparentCircleRadius(61f);
         //將此設定為true,以繪製顯示在pie chart
-        expensePieChart.setDrawCenterText(true);
+        outPieChart.setDrawCenterText(true);
         //集度的radarchart旋轉偏移。預設270f -->頂(北)
-        expensePieChart.setRotationAngle(0);
+        outPieChart.setRotationAngle(0);
         //設定為true,使旋轉/旋轉的圖表觸控。設定為false禁用它。預設值:true
-        expensePieChart.setRotationEnabled(true);
+        outPieChart.setRotationEnabled(true);
         //將此設定為false,以防止由抽頭姿態突出值。值仍然可以通過拖動或程式設計高亮顯示。預設值:真
-        expensePieChart.setHighlightPerTapEnabled(true);
+        outPieChart.setHighlightPerTapEnabled(true);
         //建立Legend物件
-        Legend l = expensePieChart.getLegend();
+        Legend l = outPieChart.getLegend();
         //設定垂直對齊of the Legend
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         //設定水平of the Legend
@@ -311,12 +336,11 @@ public class GraphActivity extends AppCompatActivity {
         //設定此軸上標籤的所使用的y軸偏移量 更高的偏移意味著作為一個整體的Legend將被放置遠離頂部。
         l.setYOffset(0f);
         //設定入口標籤的顏色。
-        expensePieChart.setEntryLabelColor(Color.WHITE);
+        outPieChart.setEntryLabelColor(Color.WHITE);
         //設定入口標籤的大小。預設值:13dp
-        expensePieChart.setEntryLabelTextSize(12f);
-        PieData(1);
+        outPieChart.setEntryLabelTextSize(12f);
         //設定到PieDataSet物件
-        PieDataSet set = new PieDataSet(ExPielist , "表二") ;
+        PieDataSet set = new PieDataSet(outPielist, "表二") ;
         set.setDrawValues(false);//設定為true,在圖表繪製y
         set.setAxisDependency(YAxis.AxisDependency.LEFT);//設定Y軸,這個資料集應該被繪製(左或右)。預設值:左
         set.setAutomaticallyDisableSliceSpacing(false);//當啟用時,片間距將是0時,最小值要小於片間距本身
@@ -342,31 +366,12 @@ public class GraphActivity extends AppCompatActivity {
         //傳入PieData
         PieData data = new PieData(set);
         //為圖表設定新的資料物件
-        expensePieChart.setData(data);
+        outPieChart.setData(data);
         //重新整理
-        expensePieChart.invalidate();
+        outPieChart.invalidate();
         //動畫圖上指定的動畫時間軸的繪製
         //pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
 
-    }
-
-    private void PieData(int flag){
-        int i;
-        //模擬的資料來源
-        if(flag==0)//income
-        {
-            for(i=0;i<10;i++) {
-                PieEntry row = new PieEntry(15.8f, "N" + i);
-                InPielist.add(row);
-            }
-        }
-        else if(flag==1)
-        {
-            for(i=0;i<10;i++) {
-                PieEntry row = new PieEntry(15.8f, "M" + i);
-                ExPielist.add(row);
-            }
-        }
     }
 
     private void monthChartShow() {
@@ -409,17 +414,17 @@ public class GraphActivity extends AppCompatActivity {
 
         if (monthBarChart.getData() != null &&
                 monthBarChart.getData().getDataSetCount() > 0) {
-            MonthSet = (BarDataSet) monthBarChart.getData().getDataSetByIndex(0);
-            MonthSet.setValues(values);
+            monthSet = (BarDataSet) monthBarChart.getData().getDataSetByIndex(0);
+            monthSet.setValues(values);
             monthBarChart.getData().notifyDataChanged();
             monthBarChart.notifyDataSetChanged();
         }
         else {
-            MonthSet = new BarDataSet(values, "日期");
-            MonthSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            MonthSet.setDrawValues(false);
+            monthSet = new BarDataSet(values, "日期");
+            monthSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            monthSet.setDrawValues(false);
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(MonthSet);
+            dataSets.add(monthSet);
             BarData data = new BarData(dataSets);
             monthBarChart.setData(data);
             monthBarChart.setFitBars(true);
@@ -434,23 +439,23 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private void inShow() {
-        incomeBarChart.getDescription().setEnabled(false);
+        inBarChart.getDescription().setEnabled(false);
         //incomeBarChart.setDescription("收入");
 
         //設置最大值條目，超出之後不會有值
-        incomeBarChart.setMaxVisibleValueCount(60);
+        inBarChart.setMaxVisibleValueCount(60);
         //分別在x軸和y軸上進行縮放
-        incomeBarChart.setPinchZoom(false);
+        inBarChart.setPinchZoom(false);
         //雙擊縮放
-        incomeBarChart.setDoubleTapToZoomEnabled(false);
+        inBarChart.setDoubleTapToZoomEnabled(false);
         //設置剩餘統計圖的陰影
-        incomeBarChart.setDrawBarShadow(false);
+        inBarChart.setDrawBarShadow(false);
         //設置網格佈局
-        incomeBarChart.setDrawGridBackground(true);
+        inBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
         ValueFormatter custom = new MyValueFormatter(" ");
         //獲取x軸線
-        XAxis xAxis = incomeBarChart.getXAxis();
+        XAxis xAxis = inBarChart.getXAxis();
         //設置x軸的顯示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //設置網格佈局
@@ -463,59 +468,59 @@ public class GraphActivity extends AppCompatActivity {
         //縮放後x 軸數據重疊問題
         xAxis.setGranularityEnabled(true);
         //獲取右邊y標籤
-        YAxis axisRight = incomeBarChart.getAxisRight();
+        YAxis axisRight = inBarChart.getAxisRight();
         axisRight.setStartAtZero(true);
         //獲取左邊y軸的標籤
-        YAxis axisLeft = incomeBarChart.getAxisLeft();
+        YAxis axisLeft = inBarChart.getAxisLeft();
         //設置Y軸數值 從零開始
         axisLeft.setStartAtZero(true);
-        incomeBarChart.getAxisLeft().setDrawGridLines(false);
+        inBarChart.getAxisLeft().setDrawGridLines(false);
         //設置動畫時間
         // monthBarChart.animateXY(600,600);
-        incomeBarChart.getLegend().setEnabled(true);
+        inBarChart.getLegend().setEnabled(true);
         //取得data
         BarData();
-        if (incomeBarChart.getData() != null &&
-                incomeBarChart.getData().getDataSetCount() > 0) {
-            IncomeSet = (BarDataSet) incomeBarChart.getData().getDataSetByIndex(0);
-            IncomeSet.setValues(InValues);
-            incomeBarChart.getData().notifyDataChanged();
-            incomeBarChart.notifyDataSetChanged();
+        if (inBarChart.getData() != null &&
+                inBarChart.getData().getDataSetCount() > 0) {
+            inSet = (BarDataSet) inBarChart.getData().getDataSetByIndex(0);
+            inSet.setValues(inValues);
+            inBarChart.getData().notifyDataChanged();
+            inBarChart.notifyDataSetChanged();
         }
         else {
-            IncomeSet = new BarDataSet(InValues, "類別1");
-            IncomeSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            IncomeSet.setDrawValues(false);
+            inSet = new BarDataSet(inValues, "類別1");
+            inSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            inSet.setDrawValues(false);
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(IncomeSet);
+            dataSets.add(inSet);
             BarData data = new BarData(dataSets);
-            incomeBarChart.setData(data);
-            incomeBarChart.setFitBars(false);
+            inBarChart.setData(data);
+            inBarChart.setFitBars(false);
         }
 
         //設置柱形統計圖上的值
-        incomeBarChart.getData().setValueTextSize(10);
-        for (IDataSet set : incomeBarChart.getData().getDataSets()){
+        inBarChart.getData().setValueTextSize(10);
+        for (IDataSet set : inBarChart.getData().getDataSets()){
             set.setDrawValues(!set.isDrawValuesEnabled());
         }
     }
 
     private void exShow() {
-        expenseBarChart.getDescription().setEnabled(false);
+        outBarChart.getDescription().setEnabled(false);
         //設置最大值條目，超出之後不會有值
-        expenseBarChart.setMaxVisibleValueCount(60);
+        outBarChart.setMaxVisibleValueCount(60);
         //分別在x軸和y軸上進行縮放
-        expenseBarChart.setPinchZoom(false);
+        outBarChart.setPinchZoom(false);
         //雙擊縮放
-        expenseBarChart.setDoubleTapToZoomEnabled(false);
+        outBarChart.setDoubleTapToZoomEnabled(false);
         //設置剩餘統計圖的陰影
-        expenseBarChart.setDrawBarShadow(false);
+        outBarChart.setDrawBarShadow(false);
         //設置網格佈局
-        expenseBarChart.setDrawGridBackground(true);
+        outBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
         ValueFormatter custom = new MyValueFormatter(" ");
         //獲取x軸線
-        XAxis xAxis = expenseBarChart.getXAxis();
+        XAxis xAxis = outBarChart.getXAxis();
         //設置x軸的顯示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //設置網格佈局
@@ -528,49 +533,49 @@ public class GraphActivity extends AppCompatActivity {
         //縮放後x 軸數據重疊問題
         xAxis.setGranularityEnabled(true);
         //獲取右邊y標籤
-        YAxis YaxisRight = expenseBarChart.getAxisRight();
+        YAxis YaxisRight = outBarChart.getAxisRight();
         YaxisRight.setStartAtZero(true);
         //獲取左邊y軸的標籤
-        YAxis YaxisLeft = expenseBarChart.getAxisLeft();
+        YAxis YaxisLeft = outBarChart.getAxisLeft();
         //設置Y軸數值 從零開始
         YaxisLeft.setStartAtZero(true);
-        expenseBarChart.getAxisLeft().setDrawGridLines(false);
+        outBarChart.getAxisLeft().setDrawGridLines(false);
         //設置動畫時間
         // monthBarChart.animateXY(600,600);
-        expenseBarChart.getLegend().setEnabled(true);
+        outBarChart.getLegend().setEnabled(true);
         //取得data
         BarData();
-        if (expenseBarChart.getData() != null &&
-                expenseBarChart.getData().getDataSetCount() > 0) {
-            ExpenseSet = (BarDataSet) expenseBarChart.getData().getDataSetByIndex(0);
-            ExpenseSet.setValues(ExValues);
-            expenseBarChart.getData().notifyDataChanged();
-            expenseBarChart.notifyDataSetChanged();
+        if (outBarChart.getData() != null &&
+                outBarChart.getData().getDataSetCount() > 0) {
+            outSet = (BarDataSet) outBarChart.getData().getDataSetByIndex(0);
+            outSet.setValues(outValues);
+            outBarChart.getData().notifyDataChanged();
+            outBarChart.notifyDataSetChanged();
         }
         else {
-            ExpenseSet = new BarDataSet(ExValues, "類別");
-            ExpenseSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            ExpenseSet.setDrawValues(false);
+            outSet = new BarDataSet(outValues, "類別");
+            outSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            outSet.setDrawValues(false);
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(ExpenseSet);
+            dataSets.add(outSet);
             BarData data = new BarData(dataSets);
-            expenseBarChart.setData(data);
-            expenseBarChart.setFitBars(true);
+            outBarChart.setData(data);
+            outBarChart.setFitBars(true);
         }
         //設置柱形統計圖上的值
-        expenseBarChart.getData().setValueTextSize(10);
-        for (IDataSet set : expenseBarChart.getData().getDataSets()){
+        outBarChart.getData().setValueTextSize(10);
+        for (IDataSet set : outBarChart.getData().getDataSets()){
             set.setDrawValues(!set.isDrawValuesEnabled());
         }
     }
 
     private void MonthBarData(){
-        int i;
         int Date_count = 1;
         int InExMoney = 100;
         //Log.v("xue","aFloat+++++"+Date_count);
-        for(i=0;i<7;i++)
+        for(int i=0;i<8;i++)
         {
+            //todo date_count日期 inexmoney 總額
             BarEntry barEntry = new BarEntry(Date_count,InExMoney);
             values.add(barEntry);
             Date_count++;
@@ -585,13 +590,13 @@ public class GraphActivity extends AppCompatActivity {
         for(i=0;i<7;i++)
         {
             BarEntry barInEntry = new BarEntry(i,InData);
-            InValues.add(barInEntry);
+            inValues.add(barInEntry);
             InData=InData+100;
         }
         for(i=0;i<7;i++)
         {
             BarEntry barExEntry = new BarEntry(i,ExData);
-            ExValues.add(barExEntry);
+            outValues.add(barExEntry);
             ExData=ExData-100;
         }
     }
@@ -611,41 +616,16 @@ public class GraphActivity extends AppCompatActivity {
         }
     };
 
-
-    private void MakeReData(){
-        InData = new LinkedList<>();
-        ExData = new LinkedList<>();
-        for(int i=1; i<20; i++){
-            HashMap<String, String> InRow = new HashMap<>();
-            InRow.put("type", String.valueOf(i/10));
-            InRow.put("asset", String.valueOf(i/8));
-            InRow.put("category", String.valueOf(i/5));
-            InRow.put("description", "i=" + i);
-            InRow.put("money", "0" + i);
-            InData.add(InRow);
-        }
-        for(int i=1; i<20; i++){
-            HashMap<String, String> ExRow = new HashMap<>();
-            ExRow.put("type", String.valueOf(i/6));
-            ExRow.put("asset", String.valueOf(i/8));
-            ExRow.put("category", String.valueOf(i/4));
-            ExRow.put("description", "i=" + i);
-            ExRow.put("money", "123" + i);
-            ExData.add(ExRow);
-        }
-    }
-
     private class incomeGraphAdapter extends RecyclerView.Adapter<incomeGraphAdapter.MyViewHolder>{
         class MyViewHolder extends RecyclerView.ViewHolder{
             public View itemView;
-            public TextView description, money, category;
+            public TextView amount, category;
 
             public MyViewHolder(View v){
                 super(v);
                 itemView = v;
                 category = itemView.findViewById(R.id.category);
-                description = itemView.findViewById(R.id.asset);
-                money = itemView.findViewById(R.id.amount);
+                amount = itemView.findViewById(R.id.amount);
             }
         }
 
@@ -653,28 +633,22 @@ public class GraphActivity extends AppCompatActivity {
         @Override
         public incomeGraphAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from((parent.getContext()))
-                    .inflate(R.layout.single_record, parent,false);
+                    .inflate(R.layout.category_amount, parent,false);
 
             return new GraphActivity.incomeGraphAdapter.MyViewHolder(itemView);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
-        public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, int position) {
+        public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             Resources res=getResources();
-            holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(InData.get(position).get("category"))]);
-            holder.description.setText(InData.get(position).get("description"));
-            holder.money.setText(InData.get(position).get("money"));
+            holder.category.setText(inData.get(position).Category);
+            holder.amount.setText(Integer.toString(inData.get(position).Amount));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String type = InData.get(position).get("type");
-                    String assets = InData.get(position).get("asset");
-                    String category = InData.get(position).get("category");
-                    String description = InData.get(position).get("description");
-                    String money = InData.get(position).get("money");
                     Intent intent = new Intent(GraphActivity.this, CategoryGraphActivity.class);
-
                     startActivity(intent);
                 }
             });
@@ -682,21 +656,20 @@ public class GraphActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return InData.size();
+            return inData.size();
         }
     }
 
     private class expenseGraphAdapter extends RecyclerView.Adapter<expenseGraphAdapter.MyViewHolder>{
         class MyViewHolder extends RecyclerView.ViewHolder{
             public View itemView;
-            public TextView description, money, category;
+            public TextView amount, category;
 
             public MyViewHolder(View v){
                 super(v);
                 itemView = v;
                 category = itemView.findViewById(R.id.category);
-                description = itemView.findViewById(R.id.asset);
-                money = itemView.findViewById(R.id.amount);
+                amount = itemView.findViewById(R.id.amount);
             }
         }
 
@@ -704,26 +677,20 @@ public class GraphActivity extends AppCompatActivity {
         @Override
         public expenseGraphAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from((parent.getContext()))
-                    .inflate(R.layout.single_record, parent,false);
+                    .inflate(R.layout.category_amount, parent,false);
 
             return new GraphActivity.expenseGraphAdapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, int position) {
+        public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             Resources res=getResources();
-            holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(ExData.get(position).get("category"))]);
-            holder.description.setText(ExData.get(position).get("description"));
-            holder.money.setText(ExData.get(position).get("money"));
+            holder.category.setText(outData.get(position).Category);
+            holder.amount.setText(Integer.toString(outData.get(position).Amount));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String type = ExData.get(position).get("type");
-                    String assets = ExData.get(position).get("asset");
-                    String category = ExData.get(position).get("category");
-                    String description = ExData.get(position).get("description");
-                    String money = ExData.get(position).get("money");
                     Intent intent = new Intent(GraphActivity.this, CategoryGraphActivity.class);
                     startActivity(intent);
                 }
@@ -732,7 +699,7 @@ public class GraphActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return ExData.size();
+            return outData.size();
         }
     }
 

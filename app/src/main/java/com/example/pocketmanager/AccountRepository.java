@@ -24,6 +24,10 @@ public class AccountRepository {
         return accountDao.getAccountsLive(year, month);
     }
 
+    public LiveData<List<CategoryAmount>> getCategoryAmountsLive(int year, int month, String type) {
+        return accountDao.getCategoryAmountsLive(year, month, type);
+    }
+
     public long getDayAmount(int year, int month, int day, String type) {
         return accountDao.getDayAmount(year, month, day, type);
     }
