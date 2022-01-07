@@ -20,6 +20,10 @@ public class AccountViewModel extends AndroidViewModel {
         return accountRepository.getAllAccountsLive();
     }
 
+    public LiveData<List<Account>> getAccountsLive(int year, int month) {
+        return accountRepository.getAccountsLive(year, month);
+    }
+
     void insertAccounts(Account... accounts) {
         accountRepository.insertAccounts(accounts);
     }

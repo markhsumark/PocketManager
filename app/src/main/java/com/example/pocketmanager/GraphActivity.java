@@ -638,14 +638,14 @@ public class GraphActivity extends AppCompatActivity {
     private class incomeGraphAdapter extends RecyclerView.Adapter<incomeGraphAdapter.MyViewHolder>{
         class MyViewHolder extends RecyclerView.ViewHolder{
             public View itemView;
-            public TextView description, money, category;
+            public TextView amount, asset, category;
 
             public MyViewHolder(View v){
                 super(v);
                 itemView = v;
                 category = itemView.findViewById(R.id.category);
-                description = itemView.findViewById(R.id.description);
-                money = itemView.findViewById(R.id.money);
+                asset = itemView.findViewById(R.id.asset);
+                amount = itemView.findViewById(R.id.amount);
             }
         }
 
@@ -662,8 +662,8 @@ public class GraphActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, int position) {
             Resources res=getResources();
             holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(data.get(position).get("category"))]);
-            holder.description.setText(data.get(position).get("description"));
-            holder.money.setText(data.get(position).get("money"));
+            holder.asset.setText(data.get(position).get("description"));
+            holder.amount.setText(data.get(position).get("money"));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -694,14 +694,14 @@ public class GraphActivity extends AppCompatActivity {
     private class expenseGraphAdapter extends RecyclerView.Adapter<expenseGraphAdapter.MyViewHolder>{
         class MyViewHolder extends RecyclerView.ViewHolder{
             public View itemView;
-            public TextView description, money, category;
+            public TextView asset, amount, category;
 
             public MyViewHolder(View v){
                 super(v);
                 itemView = v;
                 category = itemView.findViewById(R.id.category);
-                description = itemView.findViewById(R.id.description);
-                money = itemView.findViewById(R.id.money);
+                asset = itemView.findViewById(R.id.asset);
+                amount = itemView.findViewById(R.id.amount);
             }
         }
 
@@ -718,8 +718,8 @@ public class GraphActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, int position) {
             Resources res=getResources();
             holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(data.get(position).get("category"))]);
-            holder.description.setText(data.get(position).get("description"));
-            holder.money.setText(data.get(position).get("money"));
+            holder.asset.setText(data.get(position).get("description"));
+            holder.amount.setText(data.get(position).get("money"));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -8,33 +8,54 @@ import androidx.room.PrimaryKey;
 public class Account {
     @PrimaryKey(autoGenerate = true)
     private int Id;
-    private String Property;
-    private String InOut;
-    private int Price;
-    private String CategoryName;
-    private String SubCategoryName;
-    //private Date Time;
-    private String Description;
+    private String Asset;
+    private String Type;
+    private int Amount;
+    private String Category;
+    private String SubCategory;
+
+    private int Year;
+    private int Month;
+    private int Day;
+    private int Hour;
+    private int Minute;
+
+    private String Note;
 
     @Ignore
-    public Account(String property, String inOut, int price, String categoryName, String subCategoryName, String description) {
-        Property = property;
-        InOut = inOut;
-        Price = price;
-        CategoryName = categoryName;
-        SubCategoryName = subCategoryName;
-        Description = description;
+    public Account(String asset, String type, int amount, String category, String subCategory, int year, int month, int day, int hour, int minute, String note) {
+        Asset = asset;
+        Type = type;
+        Amount = amount;
+        Category = category;
+        SubCategory = subCategory;
+        Year = year;
+        Month = month;
+        Day = day;
+        Hour = hour;
+        Minute = minute;
+        Note = note;
     }
 
     @Ignore
-    public Account(int id, String property, String inOut, int price, String categoryName, String subCategoryName, String description) {
+    public Account(int id, String asset, String type, int amount, String category, String subCategory, int year, int month, int day, int hour, int minute, String note) {
         Id = id;
-        Property = property;
-        InOut = inOut;
-        Price = price;
-        CategoryName = categoryName;
-        SubCategoryName = subCategoryName;
-        Description = description;
+        Asset = asset;
+        Type = type;
+        Amount = amount;
+        Category = category;
+        SubCategory = subCategory;
+        Year = year;
+        Month = month;
+        Day = day;
+        Hour = hour;
+        Minute = minute;
+        Note = note;
+    }
+
+    @Ignore
+    public Account(int id) {
+        Id = id;
     }
 
     public Account() {}
@@ -42,44 +63,54 @@ public class Account {
     public int getId() {
         return Id;
     }
-    public String getProperty() {
-        return Property;
+    public String getAsset() {
+        return Asset;
     }
-    public String getInOut() {
-        return InOut;
+    public String getType() {
+        return Type;
     }
-    public int getPrice() {
-        return Price;
+    public int getAmount() {
+        return Amount;
     }
-    public String getCategoryName() {
-        return CategoryName;
+    public String getCategory() {
+        return Category;
     }
-    public String getSubCategoryName() {
-        return SubCategoryName;
+    public String getSubCategory() {
+        return SubCategory;
     }
-    public String getDescription() {
-        return Description;
+    public String getNote() {
+        return Note;
     }
+    public int getYear() { return Year; }
+    public int getMonth() { return Month; }
+    public int getDay() { return Day; }
+    public int getHour() { return Hour; }
+    public int getMinute() { return Minute; }
 
-    public void setProperty(String property) {
-        Property = property;
+    public void setAsset(String asset) {
+        Asset = asset;
     }
     public void setId(int id) {
         this.Id = id;
     }
-    public void setInOut(String inOut) {
-        InOut = inOut;
+    public void setType(String type) {
+        Type = type;
     }
-    public void setPrice(int price) {
-        Price = price;
+    public void setAmount(int amount) {
+        Amount = amount;
     }
-    public void setCategoryName(String categoryName) {
-        CategoryName = categoryName;
+    public void setCategory(String category) {
+        Category = category;
     }
-    public void setSubCategoryName(String subCategoryName) {
-        SubCategoryName = subCategoryName;
+    public void setSubCategory(String subCategory) {
+        SubCategory = subCategory;
     }
-    public void setDescription(String description) {
-        Description = description;
+    public void setNote(String note) {
+        Note = note;
     }
+    public void setYear(int year) { Year = year; }
+    public void setMonth(int month) { Month = month; }
+    public void setDay(int day) { Day = day; }
+    public void setHour(int hour) { Hour = hour; }
+    public void setMinute(int minute) { Minute = minute; }
 }
