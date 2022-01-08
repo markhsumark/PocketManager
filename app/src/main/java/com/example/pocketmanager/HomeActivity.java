@@ -28,7 +28,7 @@ import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
     private Button monthPicker;
-    private TextView inAmount, outAmount, sumAmount;
+    private TextView inAmount, outAmount, sumAmount, noData;
     private RecyclerView externalRecyclerView;
     private ExAdapter exAdapter;
     private List<Account> data = new ArrayList<>();
@@ -48,6 +48,7 @@ public class HomeActivity extends AppCompatActivity {
         inAmount = findViewById(R.id.inAmount);
         outAmount = findViewById(R.id.outAmount);
         sumAmount = findViewById(R.id.sumAmount);
+        noData = findViewById(R.id.noData);
         monthPicker = findViewById(R.id.monthPicker);
         monthPicker.setText(dateFormat.format(date.getTime()));
         externalRecyclerView = findViewById(R.id.externalRecyclerView);
@@ -106,6 +107,10 @@ public class HomeActivity extends AppCompatActivity {
             sumAmount.setText(Long.toString(sumAmountValue));
             data = accounts;
             Log.e("size",Integer.toString(accounts.size()));
+            if(accounts.size() != 0)
+                noData.setVisibility(View.GONE);
+            else
+                noData.setVisibility(View.VISIBLE);
             exAdapter = new ExAdapter(data, context, accountViewModel);
             externalRecyclerView.setAdapter(exAdapter);
             exAdapter.notifyDataSetChanged();

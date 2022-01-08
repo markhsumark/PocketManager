@@ -8,12 +8,13 @@
 
     <TextView
         android:id="@+id/dateText"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
         android:autoSizeTextType="uniform"
         android:text="日期"
         app:layout_constraintBottom_toBottomOf="@+id/timePickButton"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/timePickButton" />
 
     <Button
@@ -24,30 +25,31 @@
         android:gravity="right|center_vertical"
         android:onClick="datePicker"
         android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toTopOf="@+id/guideline15" />
+        app:layout_constraintBottom_toBottomOf="@+id/timePickButton"
+        app:layout_constraintEnd_toStartOf="@+id/timePickButton"
+        app:layout_constraintTop_toTopOf="@+id/timePickButton" />
 
     <Button
         android:id="@+id/timePickButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
+        android:layout_marginEnd="30dp"
         android:gravity="right|center_vertical"
         android:onClick="timePicker"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/datePickButton"
-        app:layout_constraintStart_toEndOf="@+id/datePickButton"
-        app:layout_constraintTop_toTopOf="@+id/datePickButton" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/typeText"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
         android:autoSizeTextType="uniform"
         android:text="收支"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/dateText" /><![CDATA[
+        app:layout_constraintBottom_toBottomOf="@+id/typePicker"
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/typePicker" /><![CDATA[
 
     android:id="@+id/assetInfo"
     android:layout_width="match_parent"
@@ -63,40 +65,36 @@
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:gravity="right"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintEnd_toEndOf="@+id/timePickButton"
         app:layout_constraintTop_toBottomOf="@+id/datePickButton" />
 
     <TextView
         android:id="@+id/assetText"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
         android:autoSizeTextType="uniform"
         android:text="資產"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/typeText" />
+        app:layout_constraintBottom_toBottomOf="@+id/assetPicker"
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/assetPicker" />
 
     <Spinner
         android:id="@+id/assetPicker"
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/assetText"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintEnd_toEndOf="@+id/timePickButton"
         app:layout_constraintTop_toBottomOf="@+id/typePicker" />
 
     <TextView
         android:id="@+id/amountText"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
         android:autoSizeTextType="uniform"
         android:text="金額"
         app:layout_constraintBottom_toBottomOf="@+id/amountEditor"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/categoryText" />
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/amountEditor" />
 
     <EditText
         android:id="@+id/amountEditor"
@@ -106,20 +104,18 @@
         android:gravity="right|center_vertical"
         android:inputType="number"
         android:text=""
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintEnd_toEndOf="@+id/timePickButton"
         app:layout_constraintTop_toBottomOf="@+id/categoryPicker" />
 
     <TextView
         android:id="@+id/categoryText"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
         android:autoSizeTextType="uniform"
         android:text="類別"
         app:layout_constraintBottom_toBottomOf="@+id/categoryPicker"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/assetText" /><![CDATA[
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/categoryPicker" /><![CDATA[
 
     android:id="@+id/descriptionInfo"
     android:layout_width="match_parent"
@@ -137,20 +133,18 @@
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:gravity="right"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintEnd_toEndOf="@+id/timePickButton"
         app:layout_constraintTop_toBottomOf="@+id/assetPicker" />
 
     <TextView
         android:id="@+id/noteText"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
         android:autoSizeTextType="uniform"
         android:text="描述"
         app:layout_constraintBottom_toBottomOf="@+id/noteEditor"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/amountText" />
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/noteEditor" />
 
     <EditText
         android:id="@+id/noteEditor"
@@ -160,8 +154,7 @@
         android:gravity="right"
         android:inputType="text"
         android:text=""
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintEnd_toEndOf="@+id/timePickButton"
         app:layout_constraintTop_toBottomOf="@+id/amountEditor" />
 
     <Button
@@ -186,38 +179,10 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="400dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="132dp" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="270dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="40dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

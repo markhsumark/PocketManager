@@ -93,6 +93,14 @@
         app:layout_constraintStart_toStartOf="@+id/sum"
         app:layout_constraintTop_toTopOf="@+id/outAmount" />
 
+    <TextView
+        android:id="@+id/noData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="還沒有資料喔~"
+        android:textColor="@color/midGray"
+        android:gravity="center"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/externalRecyclerView"
         android:layout_width="0dp"
