@@ -1,7 +1,6 @@
 package com.example.pocketmanager;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +10,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -64,6 +60,7 @@ public class GraphActivity extends AppCompatActivity {
     private ArrayList<BarEntry> values = new ArrayList<>();
     private ArrayList<BarEntry> InValues = new ArrayList<>();
     private ArrayList<BarEntry> ExValues = new ArrayList<>();
+    private String [] CategoryTest={"一","二","三","四","五"};
     List<PieEntry> InPielist = new ArrayList<>() ;
     List<PieEntry> ExPielist = new ArrayList<>() ;
     Button categoryButton;
@@ -167,6 +164,7 @@ public class GraphActivity extends AppCompatActivity {
         //當月收支長條圖
         monthChartShow();
         //圓餅圖介面
+        PieData();
         incomeShow();
         expenseShow();
         //長條圖
@@ -226,7 +224,6 @@ public class GraphActivity extends AppCompatActivity {
         //設定入口標籤的大小。預設值:13dp
         incomePieChart.setEntryLabelTextSize(12f);
 
-        PieData(0);
         //設定到PieDataSet物件
         PieDataSet set = new PieDataSet(InPielist , "表一") ;
         set.setDrawValues(false);//設定為true,在圖表繪製y
@@ -314,7 +311,6 @@ public class GraphActivity extends AppCompatActivity {
         expensePieChart.setEntryLabelColor(Color.WHITE);
         //設定入口標籤的大小。預設值:13dp
         expensePieChart.setEntryLabelTextSize(12f);
-        PieData(1);
         //設定到PieDataSet物件
         PieDataSet set = new PieDataSet(ExPielist , "表二") ;
         set.setDrawValues(false);//設定為true,在圖表繪製y
@@ -350,23 +346,18 @@ public class GraphActivity extends AppCompatActivity {
 
     }
 
-    private void PieData(int flag){
-        int i;
-        //模擬的資料來源
-        if(flag==0)//income
-        {
-            for(i=0;i<10;i++) {
-                PieEntry row = new PieEntry(15.8f, "N" + i);
-                InPielist.add(row);
-            }
+    private void PieData(){
+
+        for(int i=0;i<10;i++) {
+            PieEntry row = new PieEntry(15.8f, "N" + i);
+            InPielist.add(row);
         }
-        else if(flag==1)
-        {
-            for(i=0;i<10;i++) {
-                PieEntry row = new PieEntry(15.8f, "M" + i);
-                ExPielist.add(row);
-            }
+
+        for(int i=0;i<10;i++) {
+            PieEntry row = new PieEntry(15.8f, "M" + i);
+            ExPielist.add(row);
         }
+
     }
 
     private void monthChartShow() {
@@ -380,11 +371,13 @@ public class GraphActivity extends AppCompatActivity {
 //設置網格佈局
         monthBarChart.setDrawGridBackground(true);
 //通過自定義一個x軸標籤來實現2,015 有分割符符bug
-        ValueFormatter custom = new MyValueFormatter(" ");
+        ValueFormatter custom = new MyValueFormatter(0,CategoryTest);
 //獲取x軸線
         XAxis xAxis = monthBarChart.getXAxis();
 //設置x軸的顯示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //斜體字
+        xAxis.setLabelRotationAngle(-60);
 //設置網格佈局
         xAxis.setDrawGridLines(true);
 //圖表將避免第一個和最後一個標籤條目被減掉在圖表或屏幕的邊緣
@@ -404,7 +397,7 @@ public class GraphActivity extends AppCompatActivity {
         monthBarChart.getAxisLeft().setDrawGridLines(false);
 //設置動畫時間
         // monthBarChart.animateXY(600,600);
-        monthBarChart.getLegend().setEnabled(true);
+        monthBarChart.getLegend().setEnabled(false);
         MonthBarData();
 
         if (monthBarChart.getData() != null &&
@@ -416,8 +409,8 @@ public class GraphActivity extends AppCompatActivity {
         }
         else {
             MonthSet = new BarDataSet(values, "日期");
-            MonthSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            MonthSet.setDrawValues(false);
+            MonthSet.setColors(Color.rgb(164, 228, 251));
+            MonthSet.setDrawValues(true);
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(MonthSet);
             BarData data = new BarData(dataSets);
@@ -427,10 +420,10 @@ public class GraphActivity extends AppCompatActivity {
         //繪製圖表
         monthBarChart.invalidate();
 //設置柱形統計圖上的值
-        monthBarChart.getData().setValueTextSize(10);
-        for (IDataSet set : monthBarChart.getData().getDataSets()){
-            set.setDrawValues(!set.isDrawValuesEnabled());
-        }
+//        monthBarChart.getData().setValueTextSize(10);
+//        for (IDataSet set : monthBarChart.getData().getDataSets()){
+//            set.setDrawValues(!set.isDrawValuesEnabled());
+//        }
     }
 
     private void inShow() {
@@ -448,7 +441,7 @@ public class GraphActivity extends AppCompatActivity {
         //設置網格佈局
         incomeBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
-        ValueFormatter custom = new MyValueFormatter(" ");
+        ValueFormatter custom = new MyValueFormatter(1,CategoryTest);
         //獲取x軸線
         XAxis xAxis = incomeBarChart.getXAxis();
         //設置x軸的顯示位置
@@ -472,7 +465,8 @@ public class GraphActivity extends AppCompatActivity {
         incomeBarChart.getAxisLeft().setDrawGridLines(false);
         //設置動畫時間
         // monthBarChart.animateXY(600,600);
-        incomeBarChart.getLegend().setEnabled(true);
+        //圖例標示
+        incomeBarChart.getLegend().setEnabled(false);
         //取得data
         BarData();
         if (incomeBarChart.getData() != null &&
@@ -513,7 +507,7 @@ public class GraphActivity extends AppCompatActivity {
         //設置網格佈局
         expenseBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
-        ValueFormatter custom = new MyValueFormatter(" ");
+        ValueFormatter custom = new MyValueFormatter(1,CategoryTest);
         //獲取x軸線
         XAxis xAxis = expenseBarChart.getXAxis();
         //設置x軸的顯示位置
@@ -537,7 +531,7 @@ public class GraphActivity extends AppCompatActivity {
         expenseBarChart.getAxisLeft().setDrawGridLines(false);
         //設置動畫時間
         // monthBarChart.animateXY(600,600);
-        expenseBarChart.getLegend().setEnabled(true);
+        expenseBarChart.getLegend().setEnabled(false);
         //取得data
         BarData();
         if (expenseBarChart.getData() != null &&
@@ -564,12 +558,13 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
+
     private void MonthBarData(){
         int i;
         int Date_count = 1;
         int InExMoney = 100;
         //Log.v("xue","aFloat+++++"+Date_count);
-        for(i=0;i<7;i++)
+        for(i=0;i<30;i++)
         {
             BarEntry barEntry = new BarEntry(Date_count,InExMoney);
             values.add(barEntry);
@@ -595,6 +590,7 @@ public class GraphActivity extends AppCompatActivity {
             ExData=ExData-100;
         }
     }
+
     private AdapterView.OnItemSelectedListener spnOnItemSelected
             = new AdapterView.OnItemSelectedListener() {
         public void onItemSelected(AdapterView<?> parent, View view,
@@ -659,7 +655,7 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, int position) {
+        public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             Resources res=getResources();
             holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(InData.get(position).get("category"))]);
             holder.description.setText(InData.get(position).get("description"));
@@ -710,7 +706,7 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, int position) {
+        public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             Resources res=getResources();
             holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(ExData.get(position).get("category"))]);
             holder.description.setText(ExData.get(position).get("description"));
@@ -737,22 +733,41 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     public class MyValueFormatter extends ValueFormatter{
-        private final DecimalFormat mFormat;
-        private String suffix;
-        public MyValueFormatter(String suffix) {
-            mFormat = new DecimalFormat("00");
-            this.suffix = suffix;
+        private final DecimalFormat mFormat = new DecimalFormat("00");
+        public static final int DAY=0; //日
+        public static final int CATEGORY=1; //類別
+        private  String[] mCategory;
+        private int type;
+
+        public MyValueFormatter(int type,String[] mCategory) {
+            this.mCategory = mCategory;
+            this.type = type;
         }
+
         @Override
         public String getFormattedValue(float value) {
-            return mFormat.format(value) + suffix;
+            String tmp;
+            int position=(int) value;
+            switch (type){
+                case DAY:
+                    tmp=mFormat.format(value)+"日";
+                    break;
+                case CATEGORY:
+                    tmp=mCategory[position % 5];
+                break;
+                default:
+                    tmp="錯誤";
+                    break;
+            }
+            return tmp;
         }
+
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
             if (axis instanceof XAxis) {
                 return mFormat.format(value);
             } else if (value > 0) {
-                return mFormat.format(value) + suffix;
+                return mFormat.format(value);
             } else {
                 return mFormat.format(value);
             }
