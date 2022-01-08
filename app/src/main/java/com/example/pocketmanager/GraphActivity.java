@@ -400,26 +400,25 @@ public class GraphActivity extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //設置網格佈局
         xAxis.setDrawGridLines(true);
-//圖表將避免第一個和最後一個標籤條目被減掉在圖表或屏幕的邊緣
+        //圖表將避免第一個和最後一個標籤條目被減掉在圖表或屏幕的邊緣
         xAxis.setAvoidFirstLastClipping(false);
-//繪製標籤  指x軸上的對應數值 默認true
+        //繪製標籤  指x軸上的對應數值 默認true
         xAxis.setDrawLabels(true);
         xAxis.setValueFormatter(custom);
-//縮放後x 軸數據重疊問題
+        //縮放後x 軸數據重疊問題
         xAxis.setGranularityEnabled(true);
-//獲取右邊y標籤
+        //獲取右邊y標籤
         YAxis axisRight = monthBarChart.getAxisRight();
         axisRight.setStartAtZero(true);
-//獲取左邊y軸的標籤
+        //獲取左邊y軸的標籤
         YAxis axisLeft = monthBarChart.getAxisLeft();
-//設置Y軸數值 從零開始
+        //設置Y軸數值 從零開始
         axisLeft.setStartAtZero(true);
         monthBarChart.getAxisLeft().setDrawGridLines(false);
-//設置動畫時間
+        //設置動畫時間
         // monthBarChart.animateXY(600,600);
         monthBarChart.getLegend().setEnabled(true);
         //todo MonthBarData();
-
         if (monthBarChart.getData() != null &&
                 monthBarChart.getData().getDataSetCount() > 0) {
             monthSet = (BarDataSet) monthBarChart.getData().getDataSetByIndex(0);
@@ -439,7 +438,7 @@ public class GraphActivity extends AppCompatActivity {
         }
         //繪製圖表
         monthBarChart.invalidate();
-//設置柱形統計圖上的值
+        //設置柱形統計圖上的值
         monthBarChart.getData().setValueTextSize(10);
         for (IDataSet set : monthBarChart.getData().getDataSets()){
             set.setDrawValues(!set.isDrawValuesEnabled());
