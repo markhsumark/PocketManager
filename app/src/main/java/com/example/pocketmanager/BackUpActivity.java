@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class BackUpActivity extends AppCompatActivity {
     Button back;
     RadioGroup backup_group;
+    RadioButton month_backup,week_backup,day_backup;
     SharedPreferences sharedPreferences;
     SharedPreferences preferences;
 
@@ -34,28 +36,38 @@ public class BackUpActivity extends AppCompatActivity {
         setContentView(R.layout.backup_page);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        /*
-        back = findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-         */
+
         sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
         preferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
 
-
+        month_backup = findViewById(R.id.month_backup);
+        week_backup = findViewById(R.id.week_backup);
+        day_backup = findViewById(R.id.day_backup);
         backup_group = findViewById(R.id.backup_group);
+        int backUp = sharedPreferences.getInt("backUp",1);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if(backUp==0){
+            month_backup.setChecked(true);
+        }
+        else if(backUp==1){
+            week_backup.setChecked(true);
+        }
+        else{
+            day_backup.setChecked(true);
+        }
         backup_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int backUp = checkedId;
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("backUp",backUp);
-                editor.apply();
+                if(checkedId == R.id.month_backup){
+                    editor.putInt("backUp",0);
+                }
+                else if(checkedId == R.id.week_backup){
+                    editor.putInt("backUp",1);
+                }
+                else{
+                    editor.putInt("backUp",2);
+                }
+                editor.commit();
             }
         });
     }

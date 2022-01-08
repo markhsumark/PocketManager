@@ -8,11 +8,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 
-public class AddCategoryActivity extends AppCompatActivity {
-    Button back,save;
-
+public class EditCategory extends AppCompatActivity {
+    Button save;
+    EditText categoryChange;
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             //Toast.makeText(this, "按下左上角返回鍵", Toast.LENGTH_SHORT).show();
@@ -24,10 +25,11 @@ public class AddCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_category);
+        setContentView(R.layout.activity_edit_category);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        categoryChange = findViewById(R.id.categoryChange);
         save = findViewById(R.id.save);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,5 +38,4 @@ public class AddCategoryActivity extends AppCompatActivity {
             }
         });
     }
-
 }

@@ -6,24 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".AddCategoryActivity">
 
-    <Button
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="64dp"
-        android:text="返回"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/addCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="108dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="204dp"
         android:text="新增類別"
+        android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -37,9 +30,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputEditText
-        android:layout_width="349dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="220dp"
+        android:layout_width="365dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="276dp"
         android:layout_marginEnd="28dp"
         android:hint="category"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,8 +42,8 @@
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="136dp"
         android:text="save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -23,11 +23,11 @@ public class SettingActivity extends AppCompatActivity {
     private GoogleDriveService mGDS = new GoogleDriveService();
 
     private SharedPreferences accountData;
-    Button connectGoogle,handBackup,autoBackup,editCategory,property;
-    Switch remindSwitch,speakSwitch,noticeSwitch;
+    Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind;
+    Switch noticeSwitch;
     SharedPreferences sharedPreferences;
     SharedPreferences preferences;
-
+    //boolean notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +62,8 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        editCategory = findViewById(R.id.editCatogory);
-        editCategory.setOnClickListener(new View.OnClickListener() {
+        income = findViewById(R.id.income);
+        income.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -72,51 +72,55 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        expenditure = findViewById(R.id.expenditure);
+        expenditure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(SettingActivity.this, CategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        remind = findViewById(R.id.remind);
+        remind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(SettingActivity.this, Buget.class);
+                startActivity(intent);
+            }
+        });
+
         sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
-        preferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+        //preferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
 
-        boolean remind = remindSwitch.isChecked();
-        remind = preferences.getBoolean("remind",false);
-        remindSwitch.setChecked(remind);
-
-
-        remindSwitch=findViewById(R.id.remindSwitch);
-        remindSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("remind",remind);
-                editor.apply();
-            }
-        });
+        //boolean Remind = preferences.getBoolean("remind",false);
+        //remindSwitch.setChecked(Remind);
 
 
-        speakSwitch=findViewById(R.id.speakSwitch);
-        speakSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                boolean speak = speakSwitch.isChecked();
 
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("speak",speak);
-                editor.apply();
-            }
-        });
+
         noticeSwitch=findViewById(R.id.noticeSwitch);
         noticeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                boolean notice = noticeSwitch.isChecked();
+                boolean listener = noticeSwitch.isChecked();
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("notice",notice);
+                editor.putBoolean("listener",listener);
                 editor.apply();
             }
         });
+        noticeSwitch.setChecked(sharedPreferences.getBoolean("listener",false));
+
     }
 
-
+    public void intentBuget(){
+//        Intent intent = new Intent();
+//        intent.setClass(SettingActivity.this, ExpenditureThreshold.class);
+//        startActivity(intent);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
