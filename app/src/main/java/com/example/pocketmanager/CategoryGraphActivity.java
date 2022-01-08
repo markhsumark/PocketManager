@@ -302,8 +302,8 @@ public class CategoryGraphActivity extends AppCompatActivity {
                 super(v);
                 itemView = v;
                 category = itemView.findViewById(R.id.category);
-                description = itemView.findViewById(R.id.description);
-                money = itemView.findViewById(R.id.money);
+                description = itemView.findViewById(R.id.asset);
+                money = itemView.findViewById(R.id.amount);
             }
         }
         @NonNull
