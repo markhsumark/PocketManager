@@ -9,8 +9,8 @@
     <TextView
         android:id="@+id/dateText"
         android:layout_width="40dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="10dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="20dp"
         android:autoSizeTextType="uniform"
         android:text="日期"
         app:layout_constraintBottom_toBottomOf="@+id/timePickButton"
@@ -44,7 +44,7 @@
     <TextView
         android:id="@+id/typeText"
         android:layout_width="40dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:autoSizeTextType="uniform"
         android:text="收支"
         app:layout_constraintBottom_toBottomOf="@+id/typePicker"
@@ -71,7 +71,7 @@
     <TextView
         android:id="@+id/assetText"
         android:layout_width="40dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:autoSizeTextType="uniform"
         android:text="資產"
         app:layout_constraintBottom_toBottomOf="@+id/assetPicker"
@@ -89,7 +89,7 @@
     <TextView
         android:id="@+id/amountText"
         android:layout_width="40dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:autoSizeTextType="uniform"
         android:text="金額"
         app:layout_constraintBottom_toBottomOf="@+id/amountEditor"
@@ -101,7 +101,7 @@
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:gravity="right|center_vertical"
+        android:gravity="left|center_vertical"
         android:inputType="number"
         android:text=""
         app:layout_constraintEnd_toEndOf="@+id/timePickButton"
@@ -110,7 +110,7 @@
     <TextView
         android:id="@+id/categoryText"
         android:layout_width="40dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:autoSizeTextType="uniform"
         android:text="類別"
         app:layout_constraintBottom_toBottomOf="@+id/categoryPicker"
@@ -139,7 +139,7 @@
     <TextView
         android:id="@+id/noteText"
         android:layout_width="40dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:autoSizeTextType="uniform"
         android:text="描述"
         app:layout_constraintBottom_toBottomOf="@+id/noteEditor"
@@ -151,7 +151,7 @@
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:gravity="right"
+        android:gravity="left"
         android:inputType="text"
         android:text=""
         app:layout_constraintEnd_toEndOf="@+id/timePickButton"
