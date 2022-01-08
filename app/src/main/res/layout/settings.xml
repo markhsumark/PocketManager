@@ -9,95 +9,115 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="74dp"
-        android:layout_marginTop="164dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="0dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/remind">
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:text="手動備份" />
 
         <Button
             android:id="@+id/autoBackup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"
-            android:text="自動備份" />
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="自動備份選項" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/noticeCapture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="460dp"
+        android:gravity="center"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         android:text="@string/notice_capture"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/inout"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Switch
         android:id="@+id/noticeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="444dp"
-        android:layout_marginEnd="88dp"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginEnd="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/inout"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
         android:id="@+id/connectGoogle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="0dp"
         android:text="連結Google"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <!--        若以開啟提醒，則顯示「關閉提醒」-->
     <Button
         android:id="@+id/remind"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="提醒"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="0dp"
+        android:text="開啟提醒"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectGoogle" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/edit_category_text"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:text="編 輯 類 別"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:layout_editor_absoluteX="180dp"
+        tools:layout_editor_absoluteY="273dp"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/inout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/edit_category_text">
 
         <Button
             android:id="@+id/income"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"
-            android:text="收入" />
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="收入類別" />
 
         <Button
             android:id="@+id/expenditure"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"
-            android:text="支出" />
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="支出類別" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
