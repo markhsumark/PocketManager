@@ -60,10 +60,11 @@ public class GraphActivity extends AppCompatActivity {
     private List<CategoryAmount> inData = new ArrayList<>();
     private List<CategoryAmount> outData = new ArrayList<>();
     //private LinkedList<HashMap<String,String>> InData, ExData;//data
-    private ArrayList<BarEntry> values = new ArrayList<>();
-    private ArrayList<BarEntry> inValues = new ArrayList<>();
-    private ArrayList<BarEntry> outValues = new ArrayList<>();
+    private List<BarEntry> values = new ArrayList<>();
+    private List<BarEntry> inValues = new ArrayList<>();
+    private List<BarEntry> outValues = new ArrayList<>();
     private AccountViewModel accountViewModel;
+    private LiveData<List<DayAmount>> dayAmountLiveData = null;
     private LiveData<List<CategoryAmount>> inlistLiveData = null;
     private LiveData<List<CategoryAmount>> outlistLiveData = null;
     List<PieEntry> inPielist = new ArrayList<>();
@@ -165,7 +166,14 @@ public class GraphActivity extends AppCompatActivity {
         //靜態載入佈局
         //setContentView(R.layout.activity_graph);
         //當月收支長條圖
-        monthChartShow();
+        dayAmountLiveData = accountViewModel.getDayAmountsLive(2022,0);
+        dayAmountLiveData.observe(this, dayAmounts -> {
+            values = new ArrayList<>();
+            for(int i=0;i<dayAmounts.size();i++){
+                values.add(new BarEntry(dayAmounts.get(i).Day, dayAmounts.get(i).Amount));
+            }
+            monthChartShow();
+        });
         //圓餅圖介面
         inlistLiveData = accountViewModel.getCategoryAmountsLive(2022,0,"收入");
         inlistLiveData.observe(this, categoryAmounts -> {
@@ -376,21 +384,21 @@ public class GraphActivity extends AppCompatActivity {
 
     private void monthChartShow() {
         monthBarChart.getDescription().setEnabled(false);
-//設置最大值條目，超出之後不會有值
+        //設置最大值條目，超出之後不會有值
         monthBarChart.setMaxVisibleValueCount(60);
-//分別在x軸和y軸上進行縮放
+        //分別在x軸和y軸上進行縮放
         monthBarChart.setPinchZoom(true);
-//設置剩餘統計圖的陰影
+        //設置剩餘統計圖的陰影
         monthBarChart.setDrawBarShadow(false);
-//設置網格佈局
+        //設置網格佈局
         monthBarChart.setDrawGridBackground(true);
-//通過自定義一個x軸標籤來實現2,015 有分割符符bug
+        //通過自定義一個x軸標籤來實現2,015 有分割符符bug
         ValueFormatter custom = new MyValueFormatter(" ");
-//獲取x軸線
+        //獲取x軸線
         XAxis xAxis = monthBarChart.getXAxis();
-//設置x軸的顯示位置
+        //設置x軸的顯示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//設置網格佈局
+        //設置網格佈局
         xAxis.setDrawGridLines(true);
 //圖表將避免第一個和最後一個標籤條目被減掉在圖表或屏幕的邊緣
         xAxis.setAvoidFirstLastClipping(false);
@@ -410,7 +418,7 @@ public class GraphActivity extends AppCompatActivity {
 //設置動畫時間
         // monthBarChart.animateXY(600,600);
         monthBarChart.getLegend().setEnabled(true);
-        MonthBarData();
+        //todo MonthBarData();
 
         if (monthBarChart.getData() != null &&
                 monthBarChart.getData().getDataSetCount() > 0) {
@@ -569,19 +577,19 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
-    private void MonthBarData(){
-        int Date_count = 1;
-        int InExMoney = 100;
-        //Log.v("xue","aFloat+++++"+Date_count);
-        for(int i=0;i<8;i++)
-        {
-            //todo date_count日期 inexmoney 總額
-            BarEntry barEntry = new BarEntry(Date_count,InExMoney);
-            values.add(barEntry);
-            Date_count++;
-            InExMoney=InExMoney+100;
-        }
-    }
+//    private void MonthBarData(){
+//        int Date_count = 1;
+//        int InExMoney = 100;
+//        //Log.v("xue","aFloat+++++"+Date_count);
+//        for(int i=0;i<8;i++)
+//        {
+//            //todo date_count日期 inexmoney 總額
+//            BarEntry barEntry = new BarEntry(Date_count,InExMoney);
+//            values.add(barEntry);
+//            Date_count++;
+//            InExMoney=InExMoney+100;
+//        }
+//    }
 
     private void BarData(){
         int i;

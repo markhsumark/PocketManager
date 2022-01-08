@@ -29,6 +29,10 @@ public class AccountViewModel extends AndroidViewModel {
         return accountRepository.getCategoryAmountsLive(year, month, type);
     }
 
+    public LiveData<List<DayAmount>> getDayAmountsLive(int year, int month) {
+        return accountRepository.getDayAmountsLive(year, month);
+    }
+
     public long getDayAmount(int year, int month, int day, String type) {
         return accountRepository.getDayAmount(year, month, day, type);
     }

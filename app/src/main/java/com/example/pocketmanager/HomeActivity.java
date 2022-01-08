@@ -93,7 +93,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     private void resetLiveData(){
-
         if(listLiveData != null && listLiveData.hasActiveObservers()){
             listLiveData.removeObservers(HomeActivity.this);
         }
@@ -115,16 +114,16 @@ public class HomeActivity extends AppCompatActivity {
 
     public void rackMonthPicker(View v){
         new RackMonthPicker(this)
-                .setLocale(Locale.TRADITIONAL_CHINESE)
-                .setNegativeText("取消")
-                .setPositiveText("確認")
-                .setPositiveButton((month, startDate, endDate, year, monthLabel) -> {
-                    date.set(Calendar.YEAR, year);
-                    date.set(Calendar.MONTH, month-1);
-                    monthPicker.setText(dateFormat.format(date.getTime()));
-                    resetLiveData();
-                })
-                .setNegativeButton(Dialog::cancel).show();
+            .setLocale(Locale.TRADITIONAL_CHINESE)
+            .setNegativeText("取消")
+            .setPositiveText("確認")
+            .setPositiveButton((month, startDate, endDate, year, monthLabel) -> {
+                date.set(Calendar.YEAR, year);
+                date.set(Calendar.MONTH, month-1);
+                monthPicker.setText(dateFormat.format(date.getTime()));
+                resetLiveData();
+            })
+            .setNegativeButton(Dialog::cancel).show();
     }
 
 }

@@ -28,6 +28,10 @@ public class AccountRepository {
         return accountDao.getCategoryAmountsLive(year, month, type);
     }
 
+    public LiveData<List<DayAmount>> getDayAmountsLive(int year, int month) {
+        return accountDao.getDayAmountsLive(year, month);
+    }
+
     public long getDayAmount(int year, int month, int day, String type) {
         return accountDao.getDayAmount(year, month, day, type);
     }
