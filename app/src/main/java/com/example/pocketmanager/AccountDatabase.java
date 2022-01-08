@@ -15,7 +15,7 @@ public abstract class AccountDatabase extends RoomDatabase {
     static synchronized AccountDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AccountDatabase.class, "account_database")
-                    .build();
+                    .allowMainThreadQueries().build();
         }//沒有創建過就創建一個新的，有創建過就直接回傳
         return INSTANCE;
     }

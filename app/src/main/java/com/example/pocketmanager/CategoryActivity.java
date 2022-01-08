@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -100,8 +99,8 @@ public class CategoryActivity extends AppCompatActivity {
                 super(v);
                 itemView = v;
                 category = itemView.findViewById(R.id.category);
-                description = itemView.findViewById(R.id.description);
-                money = itemView.findViewById(R.id.money);
+                description = itemView.findViewById(R.id.asset);
+                money = itemView.findViewById(R.id.amount);
             }
         }
 

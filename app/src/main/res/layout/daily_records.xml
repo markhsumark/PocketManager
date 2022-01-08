@@ -1,12 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingTop="5dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:src="@color/midGray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:gravity="center|center_vertical"/>
+        <TextView
+            android:id="@+id/dayOfTheWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/deepGray"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:gravity="center|center_vertical"/>
+        <TextView
+            android:id="@+id/yearAndMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/midGray"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"/>
+        <TextView
+            android:id="@+id/dailyInAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:layout_weight="3"
+            android:gravity="right|center_vertical"/>
+        <TextView
+            android:id="@+id/dailyOutAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:layout_weight="3"
+            android:gravity="right|center_vertical"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:src="@color/midGray"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/internalRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

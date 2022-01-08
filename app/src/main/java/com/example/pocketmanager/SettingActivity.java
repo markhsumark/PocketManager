@@ -45,6 +45,7 @@ public class SettingActivity extends AppCompatActivity {
                     Toast.makeText(SettingActivity.this, "登出", Toast.LENGTH_SHORT);
                     connectGoogle.setText("連結帳號");
                 }else {
+                    Log.i("onclick", "start sign in");
                     Intent intent = mGDS.getSignInIntent(SettingActivity.this);
                     startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
                 }

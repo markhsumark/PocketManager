@@ -13,6 +13,7 @@ public class MainActivity extends TabActivity{
     TabHost tabHost=null;      //选项卡控制器
     TabHost.TabSpec tabSpecA,tabSpecB, tabSpecC=null;   //选项卡,这里选项卡最好不用混用，有几个选项卡就设置几个对象
     TabWidget tabWidget;
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -25,25 +26,25 @@ public class MainActivity extends TabActivity{
         if((getBaseContext().getResources().getConfiguration().uiMode&Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES)
             tabWidget.setBackgroundColor(Color.parseColor("#4F4F4F"));
         //获得TabHost.TabSpec对象实例；
-        tabSpecA=tabHost.newTabSpec("Home");
+        tabSpecA=tabHost.newTabSpec("帳單");
         //为TabSpec对象设置指示器
-        tabSpecA.setIndicator("Home",getResources().getDrawable(android.R.drawable.ic_media_play));
+        tabSpecA.setIndicator("帳單",getResources().getDrawable(android.R.drawable.ic_media_play));
         //为选项卡设置内容，这里需要创建一个intent对象
         Intent intentA=new Intent();
         intentA.setClass(this, HomeActivity.class);
         tabSpecA.setContent(intentA);
 
         //for chart：
-        tabSpecB=tabHost.newTabSpec("Chart");
-        tabSpecB.setIndicator("Chart",getResources().getDrawable(android.R.drawable.ic_media_next));
+        tabSpecB=tabHost.newTabSpec("統計");
+        tabSpecB.setIndicator("統計",getResources().getDrawable(android.R.drawable.ic_media_next));
         Intent intentB=new Intent();
         intentB.setClass(this, GraphActivity.class);
         tabSpecB.setContent(intentB);
 
 
         //for setting：
-        tabSpecC=tabHost.newTabSpec("Setting");
-        tabSpecC.setIndicator("Setting",getResources().getDrawable(android.R.drawable.ic_media_next));
+        tabSpecC=tabHost.newTabSpec("設定");
+        tabSpecC.setIndicator("設定",getResources().getDrawable(android.R.drawable.ic_media_next));
         Intent intentC=new Intent();
         intentC.setClass(this, SettingActivity.class);
         tabSpecC.setContent(intentC);

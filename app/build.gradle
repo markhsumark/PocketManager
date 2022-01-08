@@ -51,7 +51,7 @@ configurations {
 
 dependencies {
 
-    implementation 'com.github.kal72:RackMonthPicker:1.6.1'
+    implementation 'com.github.kal72:RackMonthPicker:1.6.2'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
@@ -69,8 +69,6 @@ dependencies {
     def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-    //implementation 'com.github.kal72:RackMonthPicker:1.6.1'  //  for只選年月的datePicker
-    //implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation 'com.google.android.material:material:1.0.0'
 
