@@ -1,6 +1,5 @@
 package com.example.pocketmanager;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,13 +10,9 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,7 +28,7 @@ import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
     private Button monthPicker;
-    private TextView inAmount, outAmount, sumAmount;
+    private TextView inAmount, outAmount, sumAmount, noData;
     private RecyclerView externalRecyclerView;
     private ExAdapter exAdapter;
     private List<Account> data = new ArrayList<>();
@@ -53,6 +48,7 @@ public class HomeActivity extends AppCompatActivity {
         inAmount = findViewById(R.id.inAmount);
         outAmount = findViewById(R.id.outAmount);
         sumAmount = findViewById(R.id.sumAmount);
+        noData = findViewById(R.id.noData);
         monthPicker = findViewById(R.id.monthPicker);
         monthPicker.setText(dateFormat.format(date.getTime()));
         externalRecyclerView = findViewById(R.id.externalRecyclerView);
@@ -61,7 +57,6 @@ public class HomeActivity extends AppCompatActivity {
         context = externalRecyclerView.getContext();
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         resetLiveData();
-
         lastMonth.setOnClickListener(v -> {
             date.add(Calendar.MONTH,-1);
             monthPicker.setText(dateFormat.format(date.getTime()));
@@ -99,7 +94,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     private void resetLiveData(){
-
         if(listLiveData != null && listLiveData.hasActiveObservers()){
             listLiveData.removeObservers(HomeActivity.this);
         }
@@ -113,6 +107,10 @@ public class HomeActivity extends AppCompatActivity {
             sumAmount.setText(Long.toString(sumAmountValue));
             data = accounts;
             Log.e("size",Integer.toString(accounts.size()));
+            if(accounts.size() != 0)
+                noData.setVisibility(View.GONE);
+            else
+                noData.setVisibility(View.VISIBLE);
             exAdapter = new ExAdapter(data, context, accountViewModel);
             externalRecyclerView.setAdapter(exAdapter);
             exAdapter.notifyDataSetChanged();
@@ -121,16 +119,16 @@ public class HomeActivity extends AppCompatActivity {
 
     public void rackMonthPicker(View v){
         new RackMonthPicker(this)
-                .setLocale(Locale.TRADITIONAL_CHINESE)
-                .setNegativeText("取消")
-                .setPositiveText("確認")
-                .setPositiveButton((month, startDate, endDate, year, monthLabel) -> {
-                    date.set(Calendar.YEAR, year);
-                    date.set(Calendar.MONTH, month-1);
-                    monthPicker.setText(dateFormat.format(date.getTime()));
-                    resetLiveData();
-                })
-                .setNegativeButton(Dialog::cancel).show();
+            .setLocale(Locale.TRADITIONAL_CHINESE)
+            .setNegativeText("取消")
+            .setPositiveText("確認")
+            .setPositiveButton((month, startDate, endDate, year, monthLabel) -> {
+                date.set(Calendar.YEAR, year);
+                date.set(Calendar.MONTH, month-1);
+                monthPicker.setText(dateFormat.format(date.getTime()));
+                resetLiveData();
+            })
+            .setNegativeButton(Dialog::cancel).show();
     }
 
 }

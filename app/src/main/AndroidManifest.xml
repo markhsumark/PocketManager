@@ -18,6 +18,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketManager">
+
+        <service
+            android:name=".ClickService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.Click"/>
+            </intent-filter>
+
+        </service>
+
         <activity
             android:name=".CategoryGraphActivity"
             android:exported="false" />

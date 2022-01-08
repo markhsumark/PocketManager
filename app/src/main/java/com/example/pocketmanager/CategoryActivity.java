@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -114,7 +115,7 @@ public class CategoryActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull CaAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull CaAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
             Resources res=getResources();
             //holder.category.setText(res.getStringArray(R.array.category)[Integer.parseInt(data.get(position).get("category"))]);
             holder.category.setText(data.get(position).get("category"));
