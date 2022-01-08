@@ -74,6 +74,19 @@ public class AddOrEditFragment extends Fragment {
         datePickButton.setText(date.format(calendar.getTime()));  //set initial value
         timePickButton.setText(time.format(calendar.getTime()));  //set initial value
 
+        datePickButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePicker(v);
+            }
+        });
+        timePickButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePicker(v);
+            }
+        });
+
         ArrayAdapter assetAdapter = new ArrayAdapter(v.getContext(), android.R.layout.simple_spinner_dropdown_item, assets);
         assetPicker.setAdapter(assetAdapter);
         assetPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
