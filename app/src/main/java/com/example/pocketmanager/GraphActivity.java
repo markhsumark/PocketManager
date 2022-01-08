@@ -233,11 +233,11 @@ public class GraphActivity extends AppCompatActivity {
         //設定透明圓應有的顏色。
         inPieChart.setTransparentCircleColor(Color.WHITE);
         //設定透明度圓的透明度應該有0 =完全透明,255 =完全不透明,預設值為100。
-        inPieChart.setTransparentCircleAlpha(110);
+        inPieChart.setTransparentCircleAlpha(50);
         //設定在最大半徑的百分比餅圖中心孔半徑(最大=整個圖的半徑),預設為50%
-        inPieChart.setHoleRadius(58f);
+        inPieChart.setHoleRadius(30f);
         //設定繪製在孔旁邊的透明圓的半徑,在最大半徑的百分比在餅圖*(max =整個圖的半徑),預設55% -> 5%大於中心孔預設
-        inPieChart.setTransparentCircleRadius(61f);
+        inPieChart.setTransparentCircleRadius(20f);
         //將此設定為true,以繪製顯示在pie chart
         inPieChart.setDrawCenterText(true);
         //集度的radarchart旋轉偏移。預設270f -->頂(北)
@@ -263,13 +263,13 @@ public class GraphActivity extends AppCompatActivity {
         //設定此軸上標籤的所使用的y軸偏移量 更高的偏移意味著作為一個整體的Legend將被放置遠離頂部。
         l.setYOffset(0f);
         //設定入口標籤的顏色。
-        inPieChart.setEntryLabelColor(Color.WHITE);
+        inPieChart.setEntryLabelColor(Color.BLACK);
         //設定入口標籤的大小。預設值:13dp
         inPieChart.setEntryLabelTextSize(12f);
 
 
         //設定到PieDataSet物件
-        PieDataSet set = new PieDataSet(inPielist, "表一") ;
+        PieDataSet set = new PieDataSet(inPielist, "") ;
         set.setDrawValues(false);//設定為true,在圖表繪製y
         set.setAxisDependency(YAxis.AxisDependency.LEFT);//設定Y軸,這個資料集應該被繪製(左或右)。預設值:左
         set.setAutomaticallyDisableSliceSpacing(false);//當啟用時,片間距將是0時,最小值要小於片間距本身
