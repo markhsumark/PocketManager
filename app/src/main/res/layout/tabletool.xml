@@ -17,10 +17,24 @@
         android:textStyle="bold|italic" />
 
     <Button
-        android:id="@+id/appwidget_edittext"
+        android:id="@+id/appwidget_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="156dp"
         android:layout_marginTop="248dp"
-        android:text="上傳" />
+        android:text="收入" />
+    <Button
+        android:id="@+id/appwidget_btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="348dp"
+        android:text="支出" />
+    <Button
+        android:id="@+id/appwidget_btn3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="448dp"
+        android:text="圖表" />
 </RelativeLayout>
