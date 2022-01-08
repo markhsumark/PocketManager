@@ -67,6 +67,8 @@ public class GraphActivity extends AppCompatActivity {
     private LiveData<List<DayAmount>> dayAmountLiveData = null;
     private LiveData<List<CategoryAmount>> inlistLiveData = null;
     private LiveData<List<CategoryAmount>> outlistLiveData = null;
+    private List<DayAmount> barData = new ArrayList<>();
+    private String [] CategoryTest={"一","二","三","四","五"};
     List<PieEntry> inPielist = new ArrayList<>();
     List<PieEntry> outPielist = new ArrayList<>();
     Button categoryButton;
@@ -168,9 +170,10 @@ public class GraphActivity extends AppCompatActivity {
         //當月收支長條圖
         dayAmountLiveData = accountViewModel.getDayAmountsLive(2022,0);
         dayAmountLiveData.observe(this, dayAmounts -> {
+            barData = dayAmounts;
             values = new ArrayList<>();
             for(int i=0;i<dayAmounts.size();i++){
-                values.add(new BarEntry(dayAmounts.get(i).Day, dayAmounts.get(i).Amount));
+                values.add(new BarEntry(dayAmounts.get(i).Day,Math.abs(dayAmounts.get(i).Amount) ));
             }
             monthChartShow();
         });
@@ -217,6 +220,10 @@ public class GraphActivity extends AppCompatActivity {
         inPieChart.setExtraOffsets(5, 10, 5, 5);
         //較高的值表明速度會緩慢下降 例如如果它設定為0,它會立即停止。1是一個無效的值,並將自動轉換為0.999f。
         inPieChart.setDragDecelerationFrictionCoef(0.95f);
+        //隱藏文字
+        //inPieChart.setDrawSliceText(false);
+        // 如果沒有資料的時候，會顯示這個，類似ListView的EmptyView
+        inPieChart.setNoDataText("沒有資料");
         //設定中間字型
         inPieChart.setCenterText("收入");
         //設定為true將餅中心清空
@@ -305,6 +312,8 @@ public class GraphActivity extends AppCompatActivity {
         outPieChart.setExtraOffsets(5, 10, 5, 5);
         //較高的值表明速度會緩慢下降 例如如果它設定為0,它會立即停止。1是一個無效的值,並將自動轉換為0.999f。
         outPieChart.setDragDecelerationFrictionCoef(0.95f);
+        // 如果沒有資料的時候，會顯示這個，類似ListView的EmptyView
+        inPieChart.setNoDataText("沒有資料");
         //設定中間字型
         outPieChart.setCenterText("支出");
         //設定為true將餅中心清空
@@ -314,11 +323,11 @@ public class GraphActivity extends AppCompatActivity {
         //設定透明圓應有的顏色。
         outPieChart.setTransparentCircleColor(Color.WHITE);
         //設定透明度圓的透明度應該有0 =完全透明,255 =完全不透明,預設值為100。
-        outPieChart.setTransparentCircleAlpha(110);
+        outPieChart.setTransparentCircleAlpha(50);
         //設定在最大半徑的百分比餅圖中心孔半徑(最大=整個圖的半徑),預設為50%
-        outPieChart.setHoleRadius(58f);
+        outPieChart.setHoleRadius(30f);
         //設定繪製在孔旁邊的透明圓的半徑,在最大半徑的百分比在餅圖*(max =整個圖的半徑),預設55% -> 5%大於中心孔預設
-        outPieChart.setTransparentCircleRadius(61f);
+        outPieChart.setTransparentCircleRadius(20f);
         //將此設定為true,以繪製顯示在pie chart
         outPieChart.setDrawCenterText(true);
         //集度的radarchart旋轉偏移。預設270f -->頂(北)
@@ -344,11 +353,11 @@ public class GraphActivity extends AppCompatActivity {
         //設定此軸上標籤的所使用的y軸偏移量 更高的偏移意味著作為一個整體的Legend將被放置遠離頂部。
         l.setYOffset(0f);
         //設定入口標籤的顏色。
-        outPieChart.setEntryLabelColor(Color.WHITE);
+        outPieChart.setEntryLabelColor(Color.BLACK);
         //設定入口標籤的大小。預設值:13dp
         outPieChart.setEntryLabelTextSize(12f);
         //設定到PieDataSet物件
-        PieDataSet set = new PieDataSet(outPielist, "表二") ;
+        PieDataSet set = new PieDataSet(outPielist, "") ;
         set.setDrawValues(false);//設定為true,在圖表繪製y
         set.setAxisDependency(YAxis.AxisDependency.LEFT);//設定Y軸,這個資料集應該被繪製(左或右)。預設值:左
         set.setAutomaticallyDisableSliceSpacing(false);//當啟用時,片間距將是0時,最小值要小於片間距本身
@@ -393,11 +402,13 @@ public class GraphActivity extends AppCompatActivity {
         //設置網格佈局
         monthBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
-        ValueFormatter custom = new MyValueFormatter(" ");
+        ValueFormatter custom = new MyValueFormatter(0,CategoryTest);
         //獲取x軸線
         XAxis xAxis = monthBarChart.getXAxis();
         //設置x軸的顯示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //斜體字
+        xAxis.setLabelRotationAngle(-60);
         //設置網格佈局
         xAxis.setDrawGridLines(true);
         //圖表將避免第一個和最後一個標籤條目被減掉在圖表或屏幕的邊緣
@@ -417,8 +428,9 @@ public class GraphActivity extends AppCompatActivity {
         monthBarChart.getAxisLeft().setDrawGridLines(false);
         //設置動畫時間
         // monthBarChart.animateXY(600,600);
-        monthBarChart.getLegend().setEnabled(true);
+        monthBarChart.getLegend().setEnabled(false);
         //todo MonthBarData();
+
         if (monthBarChart.getData() != null &&
                 monthBarChart.getData().getDataSetCount() > 0) {
             monthSet = (BarDataSet) monthBarChart.getData().getDataSetByIndex(0);
@@ -427,9 +439,11 @@ public class GraphActivity extends AppCompatActivity {
             monthBarChart.notifyDataSetChanged();
         }
         else {
-            monthSet = new BarDataSet(values, "日期");
-            monthSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            monthSet.setDrawValues(false);
+            //MonthSet = new BarDataSet(values, "日期");
+            monthSet = new mMonthSet(values,"");
+            //設置兩種顏色
+            monthSet.setColors(Color.rgb(164, 228, 251),Color.rgb(255, 147 , 147));
+            monthSet.setDrawValues(true);
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(monthSet);
             BarData data = new BarData(dataSets);
@@ -438,11 +452,11 @@ public class GraphActivity extends AppCompatActivity {
         }
         //繪製圖表
         monthBarChart.invalidate();
-        //設置柱形統計圖上的值
-        monthBarChart.getData().setValueTextSize(10);
-        for (IDataSet set : monthBarChart.getData().getDataSets()){
-            set.setDrawValues(!set.isDrawValuesEnabled());
-        }
+//設置柱形統計圖上的值
+//        monthBarChart.getData().setValueTextSize(10);
+//        for (IDataSet set : monthBarChart.getData().getDataSets()){
+//            set.setDrawValues(!set.isDrawValuesEnabled());
+//        }
     }
 
     private void inShow() {
@@ -460,7 +474,7 @@ public class GraphActivity extends AppCompatActivity {
         //設置網格佈局
         inBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
-        ValueFormatter custom = new MyValueFormatter(" ");
+        ValueFormatter custom = new MyValueFormatter(1,CategoryTest);
         //獲取x軸線
         XAxis xAxis = inBarChart.getXAxis();
         //設置x軸的顯示位置
@@ -484,7 +498,7 @@ public class GraphActivity extends AppCompatActivity {
         inBarChart.getAxisLeft().setDrawGridLines(false);
         //設置動畫時間
         // monthBarChart.animateXY(600,600);
-        inBarChart.getLegend().setEnabled(true);
+        inBarChart.getLegend().setEnabled(false);
         //取得data
         BarData();
         if (inBarChart.getData() != null &&
@@ -525,7 +539,7 @@ public class GraphActivity extends AppCompatActivity {
         //設置網格佈局
         outBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
-        ValueFormatter custom = new MyValueFormatter(" ");
+        ValueFormatter custom = new MyValueFormatter(1,CategoryTest);
         //獲取x軸線
         XAxis xAxis = outBarChart.getXAxis();
         //設置x軸的顯示位置
@@ -549,7 +563,7 @@ public class GraphActivity extends AppCompatActivity {
         outBarChart.getAxisLeft().setDrawGridLines(false);
         //設置動畫時間
         // monthBarChart.animateXY(600,600);
-        outBarChart.getLegend().setEnabled(true);
+        outBarChart.getLegend().setEnabled(false);
         //取得data
         BarData();
         if (outBarChart.getData() != null &&
@@ -576,20 +590,6 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
-//    private void MonthBarData(){
-//        int Date_count = 1;
-//        int InExMoney = 100;
-//        //Log.v("xue","aFloat+++++"+Date_count);
-//        for(int i=0;i<8;i++)
-//        {
-//            //todo date_count日期 inexmoney 總額
-//            BarEntry barEntry = new BarEntry(Date_count,InExMoney);
-//            values.add(barEntry);
-//            Date_count++;
-//            InExMoney=InExMoney+100;
-//        }
-//    }
-
     private void BarData(){
         int i;
         int InData = 100,ExData = 800;
@@ -607,6 +607,7 @@ public class GraphActivity extends AppCompatActivity {
             ExData=ExData-100;
         }
     }
+
     private AdapterView.OnItemSelectedListener spnOnItemSelected
             = new AdapterView.OnItemSelectedListener() {
         public void onItemSelected(AdapterView<?> parent, View view,
@@ -645,7 +646,6 @@ public class GraphActivity extends AppCompatActivity {
             return new GraphActivity.incomeGraphAdapter.MyViewHolder(itemView);
         }
 
-        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             Resources res=getResources();
@@ -711,22 +711,41 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     public class MyValueFormatter extends ValueFormatter{
-        private final DecimalFormat mFormat;
-        private String suffix;
-        public MyValueFormatter(String suffix) {
-            mFormat = new DecimalFormat("00");
-            this.suffix = suffix;
+        private final DecimalFormat mFormat = new DecimalFormat("00");
+        public static final int DAY=0; //日
+        public static final int CATEGORY=1; //類別
+        private  String[] mCategory;
+        private int type;
+
+        public MyValueFormatter(int type,String[] mCategory) {
+            this.mCategory = mCategory;
+            this.type = type;
         }
+
         @Override
         public String getFormattedValue(float value) {
-            return mFormat.format(value) + suffix;
+            String tmp;
+            int position=(int) value;
+            switch (type){
+                case DAY:
+                    tmp=mFormat.format(value)+"日";
+                    break;
+                case CATEGORY:
+                    tmp=mCategory[position % 5];
+                break;
+                default:
+                    tmp="錯誤";
+                    break;
+            }
+            return tmp;
         }
+
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
             if (axis instanceof XAxis) {
                 return mFormat.format(value);
             } else if (value > 0) {
-                return mFormat.format(value) + suffix;
+                return mFormat.format(value);
             } else {
                 return mFormat.format(value);
             }
@@ -842,6 +861,24 @@ public class GraphActivity extends AppCompatActivity {
          */
         public String getCandleLabel(CandleEntry candleEntry) {
             return getFormattedValue(candleEntry.getHigh());
+        }
+    }
+
+    public class mMonthSet extends BarDataSet {
+
+
+        public mMonthSet(List<BarEntry> yVals, String label) {
+            super(yVals, label);
+            this.mValues=yVals;
+        }
+
+        @Override
+        public int getColor(int index) {
+            if (barData.get(index).Amount>0) {
+                return mColors.get(0);//藍色
+            }else {
+                return mColors.get(1);//紅色
+            }
         }
     }
 }
