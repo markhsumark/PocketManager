@@ -116,19 +116,21 @@
         android:id="@+id/previousStep"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
         android:src="@android:drawable/ic_menu_revert"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline17" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/nextStep"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginStart="10dp"
         android:scaleX="-1"
         android:src="@android:drawable/ic_menu_revert"
         app:layout_constraintBottom_toBottomOf="@+id/previousStep"
-        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toEndOf="@+id/previousStep"
         app:layout_constraintTop_toTopOf="@+id/previousStep" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -139,39 +141,19 @@
         android:autoSizeTextType="uniform"
         android:src="@android:drawable/ic_menu_edit"
         app:layout_constraintBottom_toTopOf="@+id/adder"
-        app:layout_constraintStart_toStartOf="@+id/guideline16" />
+        app:layout_constraintEnd_toEndOf="@+id/adder"
+        app:layout_constraintStart_toStartOf="@+id/adder" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/adder"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:autoSizeTextType="uniform"
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="@+id/guideline17" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="145dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="314dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.88" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline19"
