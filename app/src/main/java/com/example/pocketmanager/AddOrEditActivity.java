@@ -112,9 +112,11 @@ public class AddOrEditActivity extends AppCompatActivity {
             categoryPicker.setSelection(categories.indexOf(intent.getStringExtra("Category")));
             note.setText(intent.getStringExtra("Note"));
             amount.setText(intent.getStringExtra("Price"));
+            done.setText("儲存");
         } else if (mode.equals("add")) {
             //getSupportActionBar().setTitle("新增頁面");
             delete.setVisibility(View.GONE);
+            done.setText("新增");
         }
         //設置type,asset,category綁定的資源，並可於頁面中更改選取的物件
 
