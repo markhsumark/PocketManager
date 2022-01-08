@@ -18,6 +18,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketManager">
+        <activity
+            android:name=".Buget"
+            android:exported="false" />
+        <activity
+            android:name=".EditCategory"
+            android:exported="false" />
+        <activity
+            android:name=".typeChose"
+            android:exported="false" />
+        <activity
+            android:name=".ExpenditureThreshold"
+            android:exported="false" />
+
 
         <service
             android:name=".ClickService"

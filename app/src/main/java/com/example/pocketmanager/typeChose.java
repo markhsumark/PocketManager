@@ -4,14 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
-public class AddCategoryActivity extends AppCompatActivity {
-    Button back,save;
+public class typeChose extends AppCompatActivity {
+    Button income,expenditure;
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -24,17 +24,29 @@ public class AddCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_category);
+        setContentView(R.layout.activity_type_chose);
+
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        save = findViewById(R.id.save);
-        save.setOnClickListener(new View.OnClickListener() {
+        income=findViewById(R.id.income);
+        income.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent();
+                intent.setClass(typeChose.this, CategoryActivity.class);
+                startActivity(intent);
             }
         });
-    }
+        expenditure=findViewById(R.id.expenditure);
+        expenditure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(typeChose.this, CategoryActivity.class);
+                startActivity(intent);
+            }
+        });
 
+    }
 }

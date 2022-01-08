@@ -23,8 +23,11 @@ public class SettingActivity extends AppCompatActivity {
     private GoogleDriveService mGDS = new GoogleDriveService();
 
     private SharedPreferences accountData;
-    Button connectGoogle,handBackup,autoBackup,editCategory,property;
-    Switch remindSwitch,speakSwitch,noticeSwitch;
+    Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind;
+    Switch noticeSwitch;
+    SharedPreferences sharedPreferences;
+    SharedPreferences preferences;
+    //boolean notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +63,8 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        editCategory = findViewById(R.id.editCatogory);
-        editCategory.setOnClickListener(new View.OnClickListener() {
+        income = findViewById(R.id.income);
+        income.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -70,42 +73,54 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        remindSwitch=findViewById(R.id.remindSwitch);
-        remindSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        expenditure = findViewById(R.id.expenditure);
+        expenditure.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-
-                }
-                else{
-
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(SettingActivity.this, CategoryActivity.class);
+                startActivity(intent);
             }
         });
-        speakSwitch=findViewById(R.id.speakSwitch);
-        speakSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        remind = findViewById(R.id.remind);
+        remind.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-
-                }
-                else{
-
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(SettingActivity.this, Buget.class);
+                startActivity(intent);
             }
         });
+
+        sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+        //preferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+
+        //boolean Remind = preferences.getBoolean("remind",false);
+        //remindSwitch.setChecked(Remind);
+
+
+
+
         noticeSwitch=findViewById(R.id.noticeSwitch);
         noticeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                boolean listener = noticeSwitch.isChecked();
 
-                }
-                else{
-
-                }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("listener",listener);
+                editor.apply();
             }
         });
+        noticeSwitch.setChecked(sharedPreferences.getBoolean("listener",false));
+
+    }
+
+    public void intentBuget(){
+//        Intent intent = new Intent();
+//        intent.setClass(SettingActivity.this, ExpenditureThreshold.class);
+//        startActivity(intent);
     }
 
     @Override
