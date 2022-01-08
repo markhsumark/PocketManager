@@ -869,4 +869,22 @@ public class GraphActivity extends AppCompatActivity {
             return getFormattedValue(candleEntry.getHigh());
         }
     }
+
+    public class mMonthSet extends BarDataSet {
+
+
+        public mMonthSet(List<BarEntry> yVals, String label) {
+            super(yVals, label);
+            this.mValues=yVals;
+        }
+
+        @Override
+        public int getColor(int index) {
+            if (getEntryForIndex(index).getY()>500) {
+                return mColors.get(0);//藍色
+            }else {
+                return mColors.get(1);//紅色
+            }
+        }
+    }
 }
