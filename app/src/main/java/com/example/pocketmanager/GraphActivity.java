@@ -400,6 +400,7 @@ public class GraphActivity extends AppCompatActivity {
         monthBarChart.getLegend().setEnabled(false);
         MonthBarData();
 
+
         if (monthBarChart.getData() != null &&
                 monthBarChart.getData().getDataSetCount() > 0) {
             MonthSet = (BarDataSet) monthBarChart.getData().getDataSetByIndex(0);
@@ -408,8 +409,10 @@ public class GraphActivity extends AppCompatActivity {
             monthBarChart.notifyDataSetChanged();
         }
         else {
-            MonthSet = new BarDataSet(values, "日期");
-            MonthSet.setColors(Color.rgb(164, 228, 251));
+            //MonthSet = new BarDataSet(values, "日期");
+            MonthSet = new mMonthSet(values,"");
+            //設置兩種顏色
+            MonthSet.setColors(Color.rgb(164, 228, 251),Color.rgb(255, 147 , 147));
             MonthSet.setDrawValues(true);
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(MonthSet);
@@ -883,6 +886,24 @@ public class GraphActivity extends AppCompatActivity {
          */
         public String getCandleLabel(CandleEntry candleEntry) {
             return getFormattedValue(candleEntry.getHigh());
+        }
+    }
+
+    public class mMonthSet extends BarDataSet {
+
+
+        public mMonthSet(List<BarEntry> yVals, String label) {
+            super(yVals, label);
+            this.mValues=yVals;
+        }
+
+        @Override
+        public int getColor(int index) {
+            if (getEntryForIndex(index).getY()>500) {
+                return mColors.get(0);//藍色
+            }else {
+                return mColors.get(1);//紅色
+            }
         }
     }
 }
