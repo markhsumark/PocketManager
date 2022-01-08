@@ -6,96 +6,93 @@
     android:layout_height="match_parent">
 
 
-    <Spinner
-        android:id="@+id/categoryspinner"
+    <TextView
+        android:id="@+id/noData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="還沒有資料喔~"
+        android:textColor="@color/midGray"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/externalRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topInfo"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/lastMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/chart_toggleButton"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/chart_toggleButton"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/monthPicker"
+        app:layout_constraintEnd_toStartOf="@+id/monthPicker"
+        app:layout_constraintTop_toTopOf="@+id/monthPicker"
+        app:srcCompat="@drawable/arrow_left"
+        app:tint="?android:attr/textColor" />
 
-    <TextView
-        android:id="@+id/monthEditTextView"
-        android:layout_width="63dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="8dp"
-        android:text="XX月"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+    <Button
+        android:id="@+id/monthPicker"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:onClick="rackMonthPicker"
+        android:text="2022 05月"
+        android:textColor="?android:attr/textColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/nextMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+
+        app:layout_constraintBottom_toBottomOf="@+id/monthPicker"
+        app:layout_constraintStart_toEndOf="@+id/monthPicker"
+        app:layout_constraintTop_toTopOf="@+id/monthPicker"
+        app:srcCompat="@drawable/arrow_right"
+        app:tint="?android:attr/textColor" />
 
     <ToggleButton
         android:id="@+id/chart_toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="164dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:textColor="#455A64"
         android:textOff="@string/round"
         android:textOn="@string/bar"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TextContrastCheck,TextContrastCheck" />
-
-    <Button
-        android:id="@+id/categoryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="460dp"
-        android:background="@drawable/button_style"
-        android:text="XXX       +XXX"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/monthBarChart"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="25dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/guideline18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:layout_constraintVertical_bias="0.485" />
-
-
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.34" />
+        app:layout_constraintTop_toBottomOf="@+id/monthPicker" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="monthEditTextView,chart_toggleButton"
+        app:constraint_referenced_ids="chart_toggleButton"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,45 +105,22 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="-60dp" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.68" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
-
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="180dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline18">
+        app:layout_constraintTop_toBottomOf="@+id/monthBarChart">
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/incomeBarChart"
             android:layout_width="180dp"
             android:layout_height="180dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/incomePieChart"
@@ -163,33 +137,30 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="180dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline13"
-        app:layout_constraintVertical_bias="0.471">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/expenseBarChart"
             android:layout_width="180dp"
             android:layout_height="180dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/expensePieChart"
             android:layout_width="180dp"
-            android:layout_height="180dp">
-        </com.github.mikephil.charting.charts.PieChart>
+            android:layout_height="180dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/expenseRecyclerView"
             android:layout_width="0dp"
             android:layout_height="180dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

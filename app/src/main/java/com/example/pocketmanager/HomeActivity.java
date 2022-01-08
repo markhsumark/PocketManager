@@ -97,10 +97,10 @@ public class HomeActivity extends AppCompatActivity {
         if(listLiveData != null && listLiveData.hasActiveObservers()){
             listLiveData.removeObservers(HomeActivity.this);
         }
-        listLiveData = accountViewModel.getAccountsLive(date.get(Calendar.YEAR),date.get(Calendar.MONTH));
+        listLiveData = accountViewModel.getAccountsLive(date.get(Calendar.YEAR), date.get(Calendar.MONTH));
         listLiveData.observe(HomeActivity.this, accounts -> {
-            long inAmountValue = accountViewModel.getMonthAmount(date.get(Calendar.YEAR),date.get(Calendar.MONTH),"收入");
-            long outAmountValue = accountViewModel.getMonthAmount(date.get(Calendar.YEAR),date.get(Calendar.MONTH),"支出");
+            long inAmountValue = accountViewModel.getMonthAmount(date.get(Calendar.YEAR), date.get(Calendar.MONTH),"收入");
+            long outAmountValue = accountViewModel.getMonthAmount(date.get(Calendar.YEAR), date.get(Calendar.MONTH),"支出");
             long sumAmountValue = inAmountValue - outAmountValue;
             inAmount.setText(Long.toString(inAmountValue));
             outAmount.setText(Long.toString(outAmountValue));

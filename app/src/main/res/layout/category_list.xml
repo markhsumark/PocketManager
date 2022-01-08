@@ -13,7 +13,7 @@
         android:layout_weight="1"
         android:autoSizeTextType="uniform"
         android:gravity="left"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         android:text="食物"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     <ImageView
