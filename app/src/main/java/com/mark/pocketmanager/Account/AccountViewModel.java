@@ -1,10 +1,13 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Account;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.mark.pocketmanager.CategoryAmount;
+import com.mark.pocketmanager.DayAmount;
 
 import java.util.List;
 
@@ -40,19 +43,19 @@ public class AccountViewModel extends AndroidViewModel {
         return accountRepository.getMonthAmount(year, month, type);
     }
 
-    void insertAccounts(Account... accounts) {
+    public void insertAccounts(Account... accounts) {
         accountRepository.insertAccounts(accounts);
     }
 
-    void updateAccounts(Account... accounts) {
+    public void updateAccounts(Account... accounts) {
         accountRepository.updateAccounts(accounts);
     }
 
-    void deleteAccounts(Account... accounts) {
+    public void deleteAccounts(Account... accounts) {
         accountRepository.deleteAccounts(accounts);
     }
 
-    void deleteAllAccounts() {
+    public void deleteAllAccounts() {
         accountRepository.deleteAllAccounts();
     }
 

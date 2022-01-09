@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Account;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -25,7 +25,6 @@ public class Account {
 
     private String Note;
 
-    @Ignore
     public Account(String asset, String type, int amount, String category, String subCategory, Calendar time, String note) {
         Asset = asset;
         Type = type;
@@ -41,7 +40,6 @@ public class Account {
         Note = note;
     }
 
-    @Ignore
     public Account(int id, String asset, String type, int amount, String category, String subCategory, Calendar time, String note) {
         Id = id;
         Asset = asset;
@@ -58,7 +56,6 @@ public class Account {
         Note = note;
     }
 
-    @Ignore
     public Account(int id) {
         Id = id;
     }

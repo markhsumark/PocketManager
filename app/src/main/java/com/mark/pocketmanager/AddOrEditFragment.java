@@ -24,6 +24,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mark.pocketmanager.Account.Account;
+import com.mark.pocketmanager.Account.AccountViewModel;
 import com.mark.pocketmanager.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -63,7 +65,6 @@ public class AddOrEditFragment extends Fragment {
         datePickButton = v.findViewById(R.id.datePickButton);
         categoryPicker = v.findViewById(R.id.categoryPicker);
         timePickButton = v.findViewById(R.id.timePickButton);
-        TabLayout tabLayout = v.findViewById(R.id.tabLayout);
         note = v.findViewById(R.id.noteEditor);
         amount = v.findViewById(R.id.amountEditor);
         done = v.findViewById(R.id.done);

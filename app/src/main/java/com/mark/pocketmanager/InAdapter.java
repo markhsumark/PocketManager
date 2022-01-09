@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mark.pocketmanager.Account.Account;
 import com.mark.pocketmanager.R;
 
 import java.util.List;
