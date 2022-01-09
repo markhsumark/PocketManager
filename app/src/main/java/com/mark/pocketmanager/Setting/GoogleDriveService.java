@@ -132,11 +132,13 @@ public class GoogleDriveService {
     public void backUpToDrive(Context context){
         driveService= getDriveService(context);
         Thread thr = new Thread(() -> {
-            ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService);
-            if(ids == null){
-                GoogleDriveUtil.createFileToDrive(driveService);
-            }else{
-                GoogleDriveUtil.uploadFileToDrive(driveService, ids.get(0));
+            for(String filename: GoogleDriveUtil.dbFileNames){
+                ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
+                if(ids == null){
+                    GoogleDriveUtil.createFileToDrive(driveService, filename);
+                }else{
+                    GoogleDriveUtil.uploadFileToDrive(driveService, ids.get(0));
+                }
             }
         });
         thr.start();
@@ -144,30 +146,31 @@ public class GoogleDriveService {
     public void deleteAllBackupFromDrive(Context context){
         driveService= getDriveService(context);
         Thread thr = new Thread(() -> {
-            ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService);
-            try{
-                for(String s: ids){
-                    Log.i("delete id", s);
-                    GoogleDriveUtil.deleteFileFromDrive(driveService, s);
+            for(String filename: GoogleDriveUtil.dbFileNames) {
+                ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
+                try {
+                    for (String s : ids) {
+                        Log.i("delete id", s);
+                        GoogleDriveUtil.deleteFileFromDrive(driveService, s);
+                    }
+                } catch (NullPointerException e) {
+                    Log.w("delete id", "there isn't exist file");
                 }
-            }catch(NullPointerException e){
-                Log.w("delete id", "there isn't exist file");
             }
-
         });
         thr.start();
     }
     public void restoreFileFromDrive(Context context){
         driveService= getDriveService(context);
         Thread thr = new Thread(() -> {
-            ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService);
-            try{
-                for(String id: ids){
-                    Log.i("download id", id);
-                    GoogleDriveUtil.downloadFileFromDrive(driveService, id);
+            for(String filename: GoogleDriveUtil.dbFileNames) {
+                ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
+                try {
+                    Log.i("download id", ids.get(0));
+                    GoogleDriveUtil.downloadFileFromDrive(driveService, ids.get(0));
+                } catch (NullPointerException e) {
+                    Log.w("delete id", "there isn't exist file");
                 }
-            }catch(NullPointerException e){
-                Log.w("delete id", "there isn't exist file");
             }
 
         });

@@ -9,6 +9,9 @@ import java.io.IOException;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
@@ -20,45 +23,49 @@ public class GoogleDriveUtil {
 
 //    會改為資料庫的路徑
     private static String rootPath = Environment.getDataDirectory().getPath();
-    private static String appFolderPath = "/data/com.example.pocketmanager/databases/";
-    private static String testFolderRootPath = "/data/com.example.pocketmanager/shared_prefs/";
+    private static String appFolderRootPath = "/data/com.mark.pocketmanager/databases/";
+    private static String testFolderRootPath = "/data/com.mark.pocketmanager/shared_prefs/";
 //    會改為DB file name
-    private static String dbFileName = "account_database";
+    public static List<String> dbFileNames = Arrays.asList("account_database", "account_database-shm", "account_database-wal");
     private static String testFileName = "Account_Data.xml";
 
     private static String mineType = "*/*";
     private static String testMineType = "plain/xml";
 
-    public static String createFileToDrive(Drive driveService){
-        String fileId;
-        //  create new file object
+    private static File createMetadata(String filename){
         File fileMetadata = new File();
-        //  fileMetadata.setName(dbFileName);
-        fileMetadata.setName(testFileName);
+        fileMetadata.setName(filename);
+//        fileMetadata.setParents(Collections.singletonList("appDataFolder"));
+        return fileMetadata;
+    }
+    private static FileContent createMediaContent(String filename){
+        java.io.File filePath = new java.io.File(rootPath + appFolderRootPath + filename);
+        FileContent mediaContent = new FileContent(mineType, filePath);
+        return mediaContent;
+    }
+    private static void doCreate(Drive driveService, File metaData, FileContent mediaContent) throws IOException{
+        String fileId;
+        File file = driveService.files().create(metaData, mediaContent)
+                .setFields("id")
+                .execute();
+        fileId = file.getId();
+        Log.i("File ID: ", file.getId());
+        Log.i("Createfile: ", "create successfully");
+    }
+    public static void createFileToDrive(Drive driveService, String filename){
 
-        //  設定為上傳到app專用的Drive目錄
-        //  ileMetadata.setParents(Collections.singletonList("appDataFolder"));
+        File metaData = createMetadata(filename);
 
-        //  實際檔案位置
-        //  java.io.File filePath = new java.io.File(appFolderRootPath + dbFileName);
-        java.io.File filePath = new java.io.File(rootPath + testFolderRootPath + testFileName);
-        //  設定檔案內容
-        FileContent mediaContent = new FileContent(testMineType, filePath);
-        //  type表格：https://blog.csdn.net/github_35631540/article/details/103228868
+        FileContent mediaContent = createMediaContent(filename);
+
+
         Log.i("Createfile: ", "create start");
         try {
             //  新增檔案，要求：檔案資訊和檔案內容
-            File file = driveService.files().create(fileMetadata, mediaContent)
-                    .setFields("id")
-                    .execute();
-            fileId = file.getId();
-            Log.i("File ID: ", file.getId());
-            Log.i("Createfile: ", "create successfully");
+            doCreate(driveService, metaData, mediaContent);
         } catch (Exception e) {
-            fileId = null;
             Log.e("err when create file", e.getMessage());
         }
-        return fileId;
     }
 
     public static void uploadFileToDrive(Drive driveService, String fileId){
@@ -123,25 +130,29 @@ public class GoogleDriveUtil {
             Log.e("err when delete file", e.getMessage());
         }
     }
-    public static ArrayList<String> searchFileFromDrive(Drive driveService){
+    private static FileList doFind(Drive driveService, String filename)throws IOException{
+        FileList result = driveService.files().list()
+                .setQ("name ='"+filename+"'")
+                .setSpaces("drive")
+//                    .setSpaces("appDataFolder")
+                .setFields("files(id, name)")
+                .execute();
+        return result;
+    }
+    public static ArrayList<String> searchFileFromDrive(Drive driveService, String filename){
         if(driveService == null){
             Log.e("searching", "driveService is null");
         }
         FileList result;
         String id;
         try {
-            Log.i("searching", "start");
-            result = driveService.files().list()
-                    .setQ("name ='"+testFileName+"'")
-                    .setSpaces("drive")
-//                    .setSpaces("appDataFolder")
-                    .setFields("files(id, name)")
-                    .execute();
+            Log.i("searching" + filename, "start");
+            result = doFind(driveService, filename);
         } catch (Exception e) {
             Log.e("Error in searchFile", e.getMessage());
             return null;
         }
-        Log.i("searching", "end");
+        Log.i("searching" + filename, "end");
         if(result.getFiles().isEmpty()){
             return null;
         }

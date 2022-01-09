@@ -20,7 +20,7 @@ public class SettingActivity extends AppCompatActivity {
     private GoogleDriveService mGDS = new GoogleDriveService();
 
     private SharedPreferences accountData;
-    Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind;
+    Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind, handbutton;
     Switch noticeSwitch;
     SharedPreferences sharedPreferences;
     SharedPreferences preferences;
@@ -57,6 +57,13 @@ public class SettingActivity extends AppCompatActivity {
                     Intent intent = mGDS.getSignInIntent(SettingActivity.this);
                     startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
                 }
+            }
+        });
+        handbutton = findViewById(R.id.handbutton);
+        handbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGDS.backUpToDrive(SettingActivity.this);
             }
         });
         autoBackup = findViewById(R.id.autoBackup);
@@ -144,7 +151,7 @@ public class SettingActivity extends AppCompatActivity {
 
                     Toast.makeText(SettingActivity.this, "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
                     Log.i("sign in", "Sign in success");
-                    updateIsLogIn(true);
+                    updateIsLogIn(false);
                 }
                 else{
                     Toast.makeText(SettingActivity.this, "登入失敗", Toast.LENGTH_SHORT).show();
