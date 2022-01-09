@@ -33,7 +33,7 @@ public class SettingActivity extends AppCompatActivity {
         accountData = this.getSharedPreferences("Account_Data", MODE_PRIVATE);
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
-        //INPUTB 是預設的文字
+        // INPUTB 是預設的文字
 
         connectGoogle = findViewById(R.id.connectGoogle);
 
@@ -44,58 +44,45 @@ public class SettingActivity extends AppCompatActivity {
         }else{
             connectGoogle.setText("連結帳號");
         }
-        connectGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(getIsLogIn()){
-                    mGDS.logOut();
-                    updateIsLogIn(false);
-                    Toast.makeText(SettingActivity.this, "登出", Toast.LENGTH_SHORT).show();
-                    connectGoogle.setText("連結帳號");
-                }else {
-                    Log.i("onclick", "start sign in");
-                    Intent intent = mGDS.getSignInIntent(SettingActivity.this);
-                    startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
-                }
+        connectGoogle.setOnClickListener(v -> {
+            if(getIsLogIn()){
+                mGDS.logOut();
+                updateIsLogIn(false);
+                Toast.makeText(SettingActivity.this, "登出", Toast.LENGTH_SHORT).show();
+                connectGoogle.setText("連結帳號");
+            }else {
+                Log.i("onclick", "start sign in");
+                Intent intent = mGDS.getSignInIntent(SettingActivity.this);
+                startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
             }
         });
         autoBackup = findViewById(R.id.autoBackup);
-        autoBackup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(SettingActivity.this, BackUpActivity.class);
-                startActivity(intent);
-            }
+        autoBackup.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(SettingActivity.this, BackUpActivity.class);
+            startActivity(intent);
         });
         income = findViewById(R.id.income);
-        income.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(SettingActivity.this, CategoryActivity.class);
-                startActivity(intent);
-            }
+        income.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("type","收入");
+            intent.setClass(SettingActivity.this, CategoryActivity.class);
+            startActivity(intent);
         });
 
         expenditure = findViewById(R.id.expenditure);
-        expenditure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(SettingActivity.this, CategoryActivity.class);
-                startActivity(intent);
-            }
+        expenditure.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("type","支出");
+            intent.setClass(SettingActivity.this, CategoryActivity.class);
+            startActivity(intent);
         });
 
         remind = findViewById(R.id.remind);
-        remind.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(SettingActivity.this, Budget.class);
-                startActivity(intent);
-            }
+        remind.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(SettingActivity.this, Budget.class);
+            startActivity(intent);
         });
 
         sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
@@ -105,18 +92,13 @@ public class SettingActivity extends AppCompatActivity {
         //remindSwitch.setChecked(Remind);
 
 
-
-
         noticeSwitch=findViewById(R.id.noticeSwitch);
-        noticeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                boolean listener = noticeSwitch.isChecked();
+        noticeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            boolean listener = noticeSwitch.isChecked();
 
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("listener",listener);
-                editor.apply();
-            }
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("listener",listener);
+            editor.apply();
         });
         noticeSwitch.setChecked(sharedPreferences.getBoolean("listener",false));
 

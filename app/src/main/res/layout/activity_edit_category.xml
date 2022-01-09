@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mark.pocketmanager.EditCategory">
+    tools:context="com.mark.pocketmanager.Setting.EditCategory">
 
     <TextView
-        android:id="@+id/changeCategory"
+        android:id="@+id/hintTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -19,16 +19,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/categoryChange"
+        android:id="@+id/categoryEditText"
         android:layout_width="350dp"
         android:layout_height="80dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="text"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hintTextView"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
@@ -38,7 +38,7 @@
         android:layout_marginEnd="30dp"
         android:text="儲存"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoryChange" />
+        app:layout_constraintTop_toBottomOf="@+id/categoryEditText" />
 
     <Button
         android:id="@+id/delete"
@@ -47,5 +47,5 @@
         android:layout_marginStart="30dp"
         android:text="刪除"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoryChange" />
+        app:layout_constraintTop_toBottomOf="@+id/categoryEditText" />
 </androidx.constraintlayout.widget.ConstraintLayout>
