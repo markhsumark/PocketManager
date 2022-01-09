@@ -84,7 +84,7 @@ public class tabletool extends AppWidgetProvider {
                     new ComponentName(context, tabletool.class),views);
 
         } else if (strg.equals(intent.getAction())) {
-            Toast.makeText(context, "Graph!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Total!", Toast.LENGTH_SHORT).show();
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.tabletool);
             views.setTextViewText(R.id.appwidget_text,"這月");

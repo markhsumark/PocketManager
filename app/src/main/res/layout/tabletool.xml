@@ -27,7 +27,6 @@
 
     <TextView
         android:id="@+id/appwidget_text"
-        style="@style/Widget.PocketManager.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -38,7 +37,6 @@
 
     <TextView
         android:id="@+id/appwidget_text_value"
-        style="@style/Widget.PocketManager.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -48,7 +46,6 @@
         android:textStyle="bold|italic" />
     <TextView
         android:id="@+id/appwidget_text2"
-        style="@style/Widget.PocketManager.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/appwidget_text"
@@ -59,7 +56,6 @@
         android:textStyle="bold|italic" />
     <TextView
         android:id="@+id/appwidget_text2_value"
-        style="@style/Widget.PocketManager.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="170dp"
