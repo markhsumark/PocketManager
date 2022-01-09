@@ -10,20 +10,23 @@
         android:id="@+id/appwidget_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="收入" />
+        android:text="收入"
+        android:textColor="@color/blue"/>
 
     <Button
         android:id="@+id/appwidget_btn2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="90dp"
-        android:text="支出" />
+        android:text="支出"
+        android:textColor="@color/red"/>
     <Button
         android:id="@+id/appwidget_btn3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="180dp"
-        android:text="總額" />
+        android:text="總額"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/appwidget_text"
@@ -33,7 +36,8 @@
         android:contentDescription="@string/appwidget_text"
         android:text="本日"
         android:textSize="20dp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        android:textColor="@color/blue"/>
 
     <TextView
         android:id="@+id/appwidget_text_value"
@@ -43,7 +47,8 @@
         android:layout_marginTop="50dp"
         android:text="10000"
         android:textSize="20dp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        android:textColor="@color/blue"/>
     <TextView
         android:id="@+id/appwidget_text2"
         android:layout_width="wrap_content"
@@ -53,7 +58,8 @@
         android:layout_marginStart="120dp"
         android:layout_marginTop="50dp"
         android:textSize="20dp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        android:textColor="@color/blue"/>
     <TextView
         android:id="@+id/appwidget_text2_value"
         android:layout_width="wrap_content"
@@ -62,5 +68,6 @@
         android:layout_marginTop="50dp"
         android:text="12345"
         android:textSize="20dp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        android:textColor="@color/blue"/>
 </RelativeLayout>
