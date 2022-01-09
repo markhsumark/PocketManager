@@ -1,22 +1,19 @@
 package com.example.pocketmanager;
 
-import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.List;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class tabletool extends AppWidgetProvider {
-    public static final String TAG = "BalanceServiceMy";
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -27,45 +24,68 @@ public class tabletool extends AppWidgetProvider {
         views.setTextViewText(R.id.appwidget_text, widgetText);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
     }
-    /**接收廣播資訊*/
+    private static final String stri = "income";
+    private static final String stro = "outcome";
+    private static final String strg = "graph";
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+                         int[] appWidgetIds) {
+
+        ComponentName thisWidget = new ComponentName(context,
+                tabletool.class);
+        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+
+        for (int widgetId : allWidgetIds) {
+
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.tabletool);
+
+            remoteViews.setOnClickPendingIntent(R.id.appwidget_btn,
+                    getPendingSelfIntent(context, stri));
+            remoteViews.setOnClickPendingIntent(R.id.appwidget_btn2,
+                    getPendingSelfIntent(context, stro));
+            remoteViews.setOnClickPendingIntent(R.id.appwidget_btn3,
+                    getPendingSelfIntent(context, strg));
+
+            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+        }
+
+    }
+
+    protected PendingIntent getPendingSelfIntent(Context context, String action) {
+        Intent intent = new Intent(context, getClass());
+        intent.setAction(action);
+        return PendingIntent.getBroadcast(context, 0, intent, 0);
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        Log.d(TAG, "onReceive: "+intent.getAction());
-        switch (intent.getAction()){
-            case "android.appwidget.action.APPWIDGET_UPDATE":
-                Boolean isRun = isServiceRun(context);
-                Log.d(TAG, "onReceive: 有Service再跑？: "+isRun);
-                if (!isRun)startRunService(context);
-                break;
-        }
-    }
-    /**當小工具被建立時*/
-    @Override
-    public void onEnabled(Context context) {
-        startRunService(context);
-    }
-    /**當小工具被刪除時*/
-    @Override
-    public void onDisabled(Context context) {
-        context.stopService(new Intent(context,ClickService.class));
-    }
-    /**啟動Service*/
-    private void startRunService(Context context) {
-        Intent intent = new Intent(context,ClickService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
-        }
-        context.startService(intent);
-    }
-    /**判斷此是否已有我的Service再跑*/
-    private Boolean isServiceRun(Context context){
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningServiceInfo> list =  manager.getRunningServices(Integer.MAX_VALUE);
-        for (ActivityManager.RunningServiceInfo info : list){
-            if (ClickService.class.getName().equals(info.service.getClassName()))return true;
-        }
-        return false;
+        if (stri.equals(intent.getAction())) {
+            Toast.makeText(context, "Income!", Toast.LENGTH_SHORT).show();
+            RemoteViews views = new RemoteViews(context.getPackageName(),
+                    R.layout.tabletool);
+            views.setTextViewText(R.id.appwidget_text,"收入");
+            AppWidgetManager.getInstance(context).updateAppWidget(
+                    new ComponentName(context, tabletool.class),views);
+
+        } else if (stro.equals(intent.getAction())) {
+            Toast.makeText(context, "Outcome!", Toast.LENGTH_SHORT).show();
+            RemoteViews views = new RemoteViews(context.getPackageName(),
+                    R.layout.tabletool);
+            views.setTextViewText(R.id.appwidget_text,"支出");
+            AppWidgetManager.getInstance(context).updateAppWidget(
+                    new ComponentName(context, tabletool.class),views);
+
+        } else if (strg.equals(intent.getAction())) {
+            Toast.makeText(context, "Graph!", Toast.LENGTH_SHORT).show();
+            RemoteViews views = new RemoteViews(context.getPackageName(),
+                    R.layout.tabletool);
+            views.setTextViewText(R.id.appwidget_text,"圖表");
+            AppWidgetManager.getInstance(context).updateAppWidget(
+                    new ComponentName(context, tabletool.class),views);
+        };
     }
 }
