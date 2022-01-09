@@ -7,8 +7,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.mark.pocketmanager.CategoryAmount;
-import com.mark.pocketmanager.DayAmount;
+import com.mark.pocketmanager.CustomClass.CategoryAmount;
+import com.mark.pocketmanager.CustomClass.DayAmount;
 
 import java.util.List;
 

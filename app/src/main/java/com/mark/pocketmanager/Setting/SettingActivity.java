@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Setting;
 
 import androidx.appcompat.app.AppCompatActivity;
 

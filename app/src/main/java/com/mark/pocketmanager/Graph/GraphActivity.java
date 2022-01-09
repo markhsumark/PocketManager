@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Graph;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mark.pocketmanager.Account.AccountViewModel;
+import com.mark.pocketmanager.CustomClass.CategoryAmount;
+import com.mark.pocketmanager.CustomClass.DayAmount;
 import com.mark.pocketmanager.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;

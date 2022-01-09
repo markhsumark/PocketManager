@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.CustomClass;
 
 public class CategoryAmount {
     public String Category;

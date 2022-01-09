@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Home;
 
 import android.content.Intent;
 import android.os.Bundle;

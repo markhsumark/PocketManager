@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Setting;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+
+import com.mark.pocketmanager.R;
 
 public class Buget extends AppCompatActivity {
     Switch remindSwitch;

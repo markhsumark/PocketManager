@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Widget;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;

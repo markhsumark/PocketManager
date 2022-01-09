@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Widget;
 
 import android.app.ActivityManager;
 import android.appwidget.AppWidgetManager;

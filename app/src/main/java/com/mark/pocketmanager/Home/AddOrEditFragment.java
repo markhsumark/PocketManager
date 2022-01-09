@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Home;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

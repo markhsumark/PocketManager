@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 
-import com.mark.pocketmanager.R;
+import com.mark.pocketmanager.Graph.GraphActivity;
+import com.mark.pocketmanager.Home.HomeActivity;
+import com.mark.pocketmanager.Setting.SettingActivity;
 
 public class MainActivity extends TabActivity{
 

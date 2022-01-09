@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Setting;
 
 import android.os.Environment;
 import android.util.Log;

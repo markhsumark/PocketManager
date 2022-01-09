@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Setting;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -6,13 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.mark.pocketmanager.R;
 
-public class AddCategoryActivity extends AppCompatActivity {
-    Button back,save;
+public class ChildCategory extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -25,17 +22,10 @@ public class AddCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_category);
+        setContentView(R.layout.activity_child_category);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        save = findViewById(R.id.save);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
 
+    }
 }

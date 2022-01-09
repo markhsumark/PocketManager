@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Setting;
 
 import android.Manifest;
 import android.app.Activity;

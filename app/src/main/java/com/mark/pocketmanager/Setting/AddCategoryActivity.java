@@ -1,10 +1,9 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Setting;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,8 +11,8 @@ import android.widget.Button;
 
 import com.mark.pocketmanager.R;
 
-public class typeChose extends AppCompatActivity {
-    Button income,expenditure;
+public class AddCategoryActivity extends AppCompatActivity {
+    Button back,save;
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -26,29 +25,17 @@ public class typeChose extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_type_chose);
-
+        setContentView(R.layout.activity_add_category);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        income=findViewById(R.id.income);
-        income.setOnClickListener(new View.OnClickListener() {
+        save = findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(typeChose.this, CategoryActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
-        expenditure=findViewById(R.id.expenditure);
-        expenditure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(typeChose.this, CategoryActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
+
 }

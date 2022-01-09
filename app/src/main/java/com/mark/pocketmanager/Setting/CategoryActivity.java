@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.Setting;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -49,13 +49,10 @@ public class CategoryActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         add=findViewById(R.id.add);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(CategoryActivity.this, AddCategoryActivity.class);
-                startActivity(intent);
-            }
+        add.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(CategoryActivity.this, AddCategoryActivity.class);
+            startActivity(intent);
         });
 
         categoryRecycleview = findViewById(R.id.categoryRecycleview);
@@ -95,14 +92,11 @@ public class CategoryActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull CaAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
             holder.category.setText(categorys.get(position));
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String category = categorys.get(position);
-                    Intent intent = new Intent(CategoryActivity.this, EditCategory.class);
-                    intent.putExtra("category", category);
-                    startActivity(intent);
-                }
+            holder.itemView.setOnClickListener(v -> {
+                String category = categorys.get(position);
+                Intent intent = new Intent(CategoryActivity.this, EditCategory.class);
+                intent.putExtra("category", category);
+                startActivity(intent);
             });
         }
 

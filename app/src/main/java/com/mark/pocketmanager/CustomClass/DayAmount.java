@@ -1,4 +1,4 @@
-package com.mark.pocketmanager;
+package com.mark.pocketmanager.CustomClass;
 
 public class DayAmount {
     public int Day;

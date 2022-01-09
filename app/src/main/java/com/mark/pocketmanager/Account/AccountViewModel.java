@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.mark.pocketmanager.CategoryAmount;
-import com.mark.pocketmanager.DayAmount;
+import com.mark.pocketmanager.CustomClass.CategoryAmount;
+import com.mark.pocketmanager.CustomClass.DayAmount;
 
 import java.util.List;
 

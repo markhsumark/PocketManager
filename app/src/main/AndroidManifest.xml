@@ -19,21 +19,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketManager">
         <activity
-            android:name=".Buget"
+            android:name=".Setting.Buget"
             android:exported="false" />
         <activity
-            android:name=".EditCategory"
+            android:name=".Setting.EditCategory"
             android:exported="false" />
         <activity
             android:name=".typeChose"
             android:exported="false" />
         <activity
-            android:name=".ExpenditureThreshold"
+            android:name=".Setting.ExpenditureThreshold"
             android:exported="false" />
 
 
         <service
-            android:name=".ClickService"
+            android:name=".Widget.ClickService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -43,11 +43,11 @@
         </service>
 
         <activity
-            android:name=".CategoryGraphActivity"
+            android:name=".Graph.CategoryGraphActivity"
             android:exported="false" />
 
         <receiver
-            android:name=".tabletool"
+            android:name=".Widget.tabletool"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -58,18 +58,18 @@
                 android:resource="@xml/tabletool_info" />
         </receiver>
 
-        <activity android:name=".AddOrEditActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".Home.AddOrEditActivity" />
+        <activity android:name=".Home.HomeActivity" />
         <activity android:name=".PropertyActivity" />
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".BackUpActivity" />
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".GraphActivity" />
+        <activity android:name=".Setting.CategoryActivity" />
+        <activity android:name=".Setting.BackUpActivity" />
+        <activity android:name=".Setting.SettingActivity" />
+        <activity android:name=".Graph.GraphActivity" />
         <activity
-            android:name=".ChildCategory"
+            android:name=".Setting.ChildCategory"
             android:exported="false" />
         <activity
-            android:name=".AddCategoryActivity"
+            android:name=".Setting.AddCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
