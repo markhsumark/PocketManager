@@ -52,7 +52,7 @@ public class GoogleDriveService {
                         new Scope(DriveScopes.DRIVE_SCRIPTS),
                         new Scope(DriveScopes.DRIVE_METADATA_READONLY),
                         new Scope(DriveScopes.DRIVE_PHOTOS_READONLY))
-                .requestIdToken("1013631286690-3gfib9ndh7r8t7snq6k98ukc4p814119.apps.googleusercontent.com")
+//                .requestIdToken("1013631286690-3gfib9ndh7r8t7snq6k98ukc4p814119.apps.googleusercontent.com")
                 .requestProfile()
                 .build();
 
