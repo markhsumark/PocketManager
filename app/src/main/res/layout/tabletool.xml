@@ -4,47 +4,67 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.PocketManager.AppWidgetContainer">
 
-    <TextView
-        android:id="@+id/appwidget_text"
-        style="@style/Widget.PocketManager.AppWidget.InnerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/appwidget_text"
-        android:text="桌面小工具"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="100dp"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
+
 
     <Button
         android:id="@+id/appwidget_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="248dp"
         android:text="收入" />
+
     <Button
         android:id="@+id/appwidget_btn2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="348dp"
+        android:layout_marginStart="90dp"
         android:text="支出" />
     <Button
         android:id="@+id/appwidget_btn3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="448dp"
-        android:text="圖表" />
+        android:layout_marginStart="180dp"
+        android:text="總額" />
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        style="@style/Widget.PocketManager.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/appwidget_text"
+        android:text="本日"
+        android:textSize="20dp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/appwidget_text_value"
+        style="@style/Widget.PocketManager.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:text="10000"
+        android:textSize="20dp"
+        android:textStyle="bold|italic" />
     <TextView
         android:id="@+id/appwidget_text2"
         style="@style/Widget.PocketManager.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10000"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="300dp"
-        android:textSize="24sp"
+        android:contentDescription="@string/appwidget_text"
+        android:text="本月"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="50dp"
+        android:textSize="20dp"
+        android:textStyle="bold|italic" />
+    <TextView
+        android:id="@+id/appwidget_text2_value"
+        style="@style/Widget.PocketManager.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="50dp"
+        android:text="12345"
+        android:textSize="20dp"
         android:textStyle="bold|italic" />
 </RelativeLayout>

@@ -50,9 +50,5 @@ public class MainActivity extends TabActivity{
         tabHost.addTab(tabSpecB);
         tabHost.addTab(tabSpecC);
 
-
-
-
-
     }
 }

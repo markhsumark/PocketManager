@@ -69,7 +69,8 @@ public class tabletool extends AppWidgetProvider {
             Toast.makeText(context, "Income!", Toast.LENGTH_SHORT).show();
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.tabletool);
-            views.setTextViewText(R.id.appwidget_text,"收入");
+            views.setTextViewText(R.id.appwidget_text,"本日");
+            views.setTextViewText(R.id.appwidget_text2,"本月");
             AppWidgetManager.getInstance(context).updateAppWidget(
                     new ComponentName(context, tabletool.class),views);
 
@@ -77,7 +78,8 @@ public class tabletool extends AppWidgetProvider {
             Toast.makeText(context, "Outcome!", Toast.LENGTH_SHORT).show();
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.tabletool);
-            views.setTextViewText(R.id.appwidget_text,"支出");
+            views.setTextViewText(R.id.appwidget_text,"本日");
+            views.setTextViewText(R.id.appwidget_text2,"本月");
             AppWidgetManager.getInstance(context).updateAppWidget(
                     new ComponentName(context, tabletool.class),views);
 
@@ -85,7 +87,8 @@ public class tabletool extends AppWidgetProvider {
             Toast.makeText(context, "Graph!", Toast.LENGTH_SHORT).show();
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.tabletool);
-            views.setTextViewText(R.id.appwidget_text,"圖表");
+            views.setTextViewText(R.id.appwidget_text,"這月");
+            views.setTextViewText(R.id.appwidget_text2,"上月");
             AppWidgetManager.getInstance(context).updateAppWidget(
                     new ComponentName(context, tabletool.class),views);
         };
