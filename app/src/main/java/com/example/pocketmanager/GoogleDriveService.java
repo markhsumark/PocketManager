@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
@@ -51,7 +52,7 @@ public class GoogleDriveService {
                         new Scope(DriveScopes.DRIVE_SCRIPTS),
                         new Scope(DriveScopes.DRIVE_METADATA_READONLY),
                         new Scope(DriveScopes.DRIVE_PHOTOS_READONLY))
-                .requestIdToken("1013631286690-5pdqknoqqql0o0ntdjbvmo5l04dc8s70.apps.googleusercontent.com")
+                .requestIdToken("1013631286690-3gfib9ndh7r8t7snq6k98ukc4p814119.apps.googleusercontent.com")
                 .requestProfile()
                 .build();
 
@@ -91,6 +92,7 @@ public class GoogleDriveService {
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
             if(e.getStatusCode() == 7){
                 Log.i("signin repo", "no internet connect");
+                Toast.makeText(context, "失去網路連接", Toast.LENGTH_SHORT).show();
             }
             return false;
         }

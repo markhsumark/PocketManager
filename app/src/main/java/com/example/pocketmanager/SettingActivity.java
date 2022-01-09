@@ -39,13 +39,21 @@ public class SettingActivity extends AppCompatActivity {
         //INPUTB 是預設的文字
 
         connectGoogle = findViewById(R.id.connectGoogle);
+
+        //判斷是否已經登入，若登入則顯示email，未登入就顯示「連結帳號」
+        if(getIsLogIn()){
+            String userEmail = accountData.getString("email","");
+            connectGoogle.setText(userEmail);
+        }else{
+            connectGoogle.setText("連結帳號");
+        }
         connectGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isLogIn){
+                if(getIsLogIn()){
                     mGDS.logOut();
-                    isLogIn = false;
-                    Toast.makeText(SettingActivity.this, "登出", Toast.LENGTH_SHORT);
+                    updateIsLogIn(false);
+                    Toast.makeText(SettingActivity.this, "登出", Toast.LENGTH_SHORT).show();
                     connectGoogle.setText("連結帳號");
                 }else {
                     Log.i("onclick", "start sign in");
@@ -128,24 +136,22 @@ public class SettingActivity extends AppCompatActivity {
         switch (requestCode) {
             case GoogleDriveService.RC_SIGN_IN:
                 if(mGDS.handleSignInResult(data , SettingActivity.this)){
-                    Toast.makeText(SettingActivity.this, "登入成功", Toast.LENGTH_SHORT);
-                    Log.i("sign in", "Sign in success");
-
+                    mGDS.requestStoragePremission(this);
 //                    mGDS.deleteAllBackupFromDrive(SettingActivity.this);
 //                    mGDS.backUpToDrive(SettingActivity.this);
 //                    mGDS.restoreFileFromDrive(SettingActivity.this);
-
                     accountData = mGDS.setAccountData(accountData);
-                    mGDS.requestStoragePremission(this);
-                    connectGoogle.setText(accountData.getString("email", "已登入"));
+                    String userEmail = accountData.getString("email","已登入");
+                    connectGoogle.setText(userEmail);
 
-//                    File tfile  = Environment.getDataDirectory();
-//                    Log.i("root", tfile.getAbsolutePath());
-                    isLogIn = true;
+
+                    Toast.makeText(SettingActivity.this, "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
+                    Log.i("sign in", "Sign in success");
+                    updateIsLogIn(true);
                 }
                 else{
-                    isLogIn = false;
-                    Toast.makeText(SettingActivity.this, "登入失敗", Toast.LENGTH_SHORT);
+                    Toast.makeText(SettingActivity.this, "登入失敗", Toast.LENGTH_SHORT).show();
+                    updateIsLogIn(false);
                 }
                 break;
             default:
@@ -153,5 +159,13 @@ public class SettingActivity extends AppCompatActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    private void updateIsLogIn(Boolean TorF){
+        SharedPreferences.Editor editor = accountData.edit();
+        editor.putBoolean("isLogIn", TorF);
+        editor.apply();
+    }
+    public Boolean getIsLogIn(){
+        return accountData.getBoolean("isLogIn", false);
     }
 }
