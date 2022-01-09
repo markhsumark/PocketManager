@@ -28,17 +28,6 @@
             android:name=".Setting.ExpenditureThreshold"
             android:exported="false" />
 
-
-        <service
-            android:name=".Widget.ClickService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.Click"/>
-            </intent-filter>
-
-        </service>
-
         <activity
             android:name=".Graph.CategoryGraphActivity"
             android:exported="false" />

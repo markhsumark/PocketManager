@@ -1,4 +1,4 @@
-package com.example.pocketmanager;
+package com.mark.pocketmanager.Widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import com.mark.pocketmanager.R;
 
 
 /**
