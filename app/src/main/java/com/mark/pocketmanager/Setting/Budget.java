@@ -15,7 +15,7 @@ import android.widget.Switch;
 
 import com.mark.pocketmanager.R;
 
-public class Buget extends AppCompatActivity {
+public class Budget extends AppCompatActivity {
     Switch remindSwitch;
     EditText bugetEdit,test;
     Button save;

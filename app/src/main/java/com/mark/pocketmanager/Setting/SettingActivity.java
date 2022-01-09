@@ -93,7 +93,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(SettingActivity.this, Buget.class);
+                intent.setClass(SettingActivity.this, Budget.class);
                 startActivity(intent);
             }
         });

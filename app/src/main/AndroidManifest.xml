@@ -19,13 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketManager">
         <activity
-            android:name=".Setting.Buget"
+            android:name=".Setting.Budget"
             android:exported="false" />
         <activity
             android:name=".Setting.EditCategory"
-            android:exported="false" />
-        <activity
-            android:name=".typeChose"
             android:exported="false" />
         <activity
             android:name=".Setting.ExpenditureThreshold"
@@ -60,7 +57,6 @@
 
         <activity android:name=".Home.AddOrEditActivity" />
         <activity android:name=".Home.HomeActivity" />
-        <activity android:name=".PropertyActivity" />
         <activity android:name=".Setting.CategoryActivity" />
         <activity android:name=".Setting.BackUpActivity" />
         <activity android:name=".Setting.SettingActivity" />
