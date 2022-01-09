@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--收支可以改成tabview形式-->
+
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="20dp"
+        android:autoSizeTextType="uniform"
+        android:text="日期"
+        app:layout_constraintBottom_toBottomOf="@+id/timePickButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timePickButton" />
+
+    <Button
+        android:id="@+id/datePickButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end|center_vertical"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/timePickButton"
+        app:layout_constraintEnd_toStartOf="@+id/timePickButton"
+        app:layout_constraintTop_toTopOf="@+id/timePickButton" />
+
+    <Button
+        android:id="@+id/timePickButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="end|center_vertical"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/assetText"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:autoSizeTextType="uniform"
+        android:text="資產"
+        app:layout_constraintBottom_toBottomOf="@+id/assetPicker"
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/assetPicker" />
+
+    <Spinner
+        android:id="@+id/assetPicker"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        app:layout_constraintEnd_toEndOf="@+id/timePickButton"
+        app:layout_constraintTop_toBottomOf="@+id/timePickButton" />
+
+    <TextView
+        android:id="@+id/amountText"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:autoSizeTextType="uniform"
+        android:text="金額"
+        app:layout_constraintBottom_toBottomOf="@+id/amountEditor"
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/amountEditor" />
+
+    <EditText
+        android:id="@+id/amountEditor"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="start|center_vertical"
+        android:inputType="number"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/timePickButton"
+        app:layout_constraintTop_toBottomOf="@+id/categoryPicker" />
+
+    <TextView
+        android:id="@+id/categoryText"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:autoSizeTextType="uniform"
+        android:text="類別"
+        app:layout_constraintBottom_toBottomOf="@+id/categoryPicker"
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/categoryPicker" /><![CDATA[
+
+    android:id="@+id/descriptionInfo"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+
+
+    ]]>
+
+    <Spinner
+        android:id="@+id/categoryPicker"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="end"
+        app:layout_constraintEnd_toEndOf="@+id/timePickButton"
+        app:layout_constraintTop_toBottomOf="@+id/assetPicker" />
+
+    <TextView
+        android:id="@+id/noteText"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:autoSizeTextType="uniform"
+        android:text="描述"
+        app:layout_constraintBottom_toBottomOf="@+id/noteEditor"
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/noteEditor" />
+
+    <EditText
+        android:id="@+id/noteEditor"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="start"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/timePickButton"
+        app:layout_constraintTop_toBottomOf="@+id/amountEditor" />
+
+    <Button
+        android:id="@+id/done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:text="done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.835"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="60dp"
+        android:text="刪除"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

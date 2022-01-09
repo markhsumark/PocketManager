@@ -56,10 +56,11 @@
         <entry key="..\:/my_software_project/PocketManager/app/src/main/res/layout/settings.xml" value="0.1" />
         <entry key="..\:/my_software_project/PocketManager/app/src/main/res/layout/single_record.xml" value="0.6" />
         <entry key="app/src/main/res/layout/activity_category_list.xml" value="0.165625" />
-        <entry key="app/src/main/res/layout/activity_graph.xml" value="0.165625" />
+        <entry key="app/src/main/res/layout/activity_graph.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165625" />
         <entry key="app/src/main/res/layout/activity_main3.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/settings.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/category_page.xml" value="0.21422101449275363" />
+        <entry key="app/src/main/res/layout/settings.xml" value="0.335" />
         <entry key="app/src/main/res/layout/test_google.xml" value="0.26163723636036146" />
       </map>
     </option>

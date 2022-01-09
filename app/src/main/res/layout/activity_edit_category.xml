@@ -4,52 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mark.pocketmanager.AddCategoryActivity">
+    tools:context="mark.pocketmanager.EditCategory">
 
     <TextView
-        android:id="@+id/addCategory"
+        android:id="@+id/changeCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="204dp"
-        android:text="新增類別"
+        android:text="編輯類別"
         android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintHorizontal_bias="0.123"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText"
-        android:layout_width="365dp"
+    <EditText
+        android:id="@+id/categoryChange"
+        android:layout_width="350dp"
         android:layout_height="80dp"
         android:layout_marginTop="92dp"
-
+        android:ems="10"
+        android:inputType="number"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textInputLayout"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/save"
-        android:layout_width="365dp"
-        android:layout_height="wrap_content"
-
-        android:gravity="center"
-        android:text="新增"
-
-
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="30dp"
+        android:text="儲存"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryChange" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:text="刪除"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/categoryChange" />
 </androidx.constraintlayout.widget.ConstraintLayout>

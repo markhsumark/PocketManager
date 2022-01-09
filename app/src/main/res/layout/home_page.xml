@@ -6,92 +6,112 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/income"
-        android:layout_width="133dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="2dp"
-        android:layout_weight="1"
-        android:autoSizeTextType="uniform"
-        android:gravity="center|center_vertical"
-        android:text="收入"
-        android:textColor="?android:attr/textColor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/monthPicker" />
+    <LinearLayout
+        android:id="@+id/topInfo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/monthPicker">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/inAmount"
-        android:layout_width="133dp"
-        android:layout_height="30dp"
-        android:layout_weight="2"
-        android:autoSizeTextType="uniform"
-        android:gravity="center|center_vertical"
-        android:text="123456"
-        android:textColor="@color/blue"
-        app:layout_constraintEnd_toEndOf="@+id/income"
-        app:layout_constraintEnd_toStartOf="@+id/outAmount"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/income"
-        app:layout_constraintTop_toBottomOf="@+id/income" />
+            <TextView
+                android:id="@+id/income"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center|center_vertical"
+                android:text="收入"
+                android:textColor="?android:attr/textColor"
+                tools:layout_editor_absoluteY="70dp" />
 
-    <TextView
-        android:id="@+id/expenses"
-        android:layout_width="133dp"
-        android:layout_height="25dp"
-        android:layout_weight="1"
-        android:autoSizeTextType="uniform"
-        android:gravity="center|center_vertical"
-        android:text="支出"
-        android:textColor="?android:attr/textColor"
-        app:layout_constraintBottom_toBottomOf="@+id/income"
-        app:layout_constraintStart_toEndOf="@+id/income"
-        app:layout_constraintTop_toTopOf="@+id/income" />
+            <TextView
+                android:id="@+id/inAmount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center|center_vertical"
+                android:text="123456"
+                android:textColor="@color/blue"
+                tools:layout_editor_absoluteY="95dp" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/outAmount"
-        android:layout_width="133dp"
-        android:layout_height="30dp"
-        android:layout_weight="2"
-        android:autoSizeTextType="uniform"
-        android:gravity="center|center_vertical"
-        android:text="123456"
-        android:textColor="@color/red"
-        app:layout_constraintBottom_toBottomOf="@+id/inAmount"
-        app:layout_constraintEnd_toEndOf="@+id/expenses"
-        app:layout_constraintEnd_toStartOf="@+id/sumAmount"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/inAmount"
-        app:layout_constraintStart_toStartOf="@+id/expenses"
-        app:layout_constraintTop_toTopOf="@+id/inAmount" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/sum"
-        android:layout_width="133dp"
-        android:layout_height="25dp"
-        android:layout_weight="1"
-        android:autoSizeTextType="uniform"
-        android:gravity="center|center_vertical"
-        android:text="總額"
-        android:textColor="?android:attr/textColor"
-        app:layout_constraintBottom_toBottomOf="@+id/expenses"
-        app:layout_constraintStart_toEndOf="@+id/expenses"
-        app:layout_constraintTop_toTopOf="@+id/expenses" />
+            <TextView
+                android:id="@+id/expenses"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center|center_vertical"
+                android:text="支出"
+                android:textColor="?android:attr/textColor"
+                tools:layout_editor_absoluteX="133dp"
+                tools:layout_editor_absoluteY="70dp" />
 
+            <TextView
+                android:id="@+id/outAmount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center|center_vertical"
+                android:text="123456"
+                android:textColor="@color/red"
+                tools:layout_editor_absoluteX="133dp"
+                tools:layout_editor_absoluteY="84dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/sum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center|center_vertical"
+                android:text="總額"
+                android:textColor="?android:attr/textColor"
+                tools:layout_editor_absoluteX="266dp"
+                tools:layout_editor_absoluteY="70dp" />
+
+            <TextView
+                android:id="@+id/sumAmount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:gravity="center|center_vertical"
+                android:text="123456"
+                android:textColor="?android:attr/textColor"
+                tools:layout_editor_absoluteX="266dp"
+                tools:layout_editor_absoluteY="84dp" />
+        </LinearLayout>
+    </LinearLayout>
     <TextView
-        android:id="@+id/sumAmount"
-        android:layout_width="133dp"
-        android:layout_height="30dp"
-        android:layout_weight="2"
-        android:autoSizeTextType="uniform"
-        android:gravity="center|center_vertical"
-        android:text="123456"
-        android:textColor="?android:attr/textColor"
-        app:layout_constraintBottom_toBottomOf="@+id/outAmount"
-        app:layout_constraintEnd_toEndOf="@+id/sum"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/outAmount"
-        app:layout_constraintStart_toStartOf="@+id/sum"
-        app:layout_constraintTop_toTopOf="@+id/outAmount" />
+        android:id="@+id/noData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="還沒有資料喔~"
+        android:textColor="@color/midGray"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/externalRecyclerView"
@@ -100,77 +120,61 @@
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outAmount" />
+        app:layout_constraintTop_toBottomOf="@+id/topInfo"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/previousStep"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
         android:src="@android:drawable/ic_menu_revert"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline17" />
+        app:fabCustomSize="60dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/nextStep"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:scaleX="-1"
         android:src="@android:drawable/ic_menu_revert"
+        app:fabCustomSize="60dp"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="@+id/previousStep"
-        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toEndOf="@+id/previousStep"
         app:layout_constraintTop_toTopOf="@+id/previousStep" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/editor"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:autoSizeTextType="uniform"
         android:src="@android:drawable/ic_menu_edit"
+        app:fabCustomSize="60dp"
+        app:fabSize="normal"
         app:layout_constraintBottom_toTopOf="@+id/adder"
-        app:layout_constraintStart_toStartOf="@+id/guideline16" />
+        app:layout_constraintEnd_toEndOf="@+id/adder"
+        app:layout_constraintStart_toStartOf="@+id/adder" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/adder"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:autoSizeTextType="uniform"
         android:src="@android:drawable/ic_input_add"
+        app:fabCustomSize="60dp"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="@+id/guideline17" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="145dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="314dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.88" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/monthPicker"
