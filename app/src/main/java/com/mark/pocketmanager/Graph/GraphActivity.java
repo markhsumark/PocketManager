@@ -1,6 +1,7 @@
 package com.mark.pocketmanager.Graph;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kal.rackmonthpicker.RackMonthPicker;
 import com.mark.pocketmanager.Account.AccountViewModel;
 import com.mark.pocketmanager.CustomClass.CategoryAmount;
 import com.mark.pocketmanager.CustomClass.DayAmount;
@@ -54,6 +56,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class GraphActivity extends AppCompatActivity {
     private GraphActivity.incomeGraphAdapter inGraphAdapter;
@@ -148,8 +151,20 @@ public class GraphActivity extends AppCompatActivity {
         resetLiveData();
         //當月收支長條圖
         //長條圖
+    }
 
-
+    public void rackMonthPicker(View v){
+        new RackMonthPicker(this)
+                .setLocale(Locale.TRADITIONAL_CHINESE)
+                .setNegativeText("取消")
+                .setPositiveText("確認")
+                .setPositiveButton((month, startDate, endDate, year, monthLabel) -> {
+                    date.set(Calendar.YEAR, year);
+                    date.set(Calendar.MONTH, month-1);
+                    monthPicker.setText(dateFormat.format(date.getTime()));
+                    resetLiveData();
+                })
+                .setNegativeButton(Dialog::cancel).show();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -224,9 +239,7 @@ public class GraphActivity extends AppCompatActivity {
                 outBarEntrys.add(new BarEntry(i, categoryAmounts.get(i).Amount));
                 outBarFormat.add(categoryAmounts.get(i).Category);
             }
-            //圓餅圖
             outPieChartShow();
-            //長條圖
             outBarChartShow();
             outGraphAdapter.notifyDataSetChanged();
         });

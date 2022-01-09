@@ -40,37 +40,27 @@ public class Budget extends AppCompatActivity {
         settingData = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
         remindSwitch=findViewById(R.id.remindSwitch);
 
-        remindSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                boolean notification = remindSwitch.isChecked();
+        remindSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            boolean notification = remindSwitch.isChecked();
 
-                SharedPreferences.Editor editor = settingData.edit();
-                editor.putBoolean("notification",notification);
-                editor.apply();
-                if(isChecked){
+            SharedPreferences.Editor editor = settingData.edit();
+            editor.putBoolean("notification",notification);
+            editor.apply();
+            if(isChecked){
 
-                }
             }
         });
         remindSwitch.setChecked(settingData.getBoolean("notification",false));
 
         bugetEdit=findViewById(R.id.bugetEdit);
         save = findViewById(R.id.save);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String buget = bugetEdit.getText().toString();
+        save.setOnClickListener(v -> {
+            String buget = bugetEdit.getText().toString();
+            SharedPreferences.Editor editor = settingData.edit();
+            editor.putString("buget",buget);
+            editor.apply();
 
-                SharedPreferences.Editor editor = settingData.edit();
-                editor.putString("buget",buget);
-                editor.apply();
-
-                //Log.e("buget:", "test");
-                //Log.e("buget:", Integer.toString(buget));
-                //bugetEdit.setText(settingData.getString("buget","0"));
-                finish();
-            }
+            finish();
         });
         bugetEdit.setText(settingData.getString("buget","0"));
     }
