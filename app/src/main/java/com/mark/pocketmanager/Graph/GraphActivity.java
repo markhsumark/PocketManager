@@ -534,7 +534,7 @@ public class GraphActivity extends AppCompatActivity {
             dataSets.add(inSet);
             BarData data = new BarData(dataSets);
             inBarChart.setData(data);
-            inBarChart.setFitBars(false);
+            inBarChart.setFitBars(true);
         }
 
         //設置柱形統計圖上的值
