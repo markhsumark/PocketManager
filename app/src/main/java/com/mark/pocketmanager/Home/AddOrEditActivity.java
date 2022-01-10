@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -12,22 +12,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mark.pocketmanager.Account.Account;
 import com.mark.pocketmanager.Account.AccountViewModel;
-import com.mark.pocketmanager.Category.Category;
 import com.mark.pocketmanager.Category.CategoryViewModel;
 import com.mark.pocketmanager.R;
 
@@ -38,12 +35,12 @@ import java.util.Calendar;
 import java.util.List;
 
 public class AddOrEditActivity extends AppCompatActivity {
-    Button inButton, outButton;
+    Button inButton, outButton, inButtonLine, outButtonLine;
     Button datePickButton, timePickButton;
-    Button delete, done;
+    Button deleteButton, saveButton, addButton;
     String mode;
     Spinner assetPicker, categoryPicker;
-    EditText note, amount;
+    EditText noteEditor, amountEditor;
     AccountViewModel accountViewModel;
     CategoryViewModel categoryViewModel;
     Calendar calendar = Calendar.getInstance();
@@ -53,14 +50,9 @@ public class AddOrEditActivity extends AppCompatActivity {
     SimpleDateFormat time = new SimpleDateFormat("a hh:mm");
     List<String> assets = Arrays.asList("現金", "帳戶");
     List<String> types = Arrays.asList("收入", "支出", "轉帳");
-//    List<String> categories = Arrays.asList("食物", "運動", "娛樂", "交通", "家居", "健康", "教育");
-//    List<String> inCategories = Arrays.asList("家居", "健康", "教育");
-//    List<String> outCategories = Arrays.asList("食物", "運動", "娛樂");
     List<String> inCategories = new ArrayList<>();
     List<String> outCategories = new ArrayList<>();
     ArrayAdapter inCategoryAdapter, outCategoryAdapter;
-    LiveData<List<Category>> inCategoryLiveData, outCategoryLiveData;
-
     String type;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -83,14 +75,17 @@ public class AddOrEditActivity extends AppCompatActivity {
         mode = intent.getStringExtra("mode");
         inButton = findViewById(R.id.inButton);
         outButton = findViewById(R.id.outButton);
+        inButtonLine = findViewById(R.id.inButtonLine);
+        outButtonLine = findViewById(R.id.outButtonLine);
         assetPicker = findViewById(R.id.assetPicker);
         categoryPicker = findViewById(R.id.categoryPicker);
         datePickButton = findViewById(R.id.datePickButton);
         timePickButton = findViewById(R.id.timePickButton);
-        note = findViewById(R.id.noteEditor);
-        amount = findViewById(R.id.amountEditor);
-        delete = findViewById(R.id.delete);
-        done = findViewById(R.id.done);
+        noteEditor = findViewById(R.id.noteEditor);
+        amountEditor = findViewById(R.id.amountEditor);
+        deleteButton = findViewById(R.id.deleteButton);
+        saveButton = findViewById(R.id.saveButton);
+        addButton = findViewById(R.id.addButton);
         calendar.set(Calendar.YEAR, intent.getIntExtra("Year",Calendar.getInstance().get(Calendar.YEAR)));
         calendar.set(Calendar.MONTH, intent.getIntExtra("Month",Calendar.getInstance().get(Calendar.MONTH)));
         calendar.set(Calendar.DAY_OF_MONTH, intent.getIntExtra("Day",Calendar.getInstance().get(Calendar.DAY_OF_MONTH)));
@@ -113,109 +108,94 @@ public class AddOrEditActivity extends AppCompatActivity {
         outCategories = categoryViewModel.getCategoriesList("支出");
         inCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, inCategories);
         outCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, outCategories);
-
+        type = intent.getStringExtra("Type");
+        if(type == null){
+            type = "支出";
+        }
         //點進頁面
         if (mode.equals("edit")) {  //edit mode
-            //getSupportActionBar().setTitle("編輯頁面");
-            if(intent.getStringExtra("Type").equals("收入")) {
-                type = "收入";
-                inButton.setSelected(true);
-                outButton.setSelected(false);
-                inButton.setTextColor(Color.parseColor("#0072E3"));
-                outButton.setTextColor(Color.parseColor("#000000"));
+            if(type.equals("收入")) {
                 categoryPicker.setAdapter(inCategoryAdapter);
                 categoryPicker.setSelection(inCategories.indexOf(intent.getStringExtra("Category")));
-            }
-            else if(intent.getStringExtra("Type").equals("支出")) {
-                type = "支出";
-                inButton.setSelected(false);
-                outButton.setSelected(true);
-                outButton.setTextColor(Color.parseColor("#FF0000"));
-                inButton.setTextColor(Color.parseColor("#000000"));
+            } else if(type.equals("支出")) {
                 categoryPicker.setAdapter(outCategoryAdapter);
                 categoryPicker.setSelection(outCategories.indexOf(intent.getStringExtra("Category")));
             }
+            selectButton(type);
+            saveButton.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.VISIBLE);
+            addButton.setVisibility(View.GONE);
             assetPicker.setSelection(assets.indexOf(intent.getStringExtra("Asset")));
-            note.setText(intent.getStringExtra("Note"));
-            amount.setText(intent.getStringExtra("Amount"));
-            done.setText("儲存");
+            noteEditor.setText(intent.getStringExtra("Note"));
+            amountEditor.setText(intent.getStringExtra("Amount"));
         } else if (mode.equals("add")) {
-            //getSupportActionBar().setTitle("新增頁面");
-            delete.setVisibility(View.GONE);
-            done.setText("新增");
-            type = "支出";
+            saveButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
+            addButton.setVisibility(View.VISIBLE);
+            selectButton(type);
             categoryPicker.setAdapter(outCategoryAdapter);
-            inButton.setSelected(false);
-            outButton.setSelected(true);
-            outButton.setTextColor(Color.parseColor("#FF0000"));
-            inButton.setTextColor(Color.parseColor("#000000"));
         }
         //設置type,asset,category綁定的資源，並可於頁面中更改選取的物件
 
-        inButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inButton.setTextColor(Color.parseColor("#0072E3"));
-                outButton.setSelected(false);
-                outButton.setTextColor(Color.parseColor("#000000"));
-                type = "收入";
-                categoryPicker.setAdapter(inCategoryAdapter);
-            }
+        inButton.setOnClickListener(v -> {
+            selectButton("收入");
+            type = "收入";
+            categoryPicker.setAdapter(inCategoryAdapter);
         });
 
-        outButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                outButton.setTextColor(Color.parseColor("#FF0000"));
-                inButton.setSelected(false);
-                inButton.setTextColor(Color.parseColor("#000000"));
-                type = "支出";
-                categoryPicker.setAdapter(outCategoryAdapter);
-            }
+        outButton.setOnClickListener(v -> {
+            selectButton("支出");
+            type = "支出";
+            categoryPicker.setAdapter(outCategoryAdapter);
         });
 
         //設置返回、完成更動、刪除按鈕的功能
-        delete.setOnClickListener(new View.OnClickListener() {  //刪除現有資料
-            @Override
-            public void onClick(View v) {
-                accountViewModel.deleteAccounts(new Account(
-                        intent.getIntExtra("Id",0)));
+        //刪除現有資料
+        deleteButton.setOnClickListener(v -> {
+            accountViewModel.deleteAccounts(new Account(
+                    intent.getIntExtra("Id",0)));
+            finish();
+        });
+
+        addButton.setOnClickListener(v -> {
+            if(TextUtils.isEmpty(amountEditor.getText())){
+                Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
+            } else if(amountEditor.getText().toString().startsWith("0") || amountEditor.getText().toString().startsWith("-")){
+                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
+            } else{
+                accountViewModel.insertAccounts(new Account(
+                        assetPicker.getSelectedItem().toString(),
+                        type,
+                        Integer.parseInt(amountEditor.getText().toString()),
+                        categoryPicker.getSelectedItem().toString(),
+                        "",
+                        calendar,
+                        noteEditor.getText().toString()));
+                amountEditor.getBackground().clearColorFilter();
+                noteEditor.getBackground().clearColorFilter();
                 finish();
             }
         });
 
-        done.setOnClickListener(new View.OnClickListener() {  //新增OR編輯完成
-            @Override
-            public void onClick(View v) {
-                if(TextUtils.isEmpty(amount.getText())){
-                    Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
-                }
-                else if(amount.getText().toString().startsWith("0") || amount.getText().toString().startsWith("-")){
-                    Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    if (mode.equals("edit")) {
-                        accountViewModel.updateAccounts(new Account(
-                                intent.getIntExtra("Id", 0),
-                                assetPicker.getSelectedItem().toString(),
-                                type,
-                                Integer.parseInt(amount.getText().toString()),
-                                categoryPicker.getSelectedItem().toString(),
-                                "",
-                                calendar,
-                                note.getText().toString()));
-                    } else if (mode.equals("add")) {
-                        accountViewModel.insertAccounts(new Account(
-                                assetPicker.getSelectedItem().toString(),
-                                type,
-                                Integer.parseInt(amount.getText().toString()),
-                                categoryPicker.getSelectedItem().toString(),
-                                "",
-                                calendar,
-                                note.getText().toString()));
-                    }
-                    finish();
-                }
+        //新增OR編輯完成
+        saveButton.setOnClickListener(v -> {
+            if(TextUtils.isEmpty(amountEditor.getText())){
+                Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
+            } else if(amountEditor.getText().toString().startsWith("0") || amountEditor.getText().toString().startsWith("-")){
+                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
+            } else {
+                accountViewModel.updateAccounts(new Account(
+                        intent.getIntExtra("Id", 0),
+                        assetPicker.getSelectedItem().toString(),
+                        type,
+                        Integer.parseInt(amountEditor.getText().toString()),
+                        categoryPicker.getSelectedItem().toString(),
+                        "",
+                        calendar,
+                        noteEditor.getText().toString()));
+                amountEditor.getBackground().clearColorFilter();
+                noteEditor.getBackground().clearColorFilter();
+                finish();
             }
         });
     }
@@ -225,14 +205,11 @@ public class AddOrEditActivity extends AppCompatActivity {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                calendar.set(Calendar.YEAR,year);
-                calendar.set(Calendar.MONTH,month);
-                calendar.set(Calendar.DAY_OF_MONTH,day);
-                datePickButton.setText(date.format(calendar.getTime()));  //set initial value
-            }
+        new DatePickerDialog(v.getContext(), (view, year1, month1, day1) -> {
+            calendar.set(Calendar.YEAR, year1);
+            calendar.set(Calendar.MONTH, month1);
+            calendar.set(Calendar.DAY_OF_MONTH, day1);
+            datePickButton.setText(date.format(calendar.getTime()));  //set initial value
         }, year, month, day).show();
     }
 
@@ -240,13 +217,38 @@ public class AddOrEditActivity extends AppCompatActivity {
     public void timePicker(View v){
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-        new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hour, int minute) {
-                calendar.set(Calendar.HOUR_OF_DAY,hour);
-                calendar.set(Calendar.MINUTE,minute);
-                timePickButton.setText(time.format(calendar.getTime()));  //set initial value
-            }
+        new TimePickerDialog(v.getContext(), (view, hour1, minute1) -> {
+            calendar.set(Calendar.HOUR_OF_DAY, hour1);
+            calendar.set(Calendar.MINUTE, minute1);
+            timePickButton.setText(time.format(calendar.getTime()));  //set initial value
         }, hour, minute, false).show();
+    }
+
+    @SuppressLint("ResourceAsColor")
+    public void selectButton(String type){
+        if(type.equals("收入")){
+            inButton.setTextColor(this.getResources().getColor(R.color.blue)); //藍
+            inButton.setBackgroundColor(this.getResources().getColor(R.color.white)); //白
+            inButton.setSelected(true);
+            outButton.setSelected(false);
+            outButton.setTextColor(this.getResources().getColor(R.color.deepGray)); //深灰
+            outButton.setBackgroundColor(this.getResources().getColor(R.color.lightGray)); //淺灰
+            saveButton.setBackgroundColor(this.getResources().getColor(R.color.blue)); //藍
+            addButton.setBackgroundColor(this.getResources().getColor(R.color.blue)); //藍
+            inButtonLine.setVisibility(View.VISIBLE);
+            outButtonLine.setVisibility(View.GONE);
+        }
+        else if(type.equals("支出")){
+            outButton.setTextColor(this.getResources().getColor(R.color.red)); //紅
+            outButton.setBackgroundColor(this.getResources().getColor(R.color.white)); //白
+            outButton.setSelected(true);
+            inButton.setSelected(false);
+            inButton.setTextColor(this.getResources().getColor(R.color.deepGray)); //深灰
+            inButton.setBackgroundColor(this.getResources().getColor(R.color.lightGray)); //淺灰
+            saveButton.setBackgroundColor(this.getResources().getColor(R.color.red)); //紅
+            addButton.setBackgroundColor(this.getResources().getColor(R.color.red)); //紅
+            inButtonLine.setVisibility(View.GONE);
+            outButtonLine.setVisibility(View.VISIBLE);
+        }
     }
 }

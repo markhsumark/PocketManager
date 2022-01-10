@@ -13,7 +13,7 @@
         android:layout_weight="1"
         android:autoSizeTextType="uniform"
         android:text="食物"
-        android:textColor="@color/midGray"
+        android:textColor="@color/deepGray"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_weight="3"
         android:autoSizeTextType="uniform"
         android:text="現金"
-        android:textColor="@color/midGray"/>
+        android:textColor="@color/deepGray"/>
 
     <TextView
         android:id="@+id/amount"

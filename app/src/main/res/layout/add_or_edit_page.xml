@@ -4,29 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--收支可以改成tabview形式-->
 
-    <LinearLayout
-        android:id="@+id/typeButtons"
-        android:layout_width="match_parent"
+
+    <Button
+        android:id="@+id/inButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:text="收入"
+        android:textColor="@color/deepGray"
+        app:rippleColor="@color/lightGray"
+        app:backgroundTint="@color/lightGray"
+        app:layout_constraintBottom_toBottomOf="@+id/outButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/outButton"
+        app:strokeColor="@color/midGray"
+        app:strokeWidth="1dp" />
 
-        <Button
-            android:id="@+id/inButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="收入" />
-        <Button
-            android:id="@+id/outButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="支出"/>
-    </LinearLayout>
+    <Button
+        android:id="@+id/inButtonLine"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        app:rippleColor="@color/lightGray"
+        app:layout_constraintBottom_toBottomOf="@+id/outButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/outButton"
+        app:strokeColor="@color/blue"
+        app:strokeWidth="1dp" />
+
+    <Button
+        android:id="@+id/outButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="支出"
+        android:textColor="@color/deepGray"
+        app:rippleColor="@color/lightGray"
+        app:backgroundTint="@color/lightGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline50"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/midGray"
+        app:strokeWidth="1dp" />
+    <Button
+        android:id="@+id/outButtonLine"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:rippleColor="@color/lightGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline50"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/red"
+        app:strokeWidth="1dp" />
 
     <TextView
         android:id="@+id/dateText"
@@ -43,10 +86,12 @@
         android:id="@+id/datePickButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:gravity="right|center_vertical"
         android:onClick="datePicker"
+        android:text="2022-01-10"
         android:textSize="18dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/timePickButton"
         app:layout_constraintEnd_toStartOf="@+id/timePickButton"
         app:layout_constraintTop_toTopOf="@+id/timePickButton" />
@@ -55,13 +100,16 @@
         android:id="@+id/timePickButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:gravity="right|center_vertical"
         android:onClick="timePicker"
-        android:textSize="20dp"
+        android:text="下午 04:37"
+        android:textSize="18dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/typeButtons" />
+        app:layout_constraintTop_toBottomOf="@id/outButton" />
 
     <TextView
         android:id="@+id/assetText"
@@ -77,6 +125,7 @@
         android:id="@+id/assetPicker"
         android:layout_width="250dp"
         android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@+id/timePickButton"
         app:layout_constraintTop_toBottomOf="@+id/timePickButton" />
 
@@ -142,24 +191,61 @@
         app:layout_constraintTop_toBottomOf="@+id/amountEditor" />
 
     <Button
-        android:id="@+id/done"
-        android:layout_width="wrap_content"
+        android:id="@+id/addButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:text="done"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:text="新增"
+        app:backgroundTint="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.835"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noteEditor" />
 
     <Button
-        android:id="@+id/delete"
+        android:id="@+id/saveButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:text="儲存"
+        app:backgroundTint="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline30"
+        app:layout_constraintTop_toBottomOf="@+id/noteEditor" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:text="刪除"
+        android:textColor="@color/black"
+        app:strokeColor="@color/black"
+        app:strokeWidth="1dp"
+        app:icon="@drawable/delete_outline"
+        app:iconTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/saveButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline30"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/saveButton" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline50"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginBottom="60dp"
-        android:text="刪除"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
