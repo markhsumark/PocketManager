@@ -18,6 +18,10 @@ public class CategoryRepository {
         return categoryDao.getCategoriesLive(type);
     }
 
+    public List<String> getCategoriesList(String type) {
+        return categoryDao.getCategoriesList(type);
+    }
+
     void insertCategories(Category... categories) {
         new InsertAsyncTask(categoryDao).execute(categories);
     }

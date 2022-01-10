@@ -60,9 +60,9 @@ public class InAdapter extends RecyclerView.Adapter<InAdapter.MyViewHolder>{
             Intent intent = new Intent(context, AddOrEditActivity.class);
             intent.putExtra("mode", "edit");
             intent.putExtra("Id", data.get(position).getId());
-            intent.putExtra("Property", data.get(position).getAsset());
-            intent.putExtra("InOut", data.get(position).getType());
-            intent.putExtra("Price", Integer.toString(data.get(position).getAmount()));
+            intent.putExtra("Asset", data.get(position).getAsset());
+            intent.putExtra("Type", data.get(position).getType());
+            intent.putExtra("Amount", Integer.toString(data.get(position).getAmount()));
             intent.putExtra("Category", data.get(position).getCategory());
             intent.putExtra("SubCategory", data.get(position).getSubCategory());
             intent.putExtra("Year", data.get(position).getYear());

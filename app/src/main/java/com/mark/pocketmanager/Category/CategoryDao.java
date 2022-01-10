@@ -22,4 +22,7 @@ public interface CategoryDao {
 
     @Query("SELECT * FROM Category where Type = :type")
     LiveData<List<Category>> getCategoriesLive(String type);
+
+    @Query("SELECT Category FROM Category where Type = :type")
+    List<String> getCategoriesList(String type);
 }

@@ -22,13 +22,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mark.pocketmanager.Account.Account;
 import com.mark.pocketmanager.Account.AccountViewModel;
+import com.mark.pocketmanager.Category.Category;
+import com.mark.pocketmanager.Category.CategoryViewModel;
 import com.mark.pocketmanager.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -41,6 +45,7 @@ public class AddOrEditActivity extends AppCompatActivity {
     Spinner assetPicker, categoryPicker;
     EditText note, amount;
     AccountViewModel accountViewModel;
+    CategoryViewModel categoryViewModel;
     Calendar calendar = Calendar.getInstance();
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -48,9 +53,13 @@ public class AddOrEditActivity extends AppCompatActivity {
     SimpleDateFormat time = new SimpleDateFormat("a hh:mm");
     List<String> assets = Arrays.asList("現金", "帳戶");
     List<String> types = Arrays.asList("收入", "支出", "轉帳");
-    List<String> categories = Arrays.asList("食物", "運動", "娛樂", "交通", "家居", "健康", "教育");
-    List<String> inCategories = Arrays.asList("家居", "健康", "教育");
-    List<String> outCategories = Arrays.asList("食物", "運動", "娛樂");
+//    List<String> categories = Arrays.asList("食物", "運動", "娛樂", "交通", "家居", "健康", "教育");
+//    List<String> inCategories = Arrays.asList("家居", "健康", "教育");
+//    List<String> outCategories = Arrays.asList("食物", "運動", "娛樂");
+    List<String> inCategories = new ArrayList<>();
+    List<String> outCategories = new ArrayList<>();
+    ArrayAdapter inCategoryAdapter, outCategoryAdapter;
+    LiveData<List<Category>> inCategoryLiveData, outCategoryLiveData;
 
     String type;
     @Override
@@ -67,6 +76,7 @@ public class AddOrEditActivity extends AppCompatActivity {
         setTitle("");
         setContentView(R.layout.add_or_edit_page);
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
@@ -99,13 +109,16 @@ public class AddOrEditActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        ArrayAdapter inCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, inCategories);
-        ArrayAdapter outCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, outCategories);
+        inCategories = categoryViewModel.getCategoriesList("收入");
+        outCategories = categoryViewModel.getCategoriesList("支出");
+        inCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, inCategories);
+        outCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, outCategories);
 
         //點進頁面
         if (mode.equals("edit")) {  //edit mode
             //getSupportActionBar().setTitle("編輯頁面");
-            if(intent.getStringExtra("InOut").equals("收入")) {
+            if(intent.getStringExtra("Type").equals("收入")) {
+                type = "收入";
                 inButton.setSelected(true);
                 outButton.setSelected(false);
                 inButton.setTextColor(Color.parseColor("#0072E3"));
@@ -113,7 +126,8 @@ public class AddOrEditActivity extends AppCompatActivity {
                 categoryPicker.setAdapter(inCategoryAdapter);
                 categoryPicker.setSelection(inCategories.indexOf(intent.getStringExtra("Category")));
             }
-            else if(intent.getStringExtra("InOut").equals("支出")) {
+            else if(intent.getStringExtra("Type").equals("支出")) {
+                type = "支出";
                 inButton.setSelected(false);
                 outButton.setSelected(true);
                 outButton.setTextColor(Color.parseColor("#FF0000"));
@@ -121,9 +135,9 @@ public class AddOrEditActivity extends AppCompatActivity {
                 categoryPicker.setAdapter(outCategoryAdapter);
                 categoryPicker.setSelection(outCategories.indexOf(intent.getStringExtra("Category")));
             }
-            assetPicker.setSelection(assets.indexOf(intent.getStringExtra("Property")));
+            assetPicker.setSelection(assets.indexOf(intent.getStringExtra("Asset")));
             note.setText(intent.getStringExtra("Note"));
-            amount.setText(intent.getStringExtra("Price"));
+            amount.setText(intent.getStringExtra("Amount"));
             done.setText("儲存");
         } else if (mode.equals("add")) {
             //getSupportActionBar().setTitle("新增頁面");
@@ -145,7 +159,6 @@ public class AddOrEditActivity extends AppCompatActivity {
                 outButton.setSelected(false);
                 outButton.setTextColor(Color.parseColor("#000000"));
                 type = "收入";
-
                 categoryPicker.setAdapter(inCategoryAdapter);
             }
         });
@@ -157,7 +170,6 @@ public class AddOrEditActivity extends AppCompatActivity {
                 inButton.setSelected(false);
                 inButton.setTextColor(Color.parseColor("#000000"));
                 type = "支出";
-
                 categoryPicker.setAdapter(outCategoryAdapter);
             }
         });
@@ -189,7 +201,7 @@ public class AddOrEditActivity extends AppCompatActivity {
                                 type,
                                 Integer.parseInt(amount.getText().toString()),
                                 categoryPicker.getSelectedItem().toString(),
-                                "子類別",
+                                "",
                                 calendar,
                                 note.getText().toString()));
                     } else if (mode.equals("add")) {
@@ -198,7 +210,7 @@ public class AddOrEditActivity extends AppCompatActivity {
                                 type,
                                 Integer.parseInt(amount.getText().toString()),
                                 categoryPicker.getSelectedItem().toString(),
-                                "子類別",
+                                "",
                                 calendar,
                                 note.getText().toString()));
                     }
