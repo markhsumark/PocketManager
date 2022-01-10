@@ -56,18 +56,12 @@ public class CategoryGraphActivity extends AppCompatActivity {
 
         toggleButton = findViewById(R.id.categoryChartToggleButton);//圖表切換按鈕
         categoryIncomePieChart = findViewById(R.id.categoryIncomePieChart);
-        categoryExpensePieChart = findViewById(R.id.categoryExpensePieChart);
         categoryIncomeRecyclerView = findViewById(R.id.categoryIncomeRecyclerView);
-        categoryExpenseRecyclerView = findViewById(R.id.categoryExpenseRecyclerView);
 
         //income圖表
         categoryIncomeRecyclerView.setHasFixedSize(true);
         categoryIncomeLayoutManager = new LinearLayoutManager(this);
         categoryIncomeRecyclerView.setLayoutManager(categoryIncomeLayoutManager);
-        //expense圖表
-        categoryExpenseRecyclerView.setHasFixedSize(true);
-        categoryExpenseLayoutManager = new LinearLayoutManager(this);
-        categoryExpenseRecyclerView.setLayoutManager(categoryExpenseLayoutManager);
 
 
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -95,7 +89,6 @@ public class CategoryGraphActivity extends AppCompatActivity {
         });
 
         categoryIncomeShow();
-        categoryExpenseShow();
 
     }
 
@@ -327,23 +320,6 @@ public class CategoryGraphActivity extends AppCompatActivity {
         }
     }
 
-    private class categoryExpenseGraphAdapter extends RecyclerView.Adapter{
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return null;
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return 0;
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
