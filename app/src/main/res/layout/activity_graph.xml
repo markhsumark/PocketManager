@@ -5,38 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/lastMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/monthPicker"
-        app:layout_constraintEnd_toStartOf="@+id/monthPicker"
-        app:layout_constraintTop_toTopOf="@+id/monthPicker"
-        app:srcCompat="@drawable/arrow_left"
-        app:tint="?android:attr/textColor" />
-
     <Button
         android:id="@+id/monthPicker"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
         android:onClick="rackMonthPicker"
         android:text="2022 05月"
         android:textColor="?android:attr/textColor"
+        app:layout_constraintBottom_toBottomOf="@+id/lastMonth"
+        app:layout_constraintStart_toEndOf="@+id/lastMonth"
+        app:layout_constraintTop_toTopOf="@+id/lastMonth" />
+
+    <ImageButton
+        android:id="@+id/lastMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintEnd_toStartOf="@+id/monthPicker"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_left"
+        app:tint="?android:attr/textColor" />
 
     <ImageButton
         android:id="@+id/nextMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/monthPicker"
+        app:layout_constraintBottom_toBottomOf="@+id/lastMonth"
         app:layout_constraintStart_toEndOf="@+id/monthPicker"
-        app:layout_constraintTop_toTopOf="@+id/monthPicker"
+        app:layout_constraintTop_toTopOf="@+id/lastMonth"
         app:srcCompat="@drawable/arrow_right"
         app:tint="?android:attr/textColor" />
 
@@ -44,7 +45,7 @@
         android:id="@+id/chart_toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:textColor="#455A64"
         android:textOff="@string/round"

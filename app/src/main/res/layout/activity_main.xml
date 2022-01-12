@@ -2,7 +2,7 @@
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
     <!-- 最外层是一个TabHost控件，对应了MianActivity,注意这里的id需要用系统自带的id -->
 
     <LinearLayout
