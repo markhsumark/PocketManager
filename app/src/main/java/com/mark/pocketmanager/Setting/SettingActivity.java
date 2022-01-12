@@ -56,18 +56,27 @@ public class SettingActivity extends AppCompatActivity {
                 startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
             }
         });
-        handbutton = findViewById(R.id.handbutton);
+        handbutton = findViewById(R.id.handbackup);
         handbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mGDS.backUpToDrive(SettingActivity.this);
+                Toast.makeText(SettingActivity.this, "檔案已備份到雲端", Toast.LENGTH_SHORT).show();
+            }
+        });
+        handbutton = findViewById(R.id.handrestore);
+        handbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGDS.restoreFileFromDrive(SettingActivity.this);
             }
         });
         autoBackup = findViewById(R.id.autoBackup);
         autoBackup.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setClass(SettingActivity.this, BackUpActivity.class);
-            startActivity(intent);
+            mGDS.deleteAllBackupFromDrive(SettingActivity.this);
+//            Intent intent = new Intent();
+//            intent.setClass(SettingActivity.this, BackUpActivity.class);
+//            startActivity(intent);
         });
         income = findViewById(R.id.income);
         income.setOnClickListener(v -> {

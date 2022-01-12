@@ -17,17 +17,25 @@
         app:layout_constraintTop_toBottomOf="@+id/remind">
 
         <Button
-            android:id="@+id/handbutton"
-            android:layout_width="match_parent"
+            android:id="@+id/handbackup"
+            android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:text="手動備份" />
+        <Button
+            android:id="@+id/handrestore"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="手動復原" />
 
         <Button
             android:id="@+id/autoBackup"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:layout_marginStart="4dp"

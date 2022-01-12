@@ -133,7 +133,7 @@ public class GoogleDriveService {
                 if(ids == null){
                     GoogleDriveUtil.createFileToDrive(driveService, filename);
                 }else{
-                    GoogleDriveUtil.uploadFileToDrive(driveService, ids.get(0));
+                    GoogleDriveUtil.uploadFileToDrive(driveService, ids.get(0), filename);
                 }
             }
         });
@@ -153,6 +153,7 @@ public class GoogleDriveService {
                     Log.w("delete id", "there isn't exist file");
                 }
             }
+//            Toast.makeText(context, "已刪除在雲端的檔案", Toast.LENGTH_SHORT).show();
         });
         thr.start();
     }
@@ -163,12 +164,11 @@ public class GoogleDriveService {
                 ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
                 try {
                     Log.i("download id", ids.get(0));
-                    GoogleDriveUtil.downloadFileFromDrive(driveService, ids.get(0));
+                    GoogleDriveUtil.downloadFileFromDrive(driveService, ids.get(0), filename);
                 } catch (NullPointerException e) {
                     Log.w("delete id", "there isn't exist file");
                 }
             }
-
         });
         thr.start();
     }
