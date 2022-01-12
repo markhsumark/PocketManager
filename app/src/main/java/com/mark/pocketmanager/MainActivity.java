@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.TabHost;
 
 import com.mark.pocketmanager.Graph.GraphActivity;
 import com.mark.pocketmanager.Home.HomeActivity;
@@ -49,7 +49,6 @@ public class MainActivity extends TabActivity{
         tabHost.addTab(tabSpecA);
         tabHost.addTab(tabSpecB);
         tabHost.addTab(tabSpecC);
-
 
 
 

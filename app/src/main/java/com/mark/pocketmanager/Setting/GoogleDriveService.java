@@ -27,10 +27,6 @@ import com.google.api.services.drive.DriveScopes;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
-
-
-
 public class GoogleDriveService {
 
     public static final int RC_SIGN_IN = 400;

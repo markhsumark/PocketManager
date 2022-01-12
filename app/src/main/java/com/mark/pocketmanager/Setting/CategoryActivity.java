@@ -13,22 +13,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mark.pocketmanager.Category.Category;
+import com.mark.pocketmanager.Category.CategoryViewModel;
 import com.mark.pocketmanager.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CategoryActivity extends AppCompatActivity {
     FloatingActionButton add;
-    private RecyclerView categoryRecycleview;
+    private RecyclerView categoryRecyclerView;
     private RecyclerView.LayoutManager caLayoutManager;
     private CaAdapter caAdapter;
-    private List<String> categorys = new ArrayList<>(Arrays.asList("食物","運動","娛樂","交通","家居","健康","教育"));
+    private List<Category> categoryData = new ArrayList<>();
+    private CategoryViewModel categoryViewModel;
+    private LiveData<List<Category>> categoryLiveData = null;
+    private String type;
+    private TextView hintTextView;
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -38,31 +45,39 @@ public class CategoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_page);
-
-        Log.e("size:", Integer.toString(categorys.size()));
-
+        type = getIntent().getStringExtra("type");
+        hintTextView = findViewById(R.id.hintTextView);
+        hintTextView.setText(type + "類別");
+        Log.e("size:", Integer.toString(categoryData.size()));
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        categoryLiveData = categoryViewModel.getCategoriesLive(type);
+        categoryLiveData.observe(this, categories -> {
+            categoryData = categories;
+            caAdapter.notifyDataSetChanged();
+        });
 
-        add=findViewById(R.id.add);
+        add = findViewById(R.id.add);
         add.setOnClickListener(v -> {
             Intent intent = new Intent();
+            intent.putExtra("type", type);
             intent.setClass(CategoryActivity.this, AddCategoryActivity.class);
             startActivity(intent);
         });
 
-        categoryRecycleview = findViewById(R.id.categoryRecycleview);
-        categoryRecycleview.setHasFixedSize(true);
+        categoryRecyclerView = findViewById(R.id.categoryRecyclerview);
+        categoryRecyclerView.setHasFixedSize(true);
         caLayoutManager = new LinearLayoutManager(this);
-        categoryRecycleview.setLayoutManager(caLayoutManager);
+        categoryRecyclerView.setLayoutManager(caLayoutManager);
 
         caAdapter = new CaAdapter();
-        categoryRecycleview.setAdapter(caAdapter);
-        Log.e("size2:", Integer.toString(categorys.size()));
+        categoryRecyclerView.setAdapter(caAdapter);
     }
 
 
@@ -71,7 +86,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         class MyViewHolder extends RecyclerView.ViewHolder{
             public View itemView;
-            public TextView description, money, category;
+            public TextView category;
 
             public MyViewHolder(View v){
                 super(v);
@@ -91,18 +106,21 @@ public class CategoryActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull CaAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-            holder.category.setText(categorys.get(position));
+            holder.category.setText(categoryData.get(position).getCategory());
             holder.itemView.setOnClickListener(v -> {
-                String category = categorys.get(position);
+                Integer id = categoryData.get(position).getId();
+                String category = categoryData.get(position).getCategory();
                 Intent intent = new Intent(CategoryActivity.this, EditCategory.class);
+                intent.putExtra("type",type);
                 intent.putExtra("category", category);
+                intent.putExtra("id", id);
                 startActivity(intent);
             });
         }
 
         @Override
         public int getItemCount() {
-            return categorys.size();
+            return categoryData.size();
         }
     }
 }

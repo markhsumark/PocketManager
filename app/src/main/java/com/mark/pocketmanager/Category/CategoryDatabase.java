@@ -13,7 +13,9 @@ public abstract class CategoryDatabase extends RoomDatabase {
     static synchronized CategoryDatabase getDatabase(Context context){
         if(INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), CategoryDatabase.class, "category_database")
-                    .allowMainThreadQueries().build();
+                    .createFromAsset("category.db")
+                    .allowMainThreadQueries()
+                    .build();
         }
         return INSTANCE;
     }

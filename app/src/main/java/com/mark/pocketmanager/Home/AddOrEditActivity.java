@@ -1,29 +1,59 @@
 package com.mark.pocketmanager.Home;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.constraintlayout.widget.Guideline;
+import androidx.lifecycle.ViewModelProvider;
 
-
+import com.mark.pocketmanager.Account.Account;
+import com.mark.pocketmanager.Account.AccountViewModel;
+import com.mark.pocketmanager.Category.CategoryViewModel;
 import com.mark.pocketmanager.R;
-import com.google.android.material.tabs.TabLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class AddOrEditActivity extends AppCompatActivity {
-
-    private String[] tabs = {"支出","收入"};
-    private List<AddOrEditFragment> tabFragmentList = new ArrayList<>();
-
+    Button inButton, outButton, inButtonLine, outButtonLine;
+    Button datePickButton, timePickButton;
+    Button deleteButton, saveButton, addButton;
+    String mode;
+    Spinner assetPicker, categoryPicker;
+    EditText noteEditor, amountEditor;
+    AccountViewModel accountViewModel;
+    CategoryViewModel categoryViewModel;
+    Calendar calendar = Calendar.getInstance();
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat time = new SimpleDateFormat("a hh:mm");
+    List<String> assets = Arrays.asList("現金", "帳戶");
+    List<String> types = Arrays.asList("收入", "支出", "轉帳");
+    List<String> inCategories = new ArrayList<>();
+    List<String> outCategories = new ArrayList<>();
+    ArrayAdapter inCategoryAdapter, outCategoryAdapter;
+    String type;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -31,54 +61,194 @@ public class AddOrEditActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("");
         setContentView(R.layout.add_or_edit_page);
+        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        Intent intent = getIntent();
+        mode = intent.getStringExtra("mode");
+        inButton = findViewById(R.id.inButton);
+        outButton = findViewById(R.id.outButton);
+        inButtonLine = findViewById(R.id.inButtonLine);
+        outButtonLine = findViewById(R.id.outButtonLine);
+        assetPicker = findViewById(R.id.assetPicker);
+        categoryPicker = findViewById(R.id.categoryPicker);
+        datePickButton = findViewById(R.id.datePickButton);
+        timePickButton = findViewById(R.id.timePickButton);
+        noteEditor = findViewById(R.id.noteEditor);
+        amountEditor = findViewById(R.id.amountEditor);
+        deleteButton = findViewById(R.id.deleteButton);
+        saveButton = findViewById(R.id.saveButton);
+        addButton = findViewById(R.id.addButton);
+        calendar.set(Calendar.YEAR, intent.getIntExtra("Year",Calendar.getInstance().get(Calendar.YEAR)));
+        calendar.set(Calendar.MONTH, intent.getIntExtra("Month",Calendar.getInstance().get(Calendar.MONTH)));
+        calendar.set(Calendar.DAY_OF_MONTH, intent.getIntExtra("Day",Calendar.getInstance().get(Calendar.DAY_OF_MONTH)));
+        calendar.set(Calendar.HOUR_OF_DAY, intent.getIntExtra("Hour",Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+        calendar.set(Calendar.MINUTE, intent.getIntExtra("Minute",Calendar.getInstance().get(Calendar.MINUTE)));
+        datePickButton.setText(date.format(calendar.getTime()));  //set initial value
+        timePickButton.setText(time.format(calendar.getTime()));  //set initial value
 
-        //添加tab
-        for(int i=0; i<tabs.length; i++){
-                tabLayout.addTab(tabLayout.newTab().setText(tabs[i]));
-                tabFragmentList.add(new AddOrEditFragment(i));
+        ArrayAdapter assetAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, assets);
+        assetPicker.setAdapter(assetAdapter);
+        assetPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) { }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        inCategories = categoryViewModel.getCategoriesList("收入");
+        outCategories = categoryViewModel.getCategoriesList("支出");
+        inCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, inCategories);
+        outCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, outCategories);
+        type = intent.getStringExtra("Type");
+        if(type == null){
+            type = "支出";
         }
-
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return tabFragmentList.get(position);
+        //點進頁面
+        if (mode.equals("edit")) {  //edit mode
+            if(type.equals("收入")) {
+                categoryPicker.setAdapter(inCategoryAdapter);
+                categoryPicker.setSelection(inCategories.indexOf(intent.getStringExtra("Category")));
+            } else if(type.equals("支出")) {
+                categoryPicker.setAdapter(outCategoryAdapter);
+                categoryPicker.setSelection(outCategories.indexOf(intent.getStringExtra("Category")));
             }
+            selectButton(type);
+            saveButton.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.VISIBLE);
+            addButton.setVisibility(View.GONE);
+            assetPicker.setSelection(assets.indexOf(intent.getStringExtra("Asset")));
+            noteEditor.setText(intent.getStringExtra("Note"));
+            amountEditor.setText(intent.getStringExtra("Amount"));
+        } else if (mode.equals("add")) {
+            saveButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
+            addButton.setVisibility(View.VISIBLE);
+            selectButton(type);
+            categoryPicker.setAdapter(outCategoryAdapter);
+        }
+        //設置type,asset,category綁定的資源，並可於頁面中更改選取的物件
 
-            @Override
-            public int getCount() {
-                return tabFragmentList.size();
-            }
+        inButton.setOnClickListener(v -> {
+            selectButton("收入");
+            type = "收入";
+            categoryPicker.setAdapter(inCategoryAdapter);
+        });
 
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position){
-                return tabs[position];
+        outButton.setOnClickListener(v -> {
+            selectButton("支出");
+            type = "支出";
+            categoryPicker.setAdapter(outCategoryAdapter);
+        });
+
+        //設置返回、完成更動、刪除按鈕的功能
+        //刪除現有資料
+        deleteButton.setOnClickListener(v -> {
+            accountViewModel.deleteAccounts(new Account(
+                    intent.getIntExtra("Id",0)));
+            finish();
+        });
+
+        addButton.setOnClickListener(v -> {
+            if(TextUtils.isEmpty(amountEditor.getText())){
+                Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
+            } else if(amountEditor.getText().toString().startsWith("0") || amountEditor.getText().toString().startsWith("-")){
+                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
+            } else{
+                accountViewModel.insertAccounts(new Account(
+                        assetPicker.getSelectedItem().toString(),
+                        type,
+                        Integer.parseInt(amountEditor.getText().toString()),
+                        categoryPicker.getSelectedItem().toString(),
+                        "",
+                        calendar,
+                        noteEditor.getText().toString()));
+                amountEditor.getBackground().clearColorFilter();
+                noteEditor.getBackground().clearColorFilter();
+                finish();
             }
         });
 
-        tabLayout.setupWithViewPager(viewPager,false);
+        //新增OR編輯完成
+        saveButton.setOnClickListener(v -> {
+            if(TextUtils.isEmpty(amountEditor.getText())){
+                Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
+            } else if(amountEditor.getText().toString().startsWith("0") || amountEditor.getText().toString().startsWith("-")){
+                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
+            } else {
+                accountViewModel.updateAccounts(new Account(
+                        intent.getIntExtra("Id", 0),
+                        assetPicker.getSelectedItem().toString(),
+                        type,
+                        Integer.parseInt(amountEditor.getText().toString()),
+                        categoryPicker.getSelectedItem().toString(),
+                        "",
+                        calendar,
+                        noteEditor.getText().toString()));
+                amountEditor.getBackground().clearColorFilter();
+                noteEditor.getBackground().clearColorFilter();
+                finish();
+            }
+        });
+    }
 
-        //設定預設頁面
-        Intent intent = getIntent();
-        if(intent.getStringExtra("mode").equals("edit")) {
-            if (intent.getStringExtra("InOut").equals("支出")) {
-                tabLayout.getTabAt(0).select();
-            }
-            else if (intent.getStringExtra("InOut").equals("收入")) {
-                tabLayout.getTabAt(1).select();
-            }
+    // 選日期，選完自動跳去選時間
+    public void datePicker(View v){
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        new DatePickerDialog(v.getContext(), (view, year1, month1, day1) -> {
+            calendar.set(Calendar.YEAR, year1);
+            calendar.set(Calendar.MONTH, month1);
+            calendar.set(Calendar.DAY_OF_MONTH, day1);
+            datePickButton.setText(date.format(calendar.getTime()));  //set initial value
+        }, year, month, day).show();
+    }
+
+    // 選時間
+    public void timePicker(View v){
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        new TimePickerDialog(v.getContext(), (view, hour1, minute1) -> {
+            calendar.set(Calendar.HOUR_OF_DAY, hour1);
+            calendar.set(Calendar.MINUTE, minute1);
+            timePickButton.setText(time.format(calendar.getTime()));  //set initial value
+        }, hour, minute, false).show();
+    }
+
+    @SuppressLint("ResourceAsColor")
+    public void selectButton(String type){
+        if(type.equals("收入")){
+            inButton.setTextColor(this.getResources().getColor(R.color.blue)); //藍
+            inButton.setBackgroundColor(this.getResources().getColor(R.color.white)); //白
+            inButton.setSelected(true);
+            outButton.setSelected(false);
+            outButton.setTextColor(this.getResources().getColor(R.color.deepGray)); //深灰
+            outButton.setBackgroundColor(this.getResources().getColor(R.color.lightGray)); //淺灰
+            saveButton.setBackgroundColor(this.getResources().getColor(R.color.blue)); //藍
+            addButton.setBackgroundColor(this.getResources().getColor(R.color.blue)); //藍
+            inButtonLine.setVisibility(View.VISIBLE);
+            outButtonLine.setVisibility(View.GONE);
         }
-        else if (intent.getStringExtra("mode").equals("add"))
-            tabLayout.getTabAt(0).select();
+        else if(type.equals("支出")){
+            outButton.setTextColor(this.getResources().getColor(R.color.red)); //紅
+            outButton.setBackgroundColor(this.getResources().getColor(R.color.white)); //白
+            outButton.setSelected(true);
+            inButton.setSelected(false);
+            inButton.setTextColor(this.getResources().getColor(R.color.deepGray)); //深灰
+            inButton.setBackgroundColor(this.getResources().getColor(R.color.lightGray)); //淺灰
+            saveButton.setBackgroundColor(this.getResources().getColor(R.color.red)); //紅
+            addButton.setBackgroundColor(this.getResources().getColor(R.color.red)); //紅
+            inButtonLine.setVisibility(View.GONE);
+            outButtonLine.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -20,6 +20,10 @@ public class CategoryViewModel extends AndroidViewModel {
         return categoryRepository.getCategoriesLive(type);
     }
 
+    public List<String> getCategoriesList(String type) {
+        return categoryRepository.getCategoriesList(type);
+    }
+
     public void insertCategories(Category... categories) {
         categoryRepository.insertCategories(categories);
     }

@@ -30,7 +30,7 @@ public class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder> {
         int day = 0;
         int index = -1;
         for(int i=0;i<data.size();i++){
-            if(data.get(i).getDay()!=day) {
+            if(data.get(i).getDay() != day) {
                 this.dataGroupByDay.add(new ArrayList<>());
                 day = data.get(i).getDay();
                 index++;
