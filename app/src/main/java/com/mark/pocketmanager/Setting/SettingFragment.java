@@ -23,7 +23,7 @@ public class SettingFragment extends Fragment {
     private GoogleDriveService mGDS = new GoogleDriveService();
 
     private SharedPreferences googleDriveData;
-    Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind, handbutton;
+    Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind, handbutton, handrestore;
     Switch noticeSwitch;
     SharedPreferences sharedPreferences;
     SharedPreferences preferences;
@@ -40,16 +40,27 @@ public class SettingFragment extends Fragment {
         // INPUTB 是預設的文字
 
         connectGoogle = view.findViewById(R.id.connectGoogle);
-        //判斷是否已經登入，若曾經登入則自動登入一次，未登入就顯示「連結帳號」
-        if(getIsLogIn()){
-            Intent intent = mGDS.getSignInIntent(this.getActivity());
+
+        //判斷是否已經登入，若登入則自動點擊連結帳號button
+        if(mGDS.ifConnected() && ifLogInBefore()){
+            //有登入數據，也已經登入
+            String userEmail = googleDriveData.getString("email","已登入");
+            connectGoogle.setText(userEmail);
+        }else if(ifLogInBefore() && !mGDS.ifConnected()){
+            //曾經登入過（有email紀錄），但沒有登入數據
+            Log.w("auto","自動登入");
+            Intent intent = mGDS.getSignInIntent(SettingActivity.this);
             startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
         }else{
+            Log.w("auto","完全登出");
+            //登出了（沒有email紀錄），也沒有登入數據
             connectGoogle.setText("連結帳號");
         }
         connectGoogle.setOnClickListener(v -> {
-            if(getIsLogIn()){
+            Log.i("ifLogInBefore", ifLogInBefore().toString());
+            if(ifLogInBefore() && mGDS.ifConnected()){
                 mGDS.logOut();
+                mGDS.clearAccountData(googleDriveData);
                 updateIsLogIn(false);
                 Toast.makeText(this.getContext(), "登出", Toast.LENGTH_SHORT).show();
                 connectGoogle.setText("連結帳號");
@@ -59,14 +70,38 @@ public class SettingFragment extends Fragment {
                 startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
             }
         });
-
-        handbutton = view.findViewById(R.id.handbackup);
-        handbutton.setOnClickListener(v -> mGDS.backUpToDrive(this.getContext()));
-        handbutton = view.findViewById(R.id.handrestore);
-        handbutton.setOnClickListener(v -> mGDS.restoreFileFromDrive(this.getContext()));
-        autoBackup = view.findViewById(R.id.autoBackup);
+        handbutton = findViewById(R.id.handbackup);
+        handbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!ifLogInBefore()){
+                    Toast.makeText(SettingActivity.this, "請先登入", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    mGDS.backUpToDrive(SettingActivity.this);
+                }
+            }
+        });
+        handrestore = findViewById(R.id.handrestore);
+        handrestore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!ifLogInBefore()){
+                    Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    mGDS.restoreFileFromDrive(this.getContext());
+                }
+            }
+        });
+        autoBackup = findViewById(R.id.autoBackup);
         autoBackup.setOnClickListener(v -> {
-            mGDS.deleteAllBackupFromDrive(this.getContext());
+            if (!ifLogInBefore()){
+                Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
+                return;
+            }else {
+                mGDS.deleteAllBackupFromDrive(this.getContext());
+            }
 //            Intent intent = new Intent();
 //            intent.setClass(SettingActivity.this, BackUpActivity.class);
 //            startActivity(intent);
@@ -113,6 +148,7 @@ public class SettingFragment extends Fragment {
 
         return view;
     }
+
     public void intentBuget(){
 //        Intent intent = new Intent();
 //        intent.setClass(SettingActivity.this, ExpenditureThreshold.class);
@@ -135,7 +171,6 @@ public class SettingFragment extends Fragment {
                     updateIsLogIn(true);
                     Toast.makeText(this.getContext(), "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
                     Log.i("sign in", "Sign in success");
-                    updateIsLogIn(false);
                 }
                 else{
                     Toast.makeText(this.getContext(), "登入失敗", Toast.LENGTH_SHORT).show();
@@ -153,7 +188,7 @@ public class SettingFragment extends Fragment {
         editor.putBoolean("isLogIn", TorF);
         editor.apply();
     }
-    public Boolean getIsLogIn(){
+    private Boolean ifLogInBefore(){
         return googleDriveData.getBoolean("isLogIn", false);
     }
 }
