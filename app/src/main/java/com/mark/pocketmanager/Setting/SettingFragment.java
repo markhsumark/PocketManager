@@ -34,7 +34,7 @@ public class SettingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
-        googleDriveData = getContext().getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
+        googleDriveData = this.getContext().getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
         // INPUTB 是預設的文字
@@ -51,19 +51,19 @@ public class SettingFragment extends Fragment {
             if(getIsLogIn()){
                 mGDS.logOut();
                 updateIsLogIn(false);
-                Toast.makeText(getContext(), "登出", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getContext(), "登出", Toast.LENGTH_SHORT).show();
                 connectGoogle.setText("連結帳號");
             }else {
                 Log.i("onclick", "start sign in");
-                Intent intent = mGDS.getSignInIntent(SettingFragment.this.getActivity());
+                Intent intent = mGDS.getSignInIntent(this.getActivity());
                 startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
             }
         });
 
         handbutton = view.findViewById(R.id.handbackup);
-        handbutton.setOnClickListener(v -> mGDS.backUpToDrive(SettingFragment.this.getContext()));
+        handbutton.setOnClickListener(v -> mGDS.backUpToDrive(this.getContext()));
         handbutton = view.findViewById(R.id.handrestore);
-        handbutton.setOnClickListener(v -> mGDS.restoreFileFromDrive(SettingFragment.this.getContext()));
+        handbutton.setOnClickListener(v -> mGDS.restoreFileFromDrive(this.getContext()));
         autoBackup = view.findViewById(R.id.autoBackup);
         autoBackup.setOnClickListener(v -> {
             mGDS.deleteAllBackupFromDrive(this.getContext());
@@ -75,7 +75,7 @@ public class SettingFragment extends Fragment {
         income.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("type","收入");
-            intent.setClass(SettingFragment.this.getContext(), CategoryActivity.class);
+            intent.setClass(this.getContext(), CategoryActivity.class);
             startActivity(intent);
         });
 
@@ -83,14 +83,14 @@ public class SettingFragment extends Fragment {
         expenditure.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("type","支出");
-            intent.setClass(SettingFragment.this.getContext(), CategoryActivity.class);
+            intent.setClass(this.getContext(), CategoryActivity.class);
             startActivity(intent);
         });
 
         remind = view.findViewById(R.id.remind);
         remind.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.setClass(SettingFragment.this.getContext(), Budget.class);
+            intent.setClass(this.getContext(), Budget.class);
             startActivity(intent);
         });
 
@@ -123,7 +123,7 @@ public class SettingFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         switch (requestCode) {
             case GoogleDriveService.RC_SIGN_IN:
-                if(mGDS.handleSignInResult(data , SettingFragment.this.getContext())){
+                if(mGDS.handleSignInResult(data , this.getContext())){
                     mGDS.requestStoragePremission(this.getActivity());
 //                    mGDS.deleteAllBackupFromDrive(SettingActivity.this);
 //                    mGDS.backUpToDrive(SettingActivity.this);
@@ -133,12 +133,12 @@ public class SettingFragment extends Fragment {
                     connectGoogle.setText(userEmail);
 
                     updateIsLogIn(true);
-                    Toast.makeText(SettingFragment.this.getContext(), "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this.getContext(), "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
                     Log.i("sign in", "Sign in success");
                     updateIsLogIn(false);
                 }
                 else{
-                    Toast.makeText(SettingFragment.this.getContext(), "登入失敗", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this.getContext(), "登入失敗", Toast.LENGTH_SHORT).show();
                     updateIsLogIn(false);
                 }
                 break;
