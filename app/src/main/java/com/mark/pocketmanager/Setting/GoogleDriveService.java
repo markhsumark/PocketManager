@@ -127,10 +127,6 @@ public class GoogleDriveService {
     }
     public void backUpToDrive(Context context){
         driveService= getDriveService(context);
-        if (!isLogIn(driveService)){
-            Toast.makeText(context, "請先登入", Toast.LENGTH_SHORT).show();
-            return;
-        }
         Thread thr = new Thread(() -> {
             for(String filename: GoogleDriveUtil.dbFileNames){
                 ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
@@ -214,7 +210,7 @@ public class GoogleDriveService {
                 .build();
         return driveService;
     }
-    public Boolean isLogIn(){
+    public Boolean ifConnected(){
         if(client != null){
             return true;
         }else{

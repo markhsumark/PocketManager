@@ -20,7 +20,7 @@ public class SettingActivity extends AppCompatActivity {
     private GoogleDriveService mGDS = new GoogleDriveService();
 
     private SharedPreferences googleDriveData;
-    Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind, handbutton;
+    Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind, handbutton, handrestore;
     Switch noticeSwitch;
     SharedPreferences sharedPreferences;
     SharedPreferences preferences;
@@ -38,20 +38,23 @@ public class SettingActivity extends AppCompatActivity {
         connectGoogle = findViewById(R.id.connectGoogle);
 
         //判斷是否已經登入，若登入則自動點擊連結帳號button
-        if(mGDS.isLogIn() && ifLogInBefore()){
+        if(mGDS.ifConnected() && ifLogInBefore()){
             //有登入數據，也已經登入
             String userEmail = googleDriveData.getString("email","已登入");
             connectGoogle.setText(userEmail);
-        }else if(ifLogInBefore() && !mGDS.isLogIn()){
+        }else if(ifLogInBefore() && !mGDS.ifConnected()){
             //曾經登入過（有email紀錄），但沒有登入數據
+            Log.w("auto","自動登入");
             Intent intent = mGDS.getSignInIntent(SettingActivity.this);
             startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
         }else{
+            Log.w("auto","完全登出");
             //登出了（沒有email紀錄），也沒有登入數據
             connectGoogle.setText("連結帳號");
         }
         connectGoogle.setOnClickListener(v -> {
-            if(mGDS.isLogIn()){
+            Log.i("ifLogInBefore", ifLogInBefore().toString());
+            if(ifLogInBefore() && mGDS.ifConnected()){
                 mGDS.logOut();
                 mGDS.clearAccountData(googleDriveData);
                 updateIsLogIn(false);
@@ -67,19 +70,34 @@ public class SettingActivity extends AppCompatActivity {
         handbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGDS.backUpToDrive(SettingActivity.this);
+                if (!ifLogInBefore()){
+                    Toast.makeText(SettingActivity.this, "請先登入", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    mGDS.backUpToDrive(SettingActivity.this);
+                }
             }
         });
-        handbutton = findViewById(R.id.handrestore);
-        handbutton.setOnClickListener(new View.OnClickListener() {
+        handrestore = findViewById(R.id.handrestore);
+        handrestore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGDS.restoreFileFromDrive(SettingActivity.this);
+                if (!ifLogInBefore()){
+                    Toast.makeText(SettingActivity.this, "請先登入", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    mGDS.restoreFileFromDrive(SettingActivity.this);
+                }
             }
         });
         autoBackup = findViewById(R.id.autoBackup);
         autoBackup.setOnClickListener(v -> {
-            mGDS.deleteAllBackupFromDrive(SettingActivity.this);
+            if (!ifLogInBefore()){
+                Toast.makeText(SettingActivity.this, "請先登入", Toast.LENGTH_SHORT).show();
+                return;
+            }else {
+                mGDS.deleteAllBackupFromDrive(SettingActivity.this);
+            }
 //            Intent intent = new Intent();
 //            intent.setClass(SettingActivity.this, BackUpActivity.class);
 //            startActivity(intent);
@@ -148,7 +166,7 @@ public class SettingActivity extends AppCompatActivity {
 
                     Toast.makeText(SettingActivity.this, "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
                     Log.i("sign in", "Sign in success");
-                    updateIsLogIn(false);
+                    updateIsLogIn(true);
                 }
                 else{
                     Toast.makeText(SettingActivity.this, "登入失敗", Toast.LENGTH_SHORT).show();
@@ -167,6 +185,6 @@ public class SettingActivity extends AppCompatActivity {
         editor.apply();
     }
     private Boolean ifLogInBefore(){
-        return googleDriveData.getBoolean("isLogin", false);
+        return googleDriveData.getBoolean("isLogIn", false);
     }
 }
