@@ -37,16 +37,23 @@ public class SettingActivity extends AppCompatActivity {
 
         connectGoogle = findViewById(R.id.connectGoogle);
 
-        //判斷是否已經登入，若登入則顯示email，未登入就顯示「連結帳號」
-        if(getIsLogIn()){
-            String userEmail = googleDriveData.getString("email","");
+        //判斷是否已經登入，若登入則自動點擊連結帳號button
+        if(mGDS.isLogIn() && ifLogInBefore()){
+            //有登入數據，也已經登入
+            String userEmail = googleDriveData.getString("email","已登入");
             connectGoogle.setText(userEmail);
+        }else if(ifLogInBefore() && !mGDS.isLogIn()){
+            //曾經登入過（有email紀錄），但沒有登入數據
+            Intent intent = mGDS.getSignInIntent(SettingActivity.this);
+            startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
         }else{
+            //登出了（沒有email紀錄），也沒有登入數據
             connectGoogle.setText("連結帳號");
         }
         connectGoogle.setOnClickListener(v -> {
-            if(getIsLogIn()){
+            if(mGDS.isLogIn()){
                 mGDS.logOut();
+                mGDS.clearAccountData(googleDriveData);
                 updateIsLogIn(false);
                 Toast.makeText(SettingActivity.this, "登出", Toast.LENGTH_SHORT).show();
                 connectGoogle.setText("連結帳號");
@@ -159,7 +166,7 @@ public class SettingActivity extends AppCompatActivity {
         editor.putBoolean("isLogIn", TorF);
         editor.apply();
     }
-    public Boolean getIsLogIn(){
-        return googleDriveData.getBoolean("isLogIn", false);
+    private Boolean ifLogInBefore(){
+        return googleDriveData.getBoolean("isLogin", false);
     }
 }

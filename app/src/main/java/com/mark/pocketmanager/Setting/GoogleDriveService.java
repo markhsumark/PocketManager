@@ -214,5 +214,11 @@ public class GoogleDriveService {
                 .build();
         return driveService;
     }
-
+    public Boolean isLogIn(){
+        if(client != null){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
