@@ -10,7 +10,6 @@
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="rackMonthPicker"
         android:text="2022 05月"
         android:textColor="?android:attr/textColor"
         app:layout_constraintBottom_toBottomOf="@+id/lastMonth"
@@ -33,7 +32,6 @@
         android:id="@+id/nextMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:backgroundTint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/lastMonth"
         app:layout_constraintStart_toEndOf="@+id/monthPicker"

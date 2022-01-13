@@ -5,14 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +14,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -112,11 +111,27 @@ public class GraphFragment extends Fragment {
         noData = view.findViewById(R.id.noData);
         ImageButton lastMonth = view.findViewById(R.id.lastMonth);
         ImageButton nextMonth = view.findViewById(R.id.nextMonth);
+
+        monthPicker.setOnClickListener(v -> {
+            new RackMonthPicker(v.getContext())
+                    .setLocale(Locale.TRADITIONAL_CHINESE)
+                    .setNegativeText("取消")
+                    .setPositiveText("確認")
+                    .setPositiveButton((month, startDate, endDate, year, monthLabel) -> {
+                        date.set(Calendar.YEAR, year);
+                        date.set(Calendar.MONTH, month-1);
+                        monthPicker.setText(dateFormat.format(date.getTime()));
+                        resetLiveData();
+                    })
+                    .setNegativeButton(Dialog::cancel).show();
+        });
+
         lastMonth.setOnClickListener(v -> {
             date.add(Calendar.MONTH, -1);
             monthPicker.setText(dateFormat.format(date.getTime()));
             resetLiveData();
         });
+
         nextMonth.setOnClickListener(v -> {
             date.add(Calendar.MONTH, 1);
             monthPicker.setText(dateFormat.format(date.getTime()));
@@ -157,19 +172,6 @@ public class GraphFragment extends Fragment {
         //當月收支長條圖
         //長條圖
         return view;
-    }
-    public void rackMonthPicker(View v){
-        new RackMonthPicker(v.getContext())
-                .setLocale(Locale.TRADITIONAL_CHINESE)
-                .setNegativeText("取消")
-                .setPositiveText("確認")
-                .setPositiveButton((month, startDate, endDate, year, monthLabel) -> {
-                    date.set(Calendar.YEAR, year);
-                    date.set(Calendar.MONTH, month-1);
-                    monthPicker.setText(dateFormat.format(date.getTime()));
-                    resetLiveData();
-                })
-                .setNegativeButton(Dialog::cancel).show();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -441,7 +443,7 @@ public class GraphFragment extends Fragment {
         //設置網格佈局
         monthBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
-        GraphActivity.ValueFormatter custom = new GraphFragment.MyValueFormatter(0);
+        GraphFragment.ValueFormatter custom = new GraphFragment.MyValueFormatter(0);
         //獲取x軸線
         XAxis xAxis = monthBarChart.getXAxis();
         //設置x軸的顯示位置
@@ -721,7 +723,7 @@ public class GraphFragment extends Fragment {
         }
     }
 
-    public class MyValueFormatter extends GraphActivity.ValueFormatter {
+    public class MyValueFormatter extends GraphFragment.ValueFormatter {
         private final DecimalFormat mFormat = new DecimalFormat("00");
         public static final int DAY = 0; //日
         public static final int CATEGORY = 1; //類別

@@ -45,11 +45,8 @@
         </receiver>
 
         <activity android:name=".Home.AddOrEditActivity" />
-        <activity android:name=".Home.HomeActivity" />
         <activity android:name=".Setting.CategoryActivity" />
         <activity android:name=".Setting.BackUpActivity" />
-        <activity android:name=".Setting.SettingActivity" />
-        <activity android:name=".Graph.GraphActivity" />
         <activity
             android:name=".Setting.ChildCategory"
             android:exported="false" />

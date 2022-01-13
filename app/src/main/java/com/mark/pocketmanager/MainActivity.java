@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeFragment(), "Home");
-        adapter.addFragment(new GraphFragment(), "Graph");
-        adapter.addFragment(new SettingFragment(), "Setting");
+        adapter.addFragment(new HomeFragment(), "帳單");
+        adapter.addFragment(new GraphFragment(), "圖表");
+        adapter.addFragment(new SettingFragment(), "設定");
 
         viewPager.setAdapter(adapter);
     }

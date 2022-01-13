@@ -67,7 +67,7 @@ public class AddOrEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_or_edit);
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        ActionBar actionBar=getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         mode = intent.getStringExtra("mode");
