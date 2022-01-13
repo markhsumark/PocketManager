@@ -16,17 +16,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kal.rackmonthpicker.RackMonthPicker;
-import com.mark.pocketmanager.Account.AccountViewModel;
-import com.mark.pocketmanager.CustomClass.CategoryAmount;
-import com.mark.pocketmanager.CustomClass.DayAmount;
-import com.mark.pocketmanager.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -50,6 +45,11 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.kal.rackmonthpicker.RackMonthPicker;
+import com.mark.pocketmanager.Account.AccountViewModel;
+import com.mark.pocketmanager.CustomClass.CategoryAmount;
+import com.mark.pocketmanager.CustomClass.DayAmount;
+import com.mark.pocketmanager.R;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -58,9 +58,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class GraphActivity extends AppCompatActivity {
-    private GraphActivity.incomeGraphAdapter inGraphAdapter;
-    private GraphActivity.expenseGraphAdapter outGraphAdapter;
+public class GraphFragment extends Fragment {
+    private GraphFragment.incomeGraphAdapter inGraphAdapter;
+    private GraphFragment.expenseGraphAdapter outGraphAdapter;
     private List<CategoryAmount> inCategoryAmountData = new ArrayList<>();
     private List<CategoryAmount> outCategoryAmountData = new ArrayList<>();
     private List<BarEntry> dayBarEntrys = new ArrayList<>();
@@ -85,33 +85,53 @@ public class GraphActivity extends AppCompatActivity {
     private Button monthPicker;
     private TextView noData;
 
-    @SuppressLint({"NotifyDataSetChanged", "CutPasteId"})
+    public GraphFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
-        monthPicker = findViewById(R.id.monthPicker);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_graph, container, false);
+        monthPicker = view.findViewById(R.id.monthPicker);
         monthPicker.setText(dateFormat.format(date.getTime()));
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
-        RecyclerView incomeRecyclerView = findViewById(R.id.incomeRecyclerView);
-        RecyclerView expenseRecyclerView = findViewById(R.id.expenseRecyclerView);
-        inPieChart = findViewById(R.id.incomePieChart);
-        outPieChart = findViewById(R.id.expensePieChart);
-        monthBarChart = findViewById(R.id.monthBarChart);
-        inBarChart = findViewById(R.id.incomeBarChart);
-        outBarChart = findViewById(R.id.expenseBarChart);
-        inPieChartView = findViewById(R.id.incomePieChart);
-        outPieChartView = findViewById(R.id.expensePieChart);
-        inBarChartView = findViewById(R.id.incomeBarChart);
-        outBarChartView = findViewById(R.id.expenseBarChart);
-        noData = findViewById(R.id.noData);
-        ImageButton lastMonth = findViewById(R.id.lastMonth);
-        ImageButton nextMonth = findViewById(R.id.nextMonth);
+        RecyclerView incomeRecyclerView = view.findViewById(R.id.incomeRecyclerView);
+        RecyclerView expenseRecyclerView = view.findViewById(R.id.expenseRecyclerView);
+        inPieChart = view.findViewById(R.id.incomePieChart);
+        outPieChart = view.findViewById(R.id.expensePieChart);
+        monthBarChart = view.findViewById(R.id.monthBarChart);
+        inBarChart = view.findViewById(R.id.incomeBarChart);
+        outBarChart = view.findViewById(R.id.expenseBarChart);
+        inPieChartView = view.findViewById(R.id.incomePieChart);
+        outPieChartView = view.findViewById(R.id.expensePieChart);
+        inBarChartView = view.findViewById(R.id.incomeBarChart);
+        outBarChartView = view.findViewById(R.id.expenseBarChart);
+        noData = view.findViewById(R.id.noData);
+        ImageButton lastMonth = view.findViewById(R.id.lastMonth);
+        ImageButton nextMonth = view.findViewById(R.id.nextMonth);
+
+        monthPicker.setOnClickListener(v -> {
+            new RackMonthPicker(v.getContext())
+                    .setLocale(Locale.TRADITIONAL_CHINESE)
+                    .setNegativeText("取消")
+                    .setPositiveText("確認")
+                    .setPositiveButton((month, startDate, endDate, year, monthLabel) -> {
+                        date.set(Calendar.YEAR, year);
+                        date.set(Calendar.MONTH, month-1);
+                        monthPicker.setText(dateFormat.format(date.getTime()));
+                        resetLiveData();
+                    })
+                    .setNegativeButton(Dialog::cancel).show();
+        });
+
         lastMonth.setOnClickListener(v -> {
             date.add(Calendar.MONTH, -1);
             monthPicker.setText(dateFormat.format(date.getTime()));
             resetLiveData();
         });
+
         nextMonth.setOnClickListener(v -> {
             date.add(Calendar.MONTH, 1);
             monthPicker.setText(dateFormat.format(date.getTime()));
@@ -119,67 +139,54 @@ public class GraphActivity extends AppCompatActivity {
         });
         //incomeRecycleView
         incomeRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager incomeLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager incomeLayoutManager = new LinearLayoutManager(view.getContext());
         incomeRecyclerView.setLayoutManager(incomeLayoutManager);
-        inGraphAdapter = new GraphActivity.incomeGraphAdapter();
+        inGraphAdapter = new GraphFragment.incomeGraphAdapter();
         incomeRecyclerView.setAdapter(inGraphAdapter);
         //expenseRecycleView
         expenseRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager expenseLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager expenseLayoutManager = new LinearLayoutManager(view.getContext());
         expenseRecyclerView.setLayoutManager(expenseLayoutManager);
-        outGraphAdapter = new GraphActivity.expenseGraphAdapter();
+        outGraphAdapter = new GraphFragment.expenseGraphAdapter();
         expenseRecyclerView.setAdapter(outGraphAdapter);
-        toggleButton = findViewById(R.id.chart_toggleButton);
+        toggleButton = view.findViewById(R.id.chart_toggleButton);
         //長條圓餅提示切換
         toggleButton.setOnClickListener(v -> {
             if (toggleButton.isChecked()) {
-                    //Toast.makeText(GraphActivity.this, "長條圖模式", Toast.LENGTH_SHORT).show();
-                    inPieChartView.setVisibility(View.GONE);
-                    outPieChartView.setVisibility(View.GONE);
-                    inBarChartView.setVisibility(View.VISIBLE);
-                    outBarChartView.setVisibility(View.VISIBLE);
-                } else {
-                    //Toast.makeText(GraphActivity.this, "圓餅圖模式", Toast.LENGTH_SHORT).show();
-                    inPieChartView.setVisibility(View.VISIBLE);
-                    outPieChartView.setVisibility(View.VISIBLE);
-                    inBarChartView.setVisibility(View.GONE);
-                    outBarChartView.setVisibility(View.GONE);
-                }
+                //Toast.makeText(GraphActivity.this, "長條圖模式", Toast.LENGTH_SHORT).show();
+                inPieChartView.setVisibility(View.GONE);
+                outPieChartView.setVisibility(View.GONE);
+                inBarChartView.setVisibility(View.VISIBLE);
+                outBarChartView.setVisibility(View.VISIBLE);
+            } else {
+                //Toast.makeText(GraphActivity.this, "圓餅圖模式", Toast.LENGTH_SHORT).show();
+                inPieChartView.setVisibility(View.VISIBLE);
+                outPieChartView.setVisibility(View.VISIBLE);
+                inBarChartView.setVisibility(View.GONE);
+                outBarChartView.setVisibility(View.GONE);
+            }
         });
         //靜態載入佈局
         //setContentView(R.layout.activity_graph);
         resetLiveData();
         //當月收支長條圖
         //長條圖
-    }
-
-    public void rackMonthPicker(View v){
-        new RackMonthPicker(this)
-                .setLocale(Locale.TRADITIONAL_CHINESE)
-                .setNegativeText("取消")
-                .setPositiveText("確認")
-                .setPositiveButton((month, startDate, endDate, year, monthLabel) -> {
-                    date.set(Calendar.YEAR, year);
-                    date.set(Calendar.MONTH, month-1);
-                    monthPicker.setText(dateFormat.format(date.getTime()));
-                    resetLiveData();
-                })
-                .setNegativeButton(Dialog::cancel).show();
+        return view;
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private void resetLiveData() {
         if (dayAmountLiveData != null && dayAmountLiveData.hasActiveObservers()) {
-            dayAmountLiveData.removeObservers(GraphActivity.this);
+            dayAmountLiveData.removeObservers(GraphFragment.this);
         }
         if (inCategoryAmountLiveData != null && inCategoryAmountLiveData.hasActiveObservers()) {
-            inCategoryAmountLiveData.removeObservers(GraphActivity.this);
+            inCategoryAmountLiveData.removeObservers(GraphFragment.this);
         }
         if (outCategoryAmountLiveData != null && outCategoryAmountLiveData.hasActiveObservers()) {
-            outCategoryAmountLiveData.removeObservers(GraphActivity.this);
+            outCategoryAmountLiveData.removeObservers(GraphFragment.this);
         }
         dayAmountLiveData = accountViewModel.getDayAmountsLive(date.get(Calendar.YEAR), date.get(Calendar.MONTH));
-        dayAmountLiveData.observe(this, dayAmounts -> {
+        dayAmountLiveData.observe(this.getViewLifecycleOwner(), dayAmounts -> {
             if (dayAmounts.size() == 0) {
                 inPieChartView.setVisibility(View.GONE);
                 outPieChartView.setVisibility(View.GONE);
@@ -214,7 +221,7 @@ public class GraphActivity extends AppCompatActivity {
             monthBarChartShow();
         });
         inCategoryAmountLiveData = accountViewModel.getCategoryAmountsLive(date.get(Calendar.YEAR), date.get(Calendar.MONTH), "收入");
-        inCategoryAmountLiveData.observe(this, categoryAmounts -> {
+        inCategoryAmountLiveData.observe(this.getViewLifecycleOwner(), categoryAmounts -> {
             inCategoryAmountData = categoryAmounts;
             inPieEntrys = new ArrayList<>();
             inVBarEntrys = new ArrayList<>();
@@ -229,7 +236,7 @@ public class GraphActivity extends AppCompatActivity {
             inGraphAdapter.notifyDataSetChanged();
         });
         outCategoryAmountLiveData = accountViewModel.getCategoryAmountsLive(date.get(Calendar.YEAR), date.get(Calendar.MONTH), "支出");
-        outCategoryAmountLiveData.observe(this, categoryAmounts -> {
+        outCategoryAmountLiveData.observe(this.getViewLifecycleOwner(), categoryAmounts -> {
             outCategoryAmountData = categoryAmounts;
             outPieEntrys = new ArrayList<>();
             outBarEntrys = new ArrayList<>();
@@ -436,7 +443,7 @@ public class GraphActivity extends AppCompatActivity {
         //設置網格佈局
         monthBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
-        ValueFormatter custom = new MyValueFormatter(0);
+        GraphFragment.ValueFormatter custom = new GraphFragment.MyValueFormatter(0);
         //獲取x軸線
         XAxis xAxis = monthBarChart.getXAxis();
         //設置x軸的顯示位置
@@ -473,7 +480,7 @@ public class GraphActivity extends AppCompatActivity {
         }
         else {
             //MonthSet = new BarDataSet(values, "日期");
-            monthSet = new mMonthSet(dayBarEntrys,"");
+            monthSet = new GraphFragment.mMonthSet(dayBarEntrys,"");
             //設置兩種顏色
             monthSet.setColors(Color.rgb(164, 228, 251), Color.rgb(255, 147, 147));
             monthSet.setDrawValues(true);
@@ -627,7 +634,7 @@ public class GraphActivity extends AppCompatActivity {
             String sPos=String.valueOf(pos);
             String sInfo=parent.getItemAtPosition(pos).toString();
 
-            Toast.makeText(GraphActivity.this,sPos+" "+sInfo, Toast.LENGTH_SHORT).show();
+            Toast.makeText(GraphFragment.this.getContext(),sPos+" "+sInfo, Toast.LENGTH_SHORT).show();
             //String sInfo=parent.getSelectedItem().toString();
 
         }
@@ -636,7 +643,7 @@ public class GraphActivity extends AppCompatActivity {
         }
     };
 
-    private class incomeGraphAdapter extends RecyclerView.Adapter<incomeGraphAdapter.MyViewHolder>{
+    private class incomeGraphAdapter extends RecyclerView.Adapter<GraphFragment.incomeGraphAdapter.MyViewHolder>{
         class MyViewHolder extends RecyclerView.ViewHolder{
             public View itemView;
             public TextView amount, category;
@@ -651,21 +658,21 @@ public class GraphActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public incomeGraphAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public GraphFragment.incomeGraphAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from((parent.getContext()))
                     .inflate(R.layout.category_amount, parent,false);
 
-            return new GraphActivity.incomeGraphAdapter.MyViewHolder(itemView);
+            return new GraphFragment.incomeGraphAdapter.MyViewHolder(itemView);
         }
 
         @SuppressLint("SetTextI18n")
         @Override
-        public void onBindViewHolder(@NonNull  incomeGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
+        public void onBindViewHolder(@NonNull  GraphFragment.incomeGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             holder.category.setText(inCategoryAmountData.get(position).Category);
             holder.amount.setText(Integer.toString(inCategoryAmountData.get(position).Amount));
 
             holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(GraphActivity.this, CategoryGraphActivity.class);
+                Intent intent = new Intent(GraphFragment.this.getContext(), CategoryGraphActivity.class);
                 startActivity(intent);
             });
         }
@@ -676,7 +683,7 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
-    private class expenseGraphAdapter extends RecyclerView.Adapter<expenseGraphAdapter.MyViewHolder>{
+    private class expenseGraphAdapter extends RecyclerView.Adapter<GraphFragment.expenseGraphAdapter.MyViewHolder>{
         class MyViewHolder extends RecyclerView.ViewHolder{
             public View itemView;
             public TextView amount, category;
@@ -691,21 +698,21 @@ public class GraphActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public expenseGraphAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public GraphFragment.expenseGraphAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from((parent.getContext()))
                     .inflate(R.layout.category_amount, parent,false);
 
-            return new GraphActivity.expenseGraphAdapter.MyViewHolder(itemView);
+            return new GraphFragment.expenseGraphAdapter.MyViewHolder(itemView);
         }
 
         @SuppressLint("SetTextI18n")
         @Override
-        public void onBindViewHolder(@NonNull  expenseGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
+        public void onBindViewHolder(@NonNull  GraphFragment.expenseGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             holder.category.setText(outCategoryAmountData.get(position).Category);
             holder.amount.setText(Integer.toString(outCategoryAmountData.get(position).Amount));
 
             holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(GraphActivity.this, CategoryGraphActivity.class);
+                Intent intent = new Intent(GraphFragment.this.getContext(), CategoryGraphActivity.class);
                 startActivity(intent);
             });
         }
@@ -716,7 +723,7 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
-    public class MyValueFormatter extends ValueFormatter {
+    public class MyValueFormatter extends GraphFragment.ValueFormatter {
         private final DecimalFormat mFormat = new DecimalFormat("00");
         public static final int DAY = 0; //日
         public static final int CATEGORY = 1; //類別
@@ -742,7 +749,7 @@ public class GraphActivity extends AppCompatActivity {
                     break;
                 case CATEGORY:
                     tmp = mCategory[position % 5];
-                break;
+                    break;
                 default:
                     tmp="錯誤";
                     break;

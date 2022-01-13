@@ -1,12 +1,17 @@
 package com.mark.pocketmanager.Setting;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -26,10 +31,15 @@ public class SettingActivity extends AppCompatActivity {
     SharedPreferences preferences;
     //boolean notification;
 
+    public SettingFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_setting, container, false);
         googleDriveData = this.getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
@@ -47,11 +57,11 @@ public class SettingActivity extends AppCompatActivity {
             if(getIsLogIn()){
                 mGDS.logOut();
                 updateIsLogIn(false);
-                Toast.makeText(SettingActivity.this, "登出", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingFragment.this.getContext(), "登出", Toast.LENGTH_SHORT).show();
                 connectGoogle.setText("連結帳號");
             }else {
                 Log.i("onclick", "start sign in");
-                Intent intent = mGDS.getSignInIntent(SettingActivity.this);
+                Intent intent = mGDS.getSignInIntent(SettingFragment.this.getActivity());
                 startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
             }
         });
@@ -60,54 +70,54 @@ public class SettingActivity extends AppCompatActivity {
         handbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGDS.backUpToDrive(SettingActivity.this);
+                mGDS.backUpToDrive(SettingFragment.this);
             }
         });
         handbutton = findViewById(R.id.handrestore);
         handbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGDS.restoreFileFromDrive(SettingActivity.this);
+                mGDS.restoreFileFromDrive(SettingFragment.this);
             }
         });
         autoBackup = findViewById(R.id.autoBackup);
         autoBackup.setOnClickListener(v -> {
-            mGDS.deleteAllBackupFromDrive(SettingActivity.this);
+            mGDS.deleteAllBackupFromDrive(SettingFragment.this);
 //            Intent intent = new Intent();
 //            intent.setClass(SettingActivity.this, BackUpActivity.class);
 //            startActivity(intent);
         });
-        income = findViewById(R.id.income);
+        income = view.findViewById(R.id.income);
         income.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("type","收入");
-            intent.setClass(SettingActivity.this, CategoryActivity.class);
+            intent.setClass(SettingFragment.this.getContext(), CategoryActivity.class);
             startActivity(intent);
         });
 
-        expenditure = findViewById(R.id.expenditure);
+        expenditure = view.findViewById(R.id.expenditure);
         expenditure.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("type","支出");
-            intent.setClass(SettingActivity.this, CategoryActivity.class);
+            intent.setClass(SettingFragment.this.getContext(), CategoryActivity.class);
             startActivity(intent);
         });
 
-        remind = findViewById(R.id.remind);
+        remind = view.findViewById(R.id.remind);
         remind.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.setClass(SettingActivity.this, Budget.class);
+            intent.setClass(SettingFragment.this.getContext(), Budget.class);
             startActivity(intent);
         });
 
-        sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+        sharedPreferences = getContext().getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
         //preferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
 
         //boolean Remind = preferences.getBoolean("remind",false);
         //remindSwitch.setChecked(Remind);
 
 
-        noticeSwitch=findViewById(R.id.noticeSwitch);
+        noticeSwitch=view.findViewById(R.id.noticeSwitch);
         noticeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             boolean listener = noticeSwitch.isChecked();
 
@@ -117,8 +127,8 @@ public class SettingActivity extends AppCompatActivity {
         });
         noticeSwitch.setChecked(sharedPreferences.getBoolean("listener",false));
 
+        return view;
     }
-
     public void intentBuget(){
 //        Intent intent = new Intent();
 //        intent.setClass(SettingActivity.this, ExpenditureThreshold.class);
@@ -129,8 +139,8 @@ public class SettingActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         switch (requestCode) {
             case GoogleDriveService.RC_SIGN_IN:
-                if(mGDS.handleSignInResult(data , SettingActivity.this)){
-                    mGDS.requestStoragePremission(this);
+                if(mGDS.handleSignInResult(data , SettingFragment.this.getContext())){
+                    mGDS.requestStoragePremission(this.getActivity());
 //                    mGDS.deleteAllBackupFromDrive(SettingActivity.this);
 //                    mGDS.backUpToDrive(SettingActivity.this);
 //                    mGDS.restoreFileFromDrive(SettingActivity.this);
@@ -144,7 +154,7 @@ public class SettingActivity extends AppCompatActivity {
                     updateIsLogIn(false);
                 }
                 else{
-                    Toast.makeText(SettingActivity.this, "登入失敗", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingFragment.this.getContext(), "登入失敗", Toast.LENGTH_SHORT).show();
                     updateIsLogIn(false);
                 }
                 break;

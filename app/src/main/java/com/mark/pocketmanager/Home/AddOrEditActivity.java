@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -20,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.Guideline;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mark.pocketmanager.Account.Account;
@@ -66,10 +64,10 @@ public class AddOrEditActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("");
-        setContentView(R.layout.add_or_edit_page);
+        setContentView(R.layout.activity_add_or_edit);
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        ActionBar actionBar=getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         mode = intent.getStringExtra("mode");
