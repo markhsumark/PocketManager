@@ -61,7 +61,6 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mGDS.backUpToDrive(SettingActivity.this);
-                Toast.makeText(SettingActivity.this, "檔案已備份到雲端", Toast.LENGTH_SHORT).show();
             }
         });
         handbutton = findViewById(R.id.handrestore);

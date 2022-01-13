@@ -127,6 +127,10 @@ public class GoogleDriveService {
     }
     public void backUpToDrive(Context context){
         driveService= getDriveService(context);
+        if (!isLogIn(driveService)){
+            Toast.makeText(context, "請先登入", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Thread thr = new Thread(() -> {
             for(String filename: GoogleDriveUtil.dbFileNames){
                 ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
@@ -138,9 +142,16 @@ public class GoogleDriveService {
             }
         });
         thr.start();
+        while(thr.isInterrupted()){
+            Toast.makeText(context, "備份失敗", Toast.LENGTH_SHORT).show();
+        }
     }
     public void deleteAllBackupFromDrive(Context context){
         driveService= getDriveService(context);
+        if (!isLogIn(driveService)){
+            Toast.makeText(context, "請先登入", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Thread thr = new Thread(() -> {
             for(String filename: GoogleDriveUtil.dbFileNames) {
                 ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
@@ -153,12 +164,20 @@ public class GoogleDriveService {
                     Log.w("delete id", "there isn't exist file");
                 }
             }
-//            Toast.makeText(context, "已刪除在雲端的檔案", Toast.LENGTH_SHORT).show();
+
         });
         thr.start();
+        while(thr.isInterrupted()){
+            Toast.makeText(context, "刪除失敗", Toast.LENGTH_SHORT).show();
+        }
+
     }
     public void restoreFileFromDrive(Context context){
         driveService= getDriveService(context);
+        if (!isLogIn(driveService)){
+            Toast.makeText(context, "請先登入", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Thread thr = new Thread(() -> {
             for(String filename: GoogleDriveUtil.dbFileNames) {
                 ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
@@ -172,11 +191,18 @@ public class GoogleDriveService {
         });
         thr.start();
     }
+    private Boolean isLogIn(Drive drive){
+        if(drive == null){
+            return false;
+        }
+        return true;
+    }
     private Drive getDriveService(Context context){
         GoogleAccountCredential credential = GoogleAccountCredential
                 .usingOAuth2(context, Collections.singleton(DriveScopes.DRIVE_FILE));
         if(account == null) {
             Log.e("getDrive", "account is null");
+            return null;
         }
         credential.setSelectedAccount(account.getAccount());
 

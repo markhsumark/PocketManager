@@ -143,7 +143,7 @@ public class GoogleDriveUtil {
             Log.e("Error in searchFile", e.getMessage());
             return null;
         }
-        Log.i("searching" + filename, "end");
+        Log.i("searching " + filename, "end");
         if(result.getFiles().isEmpty()){
             return null;
         }
