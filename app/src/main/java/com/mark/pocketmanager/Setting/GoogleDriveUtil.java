@@ -96,16 +96,13 @@ public class GoogleDriveUtil {
     public static void downloadFileFromDrive(Drive driveService, String fileId, String filename){
         try {
             if(fileId != null) {
-
-                OutputStream outputStream = new ByteArrayOutputStream();
+                java.io.File dbFile = new java.io.File(rootPath + appFolderRootPath + filename);
+                FileOutputStream outputStream = new FileOutputStream(dbFile);
                 driveService.files().get(fileId)
                         .executeMediaAndDownloadTo(outputStream);
                 Log.i("download file context", outputStream.toString());
 
-                java.io.File dbFile = new java.io.File(rootPath + appFolderRootPath + filename);
-                FileOutputStream dbFileOutputStream = new FileOutputStream(dbFile);
-                dbFileOutputStream.write(outputStream.toString().getBytes());
-                dbFileOutputStream.close();
+                outputStream.close();
                 Log.i("download", "finish");
             }
         }catch(IOException e){
