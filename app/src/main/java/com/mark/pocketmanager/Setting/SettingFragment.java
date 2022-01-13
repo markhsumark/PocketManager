@@ -49,7 +49,7 @@ public class SettingFragment extends Fragment {
         }else if(ifLogInBefore() && !mGDS.ifConnected()){
             //曾經登入過（有email紀錄），但沒有登入數據
             Log.w("auto","自動登入");
-            Intent intent = mGDS.getSignInIntent(SettingActivity.this);
+            Intent intent = mGDS.getSignInIntent(this.getActivity());
             startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
         }else{
             Log.w("auto","完全登出");
@@ -70,31 +70,25 @@ public class SettingFragment extends Fragment {
                 startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
             }
         });
-        handbutton = findViewById(R.id.handbackup);
-        handbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!ifLogInBefore()){
-                    Toast.makeText(SettingActivity.this, "請先登入", Toast.LENGTH_SHORT).show();
-                    return;
-                }else {
-                    mGDS.backUpToDrive(SettingActivity.this);
-                }
+        handbutton = view.findViewById(R.id.handbackup);
+        handbutton.setOnClickListener(v -> {
+            if (!ifLogInBefore()){
+                Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
+                return;
+            }else {
+                mGDS.backUpToDrive(this.getContext());
             }
         });
-        handrestore = findViewById(R.id.handrestore);
-        handrestore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!ifLogInBefore()){
-                    Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
-                    return;
-                }else {
-                    mGDS.restoreFileFromDrive(this.getContext());
-                }
+        handrestore = view.findViewById(R.id.handrestore);
+        handrestore.setOnClickListener(v -> {
+            if (!ifLogInBefore()){
+                Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
+                return;
+            }else {
+                mGDS.restoreFileFromDrive(this.getContext());
             }
         });
-        autoBackup = findViewById(R.id.autoBackup);
+        autoBackup = view.findViewById(R.id.autoBackup);
         autoBackup.setOnClickListener(v -> {
             if (!ifLogInBefore()){
                 Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
