@@ -5,21 +5,19 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.mark.pocketmanager.R;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingFragment extends Fragment {
     private Boolean isLogIn = false;
 
     private GoogleDriveService mGDS = new GoogleDriveService();
@@ -31,24 +29,20 @@ public class SettingActivity extends AppCompatActivity {
     SharedPreferences preferences;
     //boolean notification;
 
-    public SettingFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
-        googleDriveData = this.getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
+        googleDriveData = getContext().getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
         // INPUTB 是預設的文字
 
-        connectGoogle = findViewById(R.id.connectGoogle);
+        connectGoogle = view.findViewById(R.id.connectGoogle);
         //判斷是否已經登入，若曾經登入則自動登入一次，未登入就顯示「連結帳號」
         if(getIsLogIn()){
-            Intent intent = mGDS.getSignInIntent(SettingActivity.this);
+            Intent intent = mGDS.getSignInIntent(this.getActivity());
             startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
         }else{
             connectGoogle.setText("連結帳號");
@@ -57,7 +51,7 @@ public class SettingActivity extends AppCompatActivity {
             if(getIsLogIn()){
                 mGDS.logOut();
                 updateIsLogIn(false);
-                Toast.makeText(SettingFragment.this.getContext(), "登出", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "登出", Toast.LENGTH_SHORT).show();
                 connectGoogle.setText("連結帳號");
             }else {
                 Log.i("onclick", "start sign in");
@@ -66,23 +60,13 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        handbutton = findViewById(R.id.handbackup);
-        handbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGDS.backUpToDrive(SettingFragment.this);
-            }
-        });
-        handbutton = findViewById(R.id.handrestore);
-        handbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGDS.restoreFileFromDrive(SettingFragment.this);
-            }
-        });
-        autoBackup = findViewById(R.id.autoBackup);
+        handbutton = view.findViewById(R.id.handbackup);
+        handbutton.setOnClickListener(v -> mGDS.backUpToDrive(SettingFragment.this.getContext()));
+        handbutton = view.findViewById(R.id.handrestore);
+        handbutton.setOnClickListener(v -> mGDS.restoreFileFromDrive(SettingFragment.this.getContext()));
+        autoBackup = view.findViewById(R.id.autoBackup);
         autoBackup.setOnClickListener(v -> {
-            mGDS.deleteAllBackupFromDrive(SettingFragment.this);
+            mGDS.deleteAllBackupFromDrive(this.getContext());
 //            Intent intent = new Intent();
 //            intent.setClass(SettingActivity.this, BackUpActivity.class);
 //            startActivity(intent);
@@ -149,7 +133,7 @@ public class SettingActivity extends AppCompatActivity {
                     connectGoogle.setText(userEmail);
 
                     updateIsLogIn(true);
-                    Toast.makeText(SettingActivity.this, "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingFragment.this.getContext(), "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
                     Log.i("sign in", "Sign in success");
                     updateIsLogIn(false);
                 }
