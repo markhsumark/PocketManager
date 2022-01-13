@@ -19,7 +19,7 @@ public class SettingActivity extends AppCompatActivity {
 
     private GoogleDriveService mGDS = new GoogleDriveService();
 
-    private SharedPreferences accountData;
+    private SharedPreferences googleDriveData;
     Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind, handbutton;
     Switch noticeSwitch;
     SharedPreferences sharedPreferences;
@@ -30,7 +30,7 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-        accountData = this.getSharedPreferences("Account_Data", MODE_PRIVATE);
+        googleDriveData = this.getSharedPreferences("Account_Data", MODE_PRIVATE);
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
         // INPUTB 是預設的文字
@@ -39,7 +39,7 @@ public class SettingActivity extends AppCompatActivity {
 
         //判斷是否已經登入，若登入則顯示email，未登入就顯示「連結帳號」
         if(getIsLogIn()){
-            String userEmail = accountData.getString("email","");
+            String userEmail = googleDriveData.getString("email","");
             connectGoogle.setText(userEmail);
         }else{
             connectGoogle.setText("連結帳號");
@@ -134,8 +134,8 @@ public class SettingActivity extends AppCompatActivity {
 //                    mGDS.deleteAllBackupFromDrive(SettingActivity.this);
 //                    mGDS.backUpToDrive(SettingActivity.this);
 //                    mGDS.restoreFileFromDrive(SettingActivity.this);
-                    accountData = mGDS.setAccountData(accountData);
-                    String userEmail = accountData.getString("email","已登入");
+                    googleDriveData = mGDS.setAccountData(googleDriveData);
+                    String userEmail = googleDriveData.getString("email","已登入");
                     connectGoogle.setText(userEmail);
 
 
@@ -155,11 +155,11 @@ public class SettingActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
     private void updateIsLogIn(Boolean TorF){
-        SharedPreferences.Editor editor = accountData.edit();
+        SharedPreferences.Editor editor = googleDriveData.edit();
         editor.putBoolean("isLogIn", TorF);
         editor.apply();
     }
     public Boolean getIsLogIn(){
-        return accountData.getBoolean("isLogIn", false);
+        return googleDriveData.getBoolean("isLogIn", false);
     }
 }
