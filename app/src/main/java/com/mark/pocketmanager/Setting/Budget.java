@@ -12,12 +12,17 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.mark.pocketmanager.R;
 
+/*
+    SharedPpreference's Data:
+    {"budget" : String 預算金額, "ifRemind" : Boolean是否提醒}
+*/
 public class Budget extends AppCompatActivity {
     Switch remindSwitch;
-    EditText bugetEdit,test;
+    EditText bugetEdit;
     Button save;
     SharedPreferences settingData;
 
@@ -38,30 +43,27 @@ public class Budget extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         settingData = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
-        remindSwitch=findViewById(R.id.remindSwitch);
 
-        remindSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            boolean notification = remindSwitch.isChecked();
-
-            SharedPreferences.Editor editor = settingData.edit();
-            editor.putBoolean("notification",notification);
-            editor.apply();
-            if(isChecked){
-
-            }
-        });
-        remindSwitch.setChecked(settingData.getBoolean("notification",false));
-
-        bugetEdit=findViewById(R.id.bugetEdit);
+        bugetEdit = findViewById(R.id.bugetEdit);
+        remindSwitch = findViewById(R.id.remindSwitch);
         save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
             String buget = bugetEdit.getText().toString();
-            SharedPreferences.Editor editor = settingData.edit();
-            editor.putString("buget",buget);
-            editor.apply();
-
-            finish();
+            boolean ifRemind = remindSwitch.isChecked();
+            if(ifRemind && buget.equals("0")){
+                Toast.makeText(Budget.this ,"預算不得為0", Toast.LENGTH_LONG).show();
+            }
+            else {
+//            Boolean ifRemind = remindSwitch.isChecked();
+                SharedPreferences.Editor editor = settingData.edit();
+                editor.putString("buget", buget);
+                editor.putBoolean("ifRemind", ifRemind);
+//            editor.putBoolean("ifRemind", ifRemind);
+                editor.apply();
+                finish();
+            }
         });
+        remindSwitch.setChecked(settingData.getBoolean("ifRemind",false));
         bugetEdit.setText(settingData.getString("buget","0"));
     }
 }

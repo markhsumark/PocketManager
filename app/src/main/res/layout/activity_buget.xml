@@ -5,59 +5,131 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mark.pocketmanager.Setting.Budget">
-
     <TextView
-        android:id="@+id/remind"
+        android:id="@+id/hintTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="156dp"
-        android:text="提醒"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="提醒設定"
+        android:textSize="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/remindSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="156dp"
-        android:layout_marginEnd="80dp"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/bugetEditBlock"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/buget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="280dp"
-        android:text="預算"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/bugetEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="272dp"
-        android:layout_marginEnd="48dp"
-        android:ems="10"
-        android:inputType="number"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck" />
-
+        app:layout_constraintTop_toBottomOf="@+id/hintTextView" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:layout_marginStart="10dp"
+            android:text="預算"/>
+        <EditText
+            android:id="@+id/bugetEdit"
+            android:layout_width="240dp"
+            android:layout_height="60dp"
+            android:gravity="right|center_vertical"
+            android:inputType="number"
+            android:layout_marginStart="50dp"
+            android:textSize="30dp" />
+        
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/remindBlock"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/bugetEditBlock"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提醒開關"
+            android:textSize="25dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Switch
+            android:id="@+id/remindSwitch"
+            android:layout_width="240dp"
+            android:gravity="center"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
     <Button
         android:id="@+id/save"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="512dp"
-        android:layout_marginEnd="60dp"
-        android:text="save"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:text="儲存"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/remindBlock" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/remind"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="76dp"-->
+<!--        android:layout_marginTop="156dp"-->
+<!--        android:text="提醒"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <Switch-->
+<!--        android:id="@+id/remindSwitch"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="156dp"-->
+<!--        android:layout_marginEnd="80dp"-->
+<!--        android:minWidth="48dp"-->
+<!--        android:minHeight="48dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/buget"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="80dp"-->
+<!--        android:layout_marginTop="280dp"-->
+<!--        android:text="預算"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/bugetEdit"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="272dp"-->
+<!--        android:layout_marginEnd="48dp"-->
+<!--        android:ems="10"-->
+<!--        android:inputType="number"-->
+<!--        android:minHeight="48dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:ignore="SpeakableTextPresentCheck" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/save"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="512dp"-->
+<!--        android:layout_marginEnd="60dp"-->
+<!--        android:text="save"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,17 +30,16 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-        googleDriveData = this.getSharedPreferences("Account_Data", MODE_PRIVATE);
+        googleDriveData = this.getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
         // INPUTB 是預設的文字
 
         connectGoogle = findViewById(R.id.connectGoogle);
-
-        //判斷是否已經登入，若登入則顯示email，未登入就顯示「連結帳號」
+        //判斷是否已經登入，若曾經登入則自動登入一次，未登入就顯示「連結帳號」
         if(getIsLogIn()){
-            String userEmail = googleDriveData.getString("email","");
-            connectGoogle.setText(userEmail);
+            Intent intent = mGDS.getSignInIntent(SettingActivity.this);
+            startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
         }else{
             connectGoogle.setText("連結帳號");
         }
@@ -56,6 +55,7 @@ public class SettingActivity extends AppCompatActivity {
                 startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
             }
         });
+
         handbutton = findViewById(R.id.handbackup);
         handbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +138,7 @@ public class SettingActivity extends AppCompatActivity {
                     String userEmail = googleDriveData.getString("email","已登入");
                     connectGoogle.setText(userEmail);
 
-
+                    updateIsLogIn(true);
                     Toast.makeText(SettingActivity.this, "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
                     Log.i("sign in", "Sign in success");
                     updateIsLogIn(false);
