@@ -1,57 +1,86 @@
 package com.mark.pocketmanager;
 
-import android.annotation.SuppressLint;
-import android.app.TabActivity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TabHost;
 
-import com.mark.pocketmanager.Graph.GraphActivity;
-import com.mark.pocketmanager.Home.HomeActivity;
-import com.mark.pocketmanager.Setting.SettingActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-public class MainActivity extends TabActivity{
 
-    TabHost tabHost=null;      //选项卡控制器
-    TabHost.TabSpec tabSpecA,tabSpecB, tabSpecC=null;   //选项卡,这里选项卡最好不用混用，有几个选项卡就设置几个对象
-    @SuppressLint("UseCompatLoadingForDrawables")
+import com.google.android.material.tabs.TabLayout;
+import com.mark.pocketmanager.Graph.GraphFragment;
+import com.mark.pocketmanager.Home.HomeFragment;
+import com.mark.pocketmanager.Setting.SettingFragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
+    public static int lastPosition = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //获得TabHost实例；
-        tabHost=getTabHost();
-        //获得TabHost.TabSpec对象实例；
-        tabSpecA=tabHost.newTabSpec("帳單");
-        //为TabSpec对象设置指示器
-        tabSpecA.setIndicator("帳單",getResources().getDrawable(android.R.drawable.ic_media_play));
-        //为选项卡设置内容，这里需要创建一个intent对象
-        Intent intentA=new Intent();
-        intentA.setClass(this, HomeActivity.class);
-        tabSpecA.setContent(intentA);
 
-        //for chart：
-        tabSpecB=tabHost.newTabSpec("統計");
-        tabSpecB.setIndicator("統計",getResources().getDrawable(android.R.drawable.ic_media_next));
-        Intent intentB=new Intent();
-        intentB.setClass(this, GraphActivity.class);
-        tabSpecB.setContent(intentB);
+        mViewPager = findViewById(R.id.view_pager);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            @Override
+            public void onPageSelected(int position) {
+                lastPosition = position;
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
 
-        //for setting：
-        tabSpecC=tabHost.newTabSpec("設定");
-        tabSpecC.setIndicator("設定",getResources().getDrawable(android.R.drawable.ic_media_next));
-        Intent intentC=new Intent();
-        intentC.setClass(this, SettingActivity.class);
-        tabSpecC.setContent(intentC);
+        setupViewPager(mViewPager);
 
-        //最后一步，把两个选项卡TabSpec添加到选项卡控件TabHost中
-        tabHost.addTab(tabSpecA);
-        tabHost.addTab(tabSpecB);
-        tabHost.addTab(tabSpecC);
+        mTabLayout = findViewById(R.id.tab_layout);
+        mTabLayout.setupWithViewPager(mViewPager);
+    }
 
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new HomeFragment(), "Home");
+        adapter.addFragment(new GraphFragment(), "Graph");
+        adapter.addFragment(new SettingFragment(), "Setting");
 
+        viewPager.setAdapter(adapter);
+    }
 
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 }
