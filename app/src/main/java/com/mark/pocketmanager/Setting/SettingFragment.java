@@ -2,6 +2,7 @@ package com.mark.pocketmanager.Setting;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,11 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.mark.pocketmanager.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class SettingFragment extends Fragment {
     private final GoogleDriveService mGDS = new GoogleDriveService();
@@ -23,8 +29,12 @@ public class SettingFragment extends Fragment {
     private SharedPreferences googleDriveData;
     Button connectGoogle,autoBackup,income,expenditure,remind, handbutton, handrestore;
     Switch noticeSwitch;
-    SharedPreferences sharedPreferences;
+    SharedPreferences settingData;
+    Calendar calendar = Calendar.getInstance();
+    TextView backupdate;
     //boolean notification;
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,6 +42,7 @@ public class SettingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         googleDriveData = this.getContext().getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
+        settingData = this.getContext().getSharedPreferences("Setting_Data", MODE_PRIVATE);
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
         // INPUTB 是預設的文字
@@ -67,12 +78,20 @@ public class SettingFragment extends Fragment {
                 startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
             }
         });
+        backupdate = view.findViewById(R.id.backupdate);
+        backupdate.setText("最新備份紀錄:\n"+settingData.getString("backupdate", "沒有備份紀錄"));
+
         handbutton = view.findViewById(R.id.handbackup);
         handbutton.setOnClickListener(v -> {
             if (!ifLogInBefore()){
                 Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
             }else {
                 mGDS.backUpToDrive(this.getContext());
+                String now = dateFormat.format(calendar.getTime());
+                backupdate.setText("最新備份紀錄:"+now);
+                SharedPreferences.Editor editor = settingData.edit();
+                editor.putString("backupdate", now);
+                editor.apply();
             }
         });
         handrestore = view.findViewById(R.id.handrestore);
@@ -117,7 +136,6 @@ public class SettingFragment extends Fragment {
             startActivity(intent);
         });
 
-        sharedPreferences = getContext().getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
         //preferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
 
         //boolean Remind = preferences.getBoolean("remind",false);
@@ -128,11 +146,11 @@ public class SettingFragment extends Fragment {
         noticeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             boolean listener = noticeSwitch.isChecked();
 
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            SharedPreferences.Editor editor = settingData.edit();
             editor.putBoolean("listener",listener);
             editor.apply();
         });
-        noticeSwitch.setChecked(sharedPreferences.getBoolean("listener",false));
+        noticeSwitch.setChecked(settingData.getBoolean("listener",false));
 
         return view;
     }
