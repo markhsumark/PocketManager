@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         mTabLayout = findViewById(R.id.tab_layout);
         mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.getTabAt(0).setIcon(R.drawable.bill_icon);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.graph_icon);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.setting_icon);
     }
 
     private void setupViewPager(ViewPager viewPager) {
