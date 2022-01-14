@@ -28,7 +28,7 @@ public class SettingFragment extends Fragment {
     private static ProgressDialog progress;
     private final GoogleDriveService mGDS = new GoogleDriveService();
 
-    private SharedPreferences googleDriveData;
+    private static SharedPreferences googleDriveData;
     Button connectGoogle,autoBackup,income,expenditure,remind, handbutton, handrestore;
     Switch noticeSwitch;
     SharedPreferences settingData;
@@ -199,6 +199,9 @@ public class SettingFragment extends Fragment {
 
     public static ProgressDialog getProgressDialog(){
         return progress;
+    }
+    public static SharedPreferences getGoogleDriveData(){
+        return googleDriveData;
     }
 
 }
