@@ -3,15 +3,13 @@ package com.mark.pocketmanager.Setting;
 import android.os.Environment;
 import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
@@ -22,17 +20,17 @@ public class GoogleDriveUtil {
 
 
 //    會改為資料庫的路徑
-    private static String rootPath = Environment.getDataDirectory().getPath();
-    private static String appFolderRootPath = "/data/com.mark.pocketmanager/databases/";
-    private static String testFolderRootPath = "/data/com.mark.pocketmanager/shared_prefs/";
+    private static final String rootPath = Environment.getDataDirectory().getPath();
+    private static final String appFolderRootPath = "/data/com.mark.pocketmanager/databases/";
+    private static final String testFolderRootPath = "/data/com.mark.pocketmanager/shared_prefs/";
 //    會改為DB file name
-    public static List<String> dbFileNames = Arrays.asList(
+    public static final List<String> dbFileNames = Arrays.asList(
             "account_database", "account_database-shm", "account_database-wal",
             "category_database", "category_database-shm", "category_database-wal");
-    private static String testFileName = "Account_Data.xml";
+    private static final String testFileName = "Account_Data.xml";
 
-    private static String mineType = "*/*";
-    private static String testMineType = "plain/xml";
+    private static final String mineType = "*/*";
+    private static final String testMineType = "plain/xml";
 
     private static File createMetadata(String filename){
         File fileMetadata = new File();
@@ -42,15 +40,12 @@ public class GoogleDriveUtil {
     }
     private static FileContent createMediaContent(String filename){
         java.io.File filePath = new java.io.File(rootPath + appFolderRootPath + filename);
-        FileContent mediaContent = new FileContent(mineType, filePath);
-        return mediaContent;
+        return new FileContent(mineType, filePath);
     }
     private static void doCreate(Drive driveService, File metaData, FileContent mediaContent) throws IOException{
-        String fileId;
         File file = driveService.files().create(metaData, mediaContent)
                 .setFields("id")
                 .execute();
-        fileId = file.getId();
         Log.i("File ID: ", file.getId());
 
     }
@@ -89,7 +84,6 @@ public class GoogleDriveUtil {
             Log.i("Uploadfile: ", "upload to :"+file.getId());
             Log.i("Uploadfile: ", "upload successfully");
         } catch (Exception e) {
-            fileId = null;
             Log.e("err when upload file", e.getMessage());
         }
     }
@@ -106,7 +100,7 @@ public class GoogleDriveUtil {
                 Log.i("download", "finish");
             }
         }catch(IOException e){
-            if(e.getMessage() == "416") {
+            if(Objects.equals(e.getMessage(), "416")) {
                 Log.e("Error!!the file might empty", e.getMessage());
             }else{
                 Log.e("Error", e.getMessage());
@@ -122,20 +116,15 @@ public class GoogleDriveUtil {
         }
     }
     private static FileList doFind(Drive driveService, String filename)throws IOException{
-        FileList result = driveService.files().list()
+        return driveService.files().list()
                 .setQ("name ='"+filename+"'")
                 .setSpaces("drive")
 //                    .setSpaces("appDataFolder")
                 .setFields("files(id, name)")
                 .execute();
-        return result;
     }
     public static ArrayList<String> searchFileFromDrive(Drive driveService, String filename){
-        if(driveService == null){
-            Log.e("searching for", "driveService is null");
-        }
         FileList result;
-        String id;
         try {
             Log.i("searching for :" + filename, "start");
             result = doFind(driveService, filename);
@@ -148,7 +137,7 @@ public class GoogleDriveUtil {
             return null;
         }
         else{
-            ArrayList<String> ids = new ArrayList<String>();
+            ArrayList<String> ids = new ArrayList<>();
             for (File file : result.getFiles()) {
                 System.out.printf("Found file: %s (%s)\n",
                         file.getName(), file.getId());

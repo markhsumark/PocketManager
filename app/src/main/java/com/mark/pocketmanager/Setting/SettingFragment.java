@@ -18,15 +18,12 @@ import androidx.fragment.app.Fragment;
 import com.mark.pocketmanager.R;
 
 public class SettingFragment extends Fragment {
-    private Boolean isLogIn = false;
-
-    private GoogleDriveService mGDS = new GoogleDriveService();
+    private final GoogleDriveService mGDS = new GoogleDriveService();
 
     private SharedPreferences googleDriveData;
-    Button connectGoogle,handBackup,autoBackup,income,expenditure,property,remind, handbutton, handrestore;
+    Button connectGoogle,autoBackup,income,expenditure,remind, handbutton, handrestore;
     Switch noticeSwitch;
     SharedPreferences sharedPreferences;
-    SharedPreferences preferences;
     //boolean notification;
 
     @Override
@@ -74,7 +71,6 @@ public class SettingFragment extends Fragment {
         handbutton.setOnClickListener(v -> {
             if (!ifLogInBefore()){
                 Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
-                return;
             }else {
                 mGDS.backUpToDrive(this.getContext());
             }
@@ -83,7 +79,6 @@ public class SettingFragment extends Fragment {
         handrestore.setOnClickListener(v -> {
             if (!ifLogInBefore()){
                 Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
-                return;
             }else {
                 mGDS.restoreFileFromDrive(this.getContext());
             }
@@ -92,7 +87,6 @@ public class SettingFragment extends Fragment {
         autoBackup.setOnClickListener(v -> {
             if (!ifLogInBefore()){
                 Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
-                return;
             }else {
                 mGDS.deleteAllBackupFromDrive(this.getContext());
             }
@@ -151,28 +145,23 @@ public class SettingFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        switch (requestCode) {
-            case GoogleDriveService.RC_SIGN_IN:
-                if(mGDS.handleSignInResult(data , this.getContext())){
-                    mGDS.requestStoragePremission(this.getActivity());
+        if (requestCode == GoogleDriveService.RC_SIGN_IN) {
+            if (mGDS.handleSignInResult(data, this.getContext())) {
+                mGDS.requestStoragePremission(this.getActivity());
 //                    mGDS.deleteAllBackupFromDrive(SettingActivity.this);
 //                    mGDS.backUpToDrive(SettingActivity.this);
 //                    mGDS.restoreFileFromDrive(SettingActivity.this);
-                    googleDriveData = mGDS.setAccountData(googleDriveData);
-                    String userEmail = googleDriveData.getString("email","已登入");
-                    connectGoogle.setText(userEmail);
+                googleDriveData = mGDS.setAccountData(googleDriveData);
+                String userEmail = googleDriveData.getString("email", "已登入");
+                connectGoogle.setText(userEmail);
 
-                    updateIsLogIn(true);
-                    Toast.makeText(this.getContext(), "已連結帳號"+userEmail, Toast.LENGTH_SHORT).show();
-                    Log.i("sign in", "Sign in success");
-                }
-                else{
-                    Toast.makeText(this.getContext(), "登入失敗", Toast.LENGTH_SHORT).show();
-                    updateIsLogIn(false);
-                }
-                break;
-            default:
-                break;
+                updateIsLogIn(true);
+                Toast.makeText(this.getContext(), "已連結帳號" + userEmail, Toast.LENGTH_SHORT).show();
+                Log.i("sign in", "Sign in success");
+            } else {
+                Toast.makeText(this.getContext(), "登入失敗", Toast.LENGTH_SHORT).show();
+                updateIsLogIn(false);
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data);

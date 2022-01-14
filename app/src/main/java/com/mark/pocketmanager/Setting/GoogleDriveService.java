@@ -150,8 +150,8 @@ public class GoogleDriveService {
         }
         Thread thr = new Thread(() -> {
             for(String filename: GoogleDriveUtil.dbFileNames) {
-                ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
                 try {
+                    ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
                     for (String s : ids) {
                         Log.i("delete id", s);
                         GoogleDriveUtil.deleteFileFromDrive(driveService, s);
@@ -188,10 +188,7 @@ public class GoogleDriveService {
         thr.start();
     }
     private Boolean isLogIn(Drive drive){
-        if(drive == null){
-            return false;
-        }
-        return true;
+        return drive != null;
     }
     private Drive getDriveService(Context context){
         GoogleAccountCredential credential = GoogleAccountCredential
@@ -211,10 +208,6 @@ public class GoogleDriveService {
         return driveService;
     }
     public Boolean ifConnected(){
-        if(client != null){
-            return true;
-        }else{
-            return false;
-        }
+        return client != null;
     }
 }
