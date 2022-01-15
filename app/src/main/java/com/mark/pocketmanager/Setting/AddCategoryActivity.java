@@ -1,6 +1,7 @@
 package com.mark.pocketmanager.Setting;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -45,13 +46,23 @@ public class AddCategoryActivity extends AppCompatActivity {
 
         save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(categoryEditText.getText()))
-                Toast.makeText(v.getContext(),"請輸入類別名稱",Toast.LENGTH_LONG).show();
-            else{
+            if(TextUtils.isEmpty(categoryEditText.getText())){
+                showToast(v.getContext(),"請輸入類別名稱");
+            } else{
                 categoryViewModel.insertCategories(new Category(type, categoryEditText.getText().toString()));
                 finish();
             }
         });
+    }
+
+    private static Toast toast;
+    public static void showToast(Context context, String msg) {
+        if (toast != null) {
+            toast.cancel();
+            toast = null;
+        }
+        toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 }

@@ -25,7 +25,6 @@ import com.mark.pocketmanager.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class SettingFragment extends Fragment {
     private static ProgressDialog progress;
@@ -221,9 +220,6 @@ public class SettingFragment extends Fragment {
 
     public static ProgressDialog getProgressDialog(){
         return progress;
-    }
-    public static SharedPreferences getGoogleDriveData(){
-        return googleDriveData;
     }
 
 }
