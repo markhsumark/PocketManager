@@ -30,7 +30,7 @@ public class GoogleDriveUtil {
             "category_database", "category_database-shm", "category_database-wal");
     private static final String testFileName = "Account_Data.xml";
 
-    private static final String mimeType = "*/*";
+    private static final String mimeType = "application/zip";
     private static final String testMimeType = "plain/xml";
     private static final String zipMimeType = "application/zip";
 

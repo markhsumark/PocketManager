@@ -166,16 +166,14 @@ public class GoogleDriveService {
         Thread thread = new Thread(() -> {
             progress.setProgress(0);
             int counter = 0;
-            for(String filename: GoogleDriveUtil.dbFileNames){
-                ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
-                if(ids == null){
-                    GoogleDriveUtil.createFileToDrive(driveService, filename);
-                }else{
-                    GoogleDriveUtil.uploadFileToDrive(driveService, ids.get(0), filename);
-                }
-                counter++;
-                progress.setProgress(counter);
+            String filename = "pocketmanager_all_db.zip";
+            ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
+            if(ids == null){
+                GoogleDriveUtil.createFileToDrive(driveService, filename);
+            }else{
+                GoogleDriveUtil.uploadFileToDrive(driveService, ids.get(0), filename);
             }
+            progress.setProgress(6);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
