@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -65,8 +66,7 @@ public class AddOrEditActivity extends AppCompatActivity {
         title.setText("");
         backButton.setOnClickListener(v -> {
             finish();
-        });
-
+        });;
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         Intent intent = getIntent();
@@ -101,7 +101,6 @@ public class AddOrEditActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
-
         inCategories = categoryViewModel.getCategoriesList("收入");
         outCategories = categoryViewModel.getCategoriesList("支出");
         inCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, inCategories);
@@ -113,9 +112,59 @@ public class AddOrEditActivity extends AppCompatActivity {
         //點進頁面
         if (mode.equals("edit")) {  //edit mode
             if(type.equals("收入")) {
+                if(!inCategories.contains(intent.getStringExtra("Category"))){
+                    inCategories.add(0,intent.getStringExtra("Category"));
+                    inCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, inCategories) {
+                        @Override
+                        public View getDropDownView(int position, View convertView, ViewGroup parent)
+                        {
+                            View v = null;
+                            // If this is the initial dummy entry, make it hidden
+                            if (position == 0) {
+                                TextView tv = new TextView(getContext());
+                                tv.setHeight(0);
+                                tv.setVisibility(View.GONE);
+                                v = tv;
+                            }
+                            else {
+                                // Pass convertView as null to prevent reuse of special case views
+                                v = super.getDropDownView(position, null, parent);
+                            }
+                            // Hide scroll bar because it appears sometimes unnecessarily, this does not prevent scrolling
+                            parent.setVerticalScrollBarEnabled(false);
+                            return v;
+                        }
+                    };
+                    inCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                }
                 categoryPicker.setAdapter(inCategoryAdapter);
                 categoryPicker.setSelection(inCategories.indexOf(intent.getStringExtra("Category")));
             } else if(type.equals("支出")) {
+                if(!outCategories.contains(intent.getStringExtra("Category"))){
+                    outCategories.add(0,intent.getStringExtra("Category"));
+                    outCategoryAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, outCategories) {
+                        @Override
+                        public View getDropDownView(int position, View convertView, ViewGroup parent)
+                        {
+                            View v = null;
+                            // If this is the initial dummy entry, make it hidden
+                            if (position == 0) {
+                                TextView tv = new TextView(getContext());
+                                tv.setHeight(0);
+                                tv.setVisibility(View.GONE);
+                                v = tv;
+                            }
+                            else {
+                                // Pass convertView as null to prevent reuse of special case views
+                                v = super.getDropDownView(position, null, parent);
+                            }
+                            // Hide scroll bar because it appears sometimes unnecessarily, this does not prevent scrolling
+                            parent.setVerticalScrollBarEnabled(false);
+                            return v;
+                        }
+                    };
+                    outCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                }
                 categoryPicker.setAdapter(outCategoryAdapter);
                 categoryPicker.setSelection(outCategories.indexOf(intent.getStringExtra("Category")));
             }

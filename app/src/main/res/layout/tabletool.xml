@@ -5,14 +5,13 @@
     android:theme="@style/Theme.PocketManager.AppWidgetContainer">
 
 
-
     <Button
         android:id="@+id/appwidget_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:text="收入"
-        android:textColor="@color/blue"/>
+        android:textColor="@color/blue" />
 
     <Button
         android:id="@+id/appwidget_btn2"
@@ -36,37 +35,38 @@
         android:id="@+id/appwidget_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
         android:contentDescription="@string/appwidget_text"
         android:text="本日"
+        android:textColor="@color/blue"
         android:textSize="20dp"
-        android:textStyle="bold|italic"
-        android:textColor="@color/blue"/>
+        android:textStyle="bold|italic" />
 
     <TextView
         android:id="@+id/appwidget_text_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
         android:layout_toRightOf="@id/appwidget_text"
         android:text="10000"
+        android:textColor="@color/blue"
         android:textSize="20dp"
-        android:textStyle="bold|italic"
-        android:textColor="@color/blue"/>
+        android:textStyle="bold|italic" />
+
     <TextView
         android:id="@+id/appwidget_text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/appwidget_text"
-        android:text="本月"
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_toRightOf="@id/appwidget_text_value"
+        android:contentDescription="@string/appwidget_text"
+        android:text="本月"
+        android:textColor="@color/blue"
         android:textSize="20dp"
-        android:textStyle="bold|italic"
-        android:textColor="@color/blue"/>
+        android:textStyle="bold|italic" />
 
     <TextView
         android:id="@+id/appwidget_text2_value"

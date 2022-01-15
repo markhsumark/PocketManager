@@ -54,7 +54,6 @@ public class tabletool extends AppWidgetProvider {
 
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }
-
     }
 
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
@@ -70,6 +69,7 @@ public class tabletool extends AppWidgetProvider {
             Toast.makeText(context, "Income!", Toast.LENGTH_SHORT).show();
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.tabletool);
+            views.setTextViewText(R.id.appwidget_text_value,"本日");
             views.setTextViewText(R.id.appwidget_text,"本日");
             views.setTextColor(R.id.appwidget_text, Color.parseColor("#0072E3"));
             views.setTextViewText(R.id.appwidget_text2,"本月");

@@ -1,21 +1,19 @@
 package com.mark.pocketmanager.Setting;
 
-import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class GoogleDriveUtil {
 
@@ -99,7 +97,6 @@ public class GoogleDriveUtil {
                 driveService.files().get(fileId)
                         .executeMediaAndDownloadTo(outputStream);
                 Log.i("download file context", outputStream.toString());
-
                 outputStream.close();
                 Log.i("download", "finish");
             }
