@@ -198,32 +198,52 @@ public class GoogleDriveService {
         Thread thread = new Thread(() -> {
             progress.setProgress(0);
             int counter = 0;
-            for(String filename: GoogleDriveUtil.dbFileNames) {
-                ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
-                try {
-                    Log.i("download id", ids.get(0));
-                    GoogleDriveUtil.downloadFileFromDrive(driveService, ids.get(0), filename);
-                } catch (NullPointerException e) {
-                    Log.w("restore", "there isn't exist file");
+            if(checkIfIntegrity()){
+                for(String filename: GoogleDriveUtil.dbFileNames) {
+                    ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
+                    try {
+                        Log.i("download id", ids.get(0));
+                        GoogleDriveUtil.downloadFileFromDrive(driveService, ids.get(0), filename);
+                    } catch (NullPointerException e) {
+                        Log.w("restore", "there isn't exist file");
+                    }
+                    counter = counter + 1;
+                    progress.setProgress(counter);
                 }
-                counter = counter + 1;
-                progress.setProgress(counter);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                progress.cancel();
+                Looper.prepare();
+                Toast.makeText(context, "還原完成", Toast.LENGTH_SHORT).show();
+                Looper.loop();
+                accountViewModel.insertAccounts(new Account(-1));
+                accountViewModel.deleteAccounts(new Account(-1));
+            }else{
+                progress.cancel();
+                Looper.prepare();
+                Toast.makeText(context, "雲端資料不完整（終止還原）", Toast.LENGTH_SHORT).show();
+                Looper.loop();
             }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                return;
-            }
-            progress.cancel();
-            Looper.prepare();
-            Toast.makeText(context, "還原完成", Toast.LENGTH_SHORT).show();
-            Looper.loop();
-            accountViewModel.insertAccounts(new Account(-1));
-            accountViewModel.deleteAccounts(new Account(-1));
+
 //                Toast.makeText(context, "雲端資料不完整！（終止還原）", Toast.LENGTH_SHORT).show();
         });
         thread.start();
     }
+    private Boolean checkIfIntegrity(){
+        for(String filename: GoogleDriveUtil.dbFileNames){
+            ArrayList<String> foundedIds =  GoogleDriveUtil.searchFileFromDrive(driveService, filename);
+            if(foundedIds == null) {
+                Log.i("check if integrity", "FALSE");
+                return false;
+            }
+        }
+        Log.w("check if integrity", "TRUE");
+        return true;
+    }
+
     private Boolean isLogIn(Drive drive){
         return drive != null;
     }
