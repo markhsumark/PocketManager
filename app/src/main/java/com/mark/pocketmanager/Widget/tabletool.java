@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -69,7 +70,10 @@ public class tabletool extends AppWidgetProvider {
             Toast.makeText(context, "Income!", Toast.LENGTH_SHORT).show();
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.tabletool);
-            views.setTextViewText(R.id.appwidget_text,"收入");
+            views.setTextViewText(R.id.appwidget_text,"本日");
+            views.setTextColor(R.id.appwidget_text, Color.parseColor("#0072E3"));
+            views.setTextViewText(R.id.appwidget_text2,"本月");
+            views.setTextColor(R.id.appwidget_text2,Color.parseColor("#0072E3"));
             AppWidgetManager.getInstance(context).updateAppWidget(
                     new ComponentName(context, tabletool.class),views);
 
@@ -77,15 +81,21 @@ public class tabletool extends AppWidgetProvider {
             Toast.makeText(context, "Outcome!", Toast.LENGTH_SHORT).show();
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.tabletool);
-            views.setTextViewText(R.id.appwidget_text,"支出");
+            views.setTextViewText(R.id.appwidget_text,"本日");
+            views.setTextColor(R.id.appwidget_text, Color.parseColor("#FF0000"));
+            views.setTextViewText(R.id.appwidget_text2,"本月");
+            views.setTextColor(R.id.appwidget_text2, Color.parseColor("#FF0000"));
             AppWidgetManager.getInstance(context).updateAppWidget(
                     new ComponentName(context, tabletool.class),views);
 
         } else if (strg.equals(intent.getAction())) {
-            Toast.makeText(context, "Graph!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Total!", Toast.LENGTH_SHORT).show();
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.tabletool);
-            views.setTextViewText(R.id.appwidget_text,"圖表");
+            views.setTextViewText(R.id.appwidget_text,"這日");
+            views.setTextColor(R.id.appwidget_text, Color.parseColor("#FF000000"));
+            views.setTextViewText(R.id.appwidget_text2,"上月");
+            views.setTextColor(R.id.appwidget_text2, Color.parseColor("#FF000000"));
             AppWidgetManager.getInstance(context).updateAppWidget(
                     new ComponentName(context, tabletool.class),views);
         };
