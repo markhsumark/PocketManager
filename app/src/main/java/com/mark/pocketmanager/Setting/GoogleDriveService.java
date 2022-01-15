@@ -1,12 +1,16 @@
 package com.mark.pocketmanager.Setting;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -26,6 +30,7 @@ import com.google.api.services.drive.DriveScopes;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 
 public class GoogleDriveService {
 
@@ -35,6 +40,10 @@ public class GoogleDriveService {
 
     private Drive driveService;
 
+//    public ThreadLocal<Integer> threadLocal = new ThreadLocal<Integer>();
+//    GoogleDriveService(){
+//        threadLocal.set(0);
+//    }
 //    return sign in intent
     public Intent getSignInIntent(Activity activity) {
         Log.i("log", "get sign in intent");
@@ -126,8 +135,12 @@ public class GoogleDriveService {
         return accountData;
     }
     public void backUpToDrive(Context context){
+        ProgressDialog progress = createProgressing("備份中...", 6);
         driveService= getDriveService(context);
+        progress.show();
         Thread thr = new Thread(() -> {
+
+            int counter = 0;
             for(String filename: GoogleDriveUtil.dbFileNames){
                 ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
                 if(ids == null){
@@ -135,21 +148,20 @@ public class GoogleDriveService {
                 }else{
                     GoogleDriveUtil.uploadFileToDrive(driveService, ids.get(0), filename);
                 }
+                counter++;
+                progress.setProgress(counter);
+
             }
         });
         thr.start();
-        while(thr.isInterrupted()){
-            Toast.makeText(context, "備份失敗", Toast.LENGTH_SHORT).show();
-        }
     }
     public void deleteAllBackupFromDrive(Context context){
-        driveService= getDriveService(context);
-        if (!isLogIn(driveService)){
-            Toast.makeText(context, "請先登入", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        ProgressDialog progress = createProgressing("刪除資料中...", 6);
+//        Map<String, String> foundedId =  GoogleDriveUtil.checkIsIntegrity(driveService);
         Thread thr = new Thread(() -> {
+//            progress.show();
             for(String filename: GoogleDriveUtil.dbFileNames) {
+                int counter = 0;
                 try {
                     ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
                     for (String s : ids) {
@@ -159,31 +171,31 @@ public class GoogleDriveService {
                 } catch (NullPointerException e) {
                     Log.w("delete id", "there isn't exist file");
                 }
+                counter = counter + 1;
+//                progress.setProgress(counter);
             }
-
         });
         thr.start();
-        while(thr.isInterrupted()){
-            Toast.makeText(context, "刪除失敗", Toast.LENGTH_SHORT).show();
-        }
 
     }
     public void restoreFileFromDrive(Context context){
-        driveService= getDriveService(context);
-        if (!isLogIn(driveService)){
-            Toast.makeText(context, "請先登入", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        SharedPreferences googleDriveData = context.getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
+        ProgressDialog progress = createProgressing("還原資料中...", 6);
+        progress.show();
         Thread thr = new Thread(() -> {
+            int counter = 0;
             for(String filename: GoogleDriveUtil.dbFileNames) {
                 ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
                 try {
                     Log.i("download id", ids.get(0));
                     GoogleDriveUtil.downloadFileFromDrive(driveService, ids.get(0), filename);
                 } catch (NullPointerException e) {
-                    Log.w("delete id", "there isn't exist file");
+                    Log.w("restore", "there isn't exist file");
                 }
+                counter = counter + 1;
+                progress.setProgress(counter);
             }
+//                Toast.makeText(context, "雲端資料不完整！（終止還原）", Toast.LENGTH_SHORT).show();
         });
         thr.start();
     }
@@ -209,5 +221,14 @@ public class GoogleDriveService {
     }
     public Boolean ifConnected(){
         return client != null;
+    }
+
+    private ProgressDialog createProgressing(String title, int maxValue){
+        ProgressDialog progress = SettingFragment.getProgressDialog();
+        progress.setMax(maxValue);
+        progress.setMessage(title);
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setProgress(0);
+        return progress;
     }
 }

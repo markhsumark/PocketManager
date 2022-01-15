@@ -3,6 +3,7 @@ package com.mark.pocketmanager.Setting;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,8 +25,10 @@ import com.mark.pocketmanager.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class SettingFragment extends Fragment {
+    private static ProgressDialog progress;
     private final GoogleDriveService mGDS = new GoogleDriveService();
 
     private SharedPreferences googleDriveData;
@@ -49,6 +52,7 @@ public class SettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         googleDriveData = this.getContext().getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
         settingData = this.getContext().getSharedPreferences("Setting_Data", MODE_PRIVATE);
+        progress = new ProgressDialog(this.getContext());
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
         // INPUTB 是預設的文字
@@ -214,4 +218,12 @@ public class SettingFragment extends Fragment {
         toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.show();
     }
+
+    public static ProgressDialog getProgressDialog(){
+        return progress;
+    }
+    public static SharedPreferences getGoogleDriveData(){
+        return googleDriveData;
+    }
+
 }

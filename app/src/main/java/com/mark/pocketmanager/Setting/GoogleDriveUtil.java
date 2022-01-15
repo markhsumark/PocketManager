@@ -126,7 +126,7 @@ public class GoogleDriveUtil {
     public static ArrayList<String> searchFileFromDrive(Drive driveService, String filename){
         FileList result;
         try {
-            Log.i("searching for :" + filename, "start");
+            Log.i("searching for " + filename, "start");
             result = doFind(driveService, filename);
         } catch (Exception e) {
             Log.e("Error in searchFile", e.getMessage());
