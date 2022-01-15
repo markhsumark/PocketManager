@@ -2,7 +2,6 @@ package com.mark.pocketmanager.Graph;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -446,6 +445,7 @@ public class GraphFragment extends Fragment {
     }
 
     private void monthBarChartShow() {
+        monthBarChart.setTouchEnabled(false);
         monthBarChart.getDescription().setEnabled(false);
         //設置最大值條目，超出之後不會有值
         monthBarChart.setMaxVisibleValueCount(60);
@@ -515,6 +515,7 @@ public class GraphFragment extends Fragment {
     }
 
     private void inBarChartShow() {
+        monthBarChart.setTouchEnabled(false);
         inBarChart.getDescription().setEnabled(false);
         //incomeBarChart.setDescription("收入");
         //設置最大值條目，超出之後不會有值
@@ -580,6 +581,7 @@ public class GraphFragment extends Fragment {
     }
 
     private void outBarChartShow() {
+        monthBarChart.setTouchEnabled(false);
         outBarChart.getDescription().setEnabled(false);
         //設置最大值條目，超出之後不會有值
         outBarChart.setMaxVisibleValueCount(60);
@@ -684,12 +686,13 @@ public class GraphFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull  GraphFragment.incomeGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             holder.category.setText(inCategoryAmountData.get(position).Category);
-            holder.amount.setText(Integer.toString(inCategoryAmountData.get(position).Amount));
+            holder.amount.setText("$ " + Integer.toString(inCategoryAmountData.get(position).Amount));
+            holder.amount.setTextColor(getResources().getColor(R.color.blue));
 
-            holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(GraphFragment.this.getContext(), CategoryGraphActivity.class);
-                startActivity(intent);
-            });
+//            holder.itemView.setOnClickListener(v -> {
+//                Intent intent = new Intent(GraphFragment.this.getContext(), CategoryGraphActivity.class);
+//                startActivity(intent);
+//            });
         }
 
         @Override
@@ -720,16 +723,18 @@ public class GraphFragment extends Fragment {
             return new GraphFragment.expenseGraphAdapter.MyViewHolder(itemView);
         }
 
+
         @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull  GraphFragment.expenseGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             holder.category.setText(outCategoryAmountData.get(position).Category);
-            holder.amount.setText(Integer.toString(outCategoryAmountData.get(position).Amount));
+            holder.amount.setText("$ " + Integer.toString(outCategoryAmountData.get(position).Amount));
+            holder.amount.setTextColor(getResources().getColor(R.color.red));
 
-            holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(GraphFragment.this.getContext(), CategoryGraphActivity.class);
-                startActivity(intent);
-            });
+//            holder.itemView.setOnClickListener(v -> {
+//                Intent intent = new Intent(GraphFragment.this.getContext(), CategoryGraphActivity.class);
+//                startActivity(intent);
+//            });
         }
 
         @Override
