@@ -94,7 +94,7 @@ public class CategoryListActivity extends AppCompatActivity {
         @Override
         public CaAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from((parent.getContext()))
-                    .inflate(R.layout.category_list, parent,false);
+                    .inflate(R.layout.single_category, parent,false);
 
             return new MyViewHolder(itemView);
         }

@@ -304,7 +304,7 @@ public class CategoryGraphActivity extends AppCompatActivity {
         @Override
         public categoryIncomeGraphAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from((parent.getContext()))
-                    .inflate(R.layout.single_record, parent,false);
+                    .inflate(R.layout.single_account, parent,false);
 
             return new categoryIncomeGraphAdapter.MyViewHolder(itemView);
         }
