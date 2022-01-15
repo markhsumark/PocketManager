@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -84,6 +85,7 @@ public class GraphFragment extends Fragment {
     private View inPieChartView, outPieChartView, inBarChartView, outBarChartView;
     private Button monthPicker;
     private TextView noData;
+    private LinearLayout inLayout, outLayout;
 
     public GraphFragment() {
         // Required empty public constructor
@@ -96,18 +98,20 @@ public class GraphFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
         monthPicker = view.findViewById(R.id.monthPicker);
         monthPicker.setText(dateFormat.format(date.getTime()));
+        inLayout = view.findViewById(R.id.inLayout);
+        outLayout = view.findViewById(R.id.outLayout);
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
-        RecyclerView incomeRecyclerView = view.findViewById(R.id.incomeRecyclerView);
-        RecyclerView expenseRecyclerView = view.findViewById(R.id.expenseRecyclerView);
-        inPieChart = view.findViewById(R.id.incomePieChart);
-        outPieChart = view.findViewById(R.id.expensePieChart);
+        RecyclerView incomeRecyclerView = view.findViewById(R.id.inRecyclerView);
+        RecyclerView expenseRecyclerView = view.findViewById(R.id.outRecyclerView);
+        inPieChart = view.findViewById(R.id.inPieChart);
+        outPieChart = view.findViewById(R.id.outPieChart);
         monthBarChart = view.findViewById(R.id.monthBarChart);
-        inBarChart = view.findViewById(R.id.incomeBarChart);
-        outBarChart = view.findViewById(R.id.expenseBarChart);
-        inPieChartView = view.findViewById(R.id.incomePieChart);
-        outPieChartView = view.findViewById(R.id.expensePieChart);
-        inBarChartView = view.findViewById(R.id.incomeBarChart);
-        outBarChartView = view.findViewById(R.id.expenseBarChart);
+        inBarChart = view.findViewById(R.id.inBarChart);
+        outBarChart = view.findViewById(R.id.outBarChart);
+        inPieChartView = view.findViewById(R.id.inPieChart);
+        outPieChartView = view.findViewById(R.id.outPieChart);
+        inBarChartView = view.findViewById(R.id.inBarChart);
+        outBarChartView = view.findViewById(R.id.outBarChart);
         noData = view.findViewById(R.id.noData);
         ImageButton lastMonth = view.findViewById(R.id.lastMonth);
         ImageButton nextMonth = view.findViewById(R.id.nextMonth);
@@ -188,27 +192,10 @@ public class GraphFragment extends Fragment {
         dayAmountLiveData = accountViewModel.getDayAmountsLive(date.get(Calendar.YEAR), date.get(Calendar.MONTH));
         dayAmountLiveData.observe(this.getViewLifecycleOwner(), dayAmounts -> {
             if (dayAmounts.size() == 0) {
-                inPieChartView.setVisibility(View.GONE);
-                outPieChartView.setVisibility(View.GONE);
-                inBarChartView.setVisibility(View.GONE);
-                outBarChartView.setVisibility(View.GONE);
                 toggleButton.setVisibility(View.GONE);
                 monthBarChart.setVisibility(View.GONE);
                 noData.setVisibility(View.VISIBLE);
             } else {
-                if (toggleButton.isChecked()) {
-                    //Toast.makeText(GraphActivity.this, "長條圖模式", Toast.LENGTH_SHORT).show();
-                    inPieChartView.setVisibility(View.GONE);
-                    outPieChartView.setVisibility(View.GONE);
-                    inBarChartView.setVisibility(View.VISIBLE);
-                    outBarChartView.setVisibility(View.VISIBLE);
-                } else {
-                    //Toast.makeText(GraphActivity.this, "圓餅圖模式", Toast.LENGTH_SHORT).show();
-                    inPieChartView.setVisibility(View.VISIBLE);
-                    outPieChartView.setVisibility(View.VISIBLE);
-                    inBarChartView.setVisibility(View.GONE);
-                    outBarChartView.setVisibility(View.GONE);
-                }
                 toggleButton.setVisibility(View.VISIBLE);
                 monthBarChart.setVisibility(View.VISIBLE);
                 noData.setVisibility(View.GONE);
@@ -222,6 +209,20 @@ public class GraphFragment extends Fragment {
         });
         inCategoryAmountLiveData = accountViewModel.getCategoryAmountsLive(date.get(Calendar.YEAR), date.get(Calendar.MONTH), "收入");
         inCategoryAmountLiveData.observe(this.getViewLifecycleOwner(), categoryAmounts -> {
+            if (categoryAmounts.size() == 0) {
+                inLayout.setVisibility(View.GONE);
+            } else {
+                inLayout.setVisibility(View.VISIBLE);
+                if (toggleButton.isChecked()) {
+                    //Toast.makeText(GraphActivity.this, "長條圖模式", Toast.LENGTH_SHORT).show();
+                    inPieChartView.setVisibility(View.GONE);
+                    inBarChartView.setVisibility(View.VISIBLE);
+                } else {
+                    //Toast.makeText(GraphActivity.this, "圓餅圖模式", Toast.LENGTH_SHORT).show();
+                    inPieChartView.setVisibility(View.VISIBLE);
+                    inBarChartView.setVisibility(View.GONE);
+                }
+            }
             inCategoryAmountData = categoryAmounts;
             inPieEntrys = new ArrayList<>();
             inVBarEntrys = new ArrayList<>();
@@ -237,6 +238,20 @@ public class GraphFragment extends Fragment {
         });
         outCategoryAmountLiveData = accountViewModel.getCategoryAmountsLive(date.get(Calendar.YEAR), date.get(Calendar.MONTH), "支出");
         outCategoryAmountLiveData.observe(this.getViewLifecycleOwner(), categoryAmounts -> {
+            if (categoryAmounts.size()==0) {
+                outLayout.setVisibility(View.GONE);
+            } else {
+                outLayout.setVisibility(View.VISIBLE);
+                if (toggleButton.isChecked()) {
+                    //Toast.makeText(GraphActivity.this, "長條圖模式", Toast.LENGTH_SHORT).show();
+                    outPieChartView.setVisibility(View.GONE);
+                    outBarChartView.setVisibility(View.VISIBLE);
+                } else {
+                    //Toast.makeText(GraphActivity.this, "圓餅圖模式", Toast.LENGTH_SHORT).show();
+                    outPieChartView.setVisibility(View.VISIBLE);
+                    outBarChartView.setVisibility(View.GONE);
+                }
+            }
             outCategoryAmountData = categoryAmounts;
             outPieEntrys = new ArrayList<>();
             outBarEntrys = new ArrayList<>();

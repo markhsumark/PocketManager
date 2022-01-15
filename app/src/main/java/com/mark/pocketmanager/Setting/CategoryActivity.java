@@ -5,23 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mark.pocketmanager.Category.Category;
 import com.mark.pocketmanager.Category.CategoryViewModel;
 import com.mark.pocketmanager.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,27 +34,23 @@ public class CategoryActivity extends AppCompatActivity {
     private CategoryViewModel categoryViewModel;
     private LiveData<List<Category>> categoryLiveData = null;
     private String type;
-    private TextView hintTextView;
-
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //Toast.makeText(this, "按下左上角返回鍵", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_page);
+
         type = getIntent().getStringExtra("type");
-        hintTextView = findViewById(R.id.hintTextView);
-        hintTextView.setText(type + "類別");
+        View actionBar = findViewById(R.id.my_actionBar);
+        ImageButton backButton = actionBar.findViewById(R.id.backButton);
+        TextView title = actionBar.findViewById(R.id.title);
+        title.setText(type + "類別");
+        backButton.setOnClickListener(v -> {
+            finish();
+        });
+
         Log.e("size:", Integer.toString(categoryData.size()));
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         categoryLiveData = categoryViewModel.getCategoriesLive(type);
         categoryLiveData.observe(this, categories -> {

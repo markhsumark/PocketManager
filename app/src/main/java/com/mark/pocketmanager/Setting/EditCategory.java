@@ -1,19 +1,18 @@
 package com.mark.pocketmanager.Setting;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.mark.pocketmanager.Category.Category;
 import com.mark.pocketmanager.Category.CategoryViewModel;
@@ -22,31 +21,28 @@ import com.mark.pocketmanager.R;
 public class EditCategory extends AppCompatActivity {
     private Button save, delete;
     private EditText categoryEditText;
-    private TextView hintTextView;
     private CategoryViewModel categoryViewModel;
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //Toast.makeText(this, "按下左上角返回鍵", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_category);
-        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
         Intent intent = getIntent();
         String type = intent.getStringExtra("type");
         int id = intent.getIntExtra("id", 0);
         String category = intent.getStringExtra("category");
-        hintTextView = findViewById(R.id.hintTextView);
-        hintTextView.setText("編輯" + type + "類別");
+
+        View actionBar = findViewById(R.id.my_actionBar);
+        ImageButton backButton = actionBar.findViewById(R.id.backButton);
+        TextView title = actionBar.findViewById(R.id.title);
+        title.setText("編輯" + type + "類別");
+        backButton.setOnClickListener(v -> {
+            finish();
+        });
+
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         categoryEditText = findViewById(R.id.categoryEditText);
         categoryEditText.setText(category);
 

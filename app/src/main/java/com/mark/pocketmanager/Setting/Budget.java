@@ -1,18 +1,16 @@
 package com.mark.pocketmanager.Setting;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.mark.pocketmanager.R;
 
@@ -22,33 +20,29 @@ import com.mark.pocketmanager.R;
 */
 public class Budget extends AppCompatActivity {
     Switch remindSwitch;
-    EditText bugetEdit;
+    EditText budgetEdit;
     Button save;
     SharedPreferences settingData;
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //Toast.makeText(this, "按下左上角返回鍵", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buget);
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        View actionBar = findViewById(R.id.my_actionBar);
+        ImageButton backButton = actionBar.findViewById(R.id.backButton);
+        TextView title = actionBar.findViewById(R.id.title);
+        title.setText("預算設定");
+        backButton.setOnClickListener(v -> {
+            finish();
+        });
 
         settingData = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
-
-        bugetEdit = findViewById(R.id.bugetEdit);
+        budgetEdit = findViewById(R.id.bugetEdit);
         remindSwitch = findViewById(R.id.remindSwitch);
         save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
-            String buget = bugetEdit.getText().toString();
+            String buget = budgetEdit.getText().toString();
             boolean ifRemind = remindSwitch.isChecked();
             if(ifRemind && buget.equals("0")){
                 Toast.makeText(Budget.this ,"預算不得為0", Toast.LENGTH_LONG).show();
@@ -64,6 +58,6 @@ public class Budget extends AppCompatActivity {
             }
         });
         remindSwitch.setChecked(settingData.getBoolean("ifRemind",false));
-        bugetEdit.setText(settingData.getString("buget","0"));
+        budgetEdit.setText(settingData.getString("buget","0"));
     }
 }

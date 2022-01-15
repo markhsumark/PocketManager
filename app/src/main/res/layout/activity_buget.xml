@@ -5,43 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mark.pocketmanager.Setting.Budget">
-    <TextView
-        android:id="@+id/hintTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:text="提醒設定"
-        android:textSize="40dp"
+
+    <include
+        android:id="@+id/my_actionBar"
+        layout="@layout/my_actionbar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:id="@+id/bugetEditBlock"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hintTextView" >
+        app:layout_constraintTop_toBottomOf="@+id/my_actionBar">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
             android:layout_marginStart="10dp"
-            android:text="預算"/>
+            android:text="預算"
+            android:textSize="25dp" />
+
         <EditText
             android:id="@+id/bugetEdit"
             android:layout_width="240dp"
             android:layout_height="60dp"
+            android:layout_marginStart="50dp"
             android:gravity="right|center_vertical"
             android:inputType="number"
-            android:layout_marginStart="50dp"
             android:textSize="30dp" />
-        
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/remindBlock"

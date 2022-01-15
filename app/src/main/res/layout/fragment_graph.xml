@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_left"
-        app:tint="?android:attr/textColor" />
+        app:tint="@color/black" />
 
     <ImageButton
         android:id="@+id/nextMonth"
@@ -36,8 +36,9 @@
         app:layout_constraintBottom_toBottomOf="@+id/lastMonth"
         app:layout_constraintStart_toEndOf="@+id/monthPicker"
         app:layout_constraintTop_toTopOf="@+id/lastMonth"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/arrow_right"
-        app:tint="?android:attr/textColor" />
+        app:tint="@color/black" />
 
     <ToggleButton
         android:id="@+id/chart_toggleButton"
@@ -58,7 +59,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="還沒有資料喔~"
-        android:textColor="@color/midGray" />
+        android:textColor="@color/deepGray"
+        android:visibility="gone" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -88,7 +90,7 @@
             </com.github.mikephil.charting.charts.BarChart>
 
             <LinearLayout
-                android:id="@+id/linearLayout3"
+                android:id="@+id/inLayout"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:layout_marginTop="20dp"
@@ -99,18 +101,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/monthBarChart">
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/incomeBarChart"
+                    android:id="@+id/inBarChart"
                     android:layout_width="180dp"
                     android:layout_height="180dp"
                     android:visibility="gone" />
 
                 <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/incomePieChart"
+                    android:id="@+id/inPieChart"
                     android:layout_width="180dp"
                     android:layout_height="180dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/incomeRecyclerView"
+                    android:id="@+id/inRecyclerView"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1" />
@@ -118,6 +120,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/outLayout"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:layout_marginTop="20dp"
@@ -125,21 +128,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+                app:layout_constraintTop_toBottomOf="@+id/inLayout">
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/expenseBarChart"
+                    android:id="@+id/outBarChart"
                     android:layout_width="180dp"
                     android:layout_height="180dp"
                     android:visibility="gone" />
 
                 <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/expensePieChart"
+                    android:id="@+id/outPieChart"
                     android:layout_width="180dp"
                     android:layout_height="180dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/expenseRecyclerView"
+                    android:id="@+id/outRecyclerView"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1" />

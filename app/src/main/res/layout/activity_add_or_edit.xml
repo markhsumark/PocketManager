@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/my_actionBar"
+        layout="@layout/my_actionbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/inButton"
@@ -28,14 +34,12 @@
         android:id="@+id/inButtonLine"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="5dp"
+        android:layout_height="0dp"
         app:rippleColor="@color/lightGray"
-        app:layout_constraintBottom_toBottomOf="@+id/outButton"
-        app:layout_constraintEnd_toStartOf="@+id/guideline50"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/outButton"
+        app:layout_constraintBottom_toBottomOf="@+id/inButton"
+        app:layout_constraintEnd_toEndOf="@+id/inButton"
+        app:layout_constraintStart_toStartOf="@+id/inButton"
+        app:layout_constraintTop_toTopOf="@+id/inButton"
         app:strokeColor="@color/blue"
         app:strokeWidth="1dp" />
 
@@ -45,7 +49,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:text="支出"
         android:textColor="@color/deepGray"
@@ -53,21 +56,19 @@
         app:backgroundTint="@color/lightGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline50"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/my_actionBar"
         app:strokeColor="@color/midGray"
         app:strokeWidth="1dp" />
     <Button
         android:id="@+id/outButtonLine"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_height="0dp"
         app:rippleColor="@color/lightGray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline50"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/outButton"
+        app:layout_constraintEnd_toEndOf="@+id/outButton"
+        app:layout_constraintStart_toStartOf="@+id/outButton"
+        app:layout_constraintTop_toTopOf="@+id/outButton"
         app:strokeColor="@color/red"
         app:strokeWidth="1dp" />
 

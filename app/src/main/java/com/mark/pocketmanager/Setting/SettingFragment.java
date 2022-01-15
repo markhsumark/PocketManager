@@ -3,6 +3,7 @@ package com.mark.pocketmanager.Setting;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,23 +12,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.common.SignInButton;
 import com.mark.pocketmanager.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class SettingFragment extends Fragment {
     private final GoogleDriveService mGDS = new GoogleDriveService();
 
     private SharedPreferences googleDriveData;
-    Button connectGoogle,autoBackup,income,expenditure,remind, handbutton, handrestore;
+    SignInButton connectGoogle;
+    Button income, expenditure, remind, backup, restore, logOut, account;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch noticeSwitch;
     SharedPreferences settingData;
     Calendar calendar = Calendar.getInstance();
@@ -35,6 +39,8 @@ public class SettingFragment extends Fragment {
     //boolean notification;
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    LinearLayout linearLayout;
+    String userEmail;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,14 +52,19 @@ public class SettingFragment extends Fragment {
         //使用 accountData.getString(INPUTA, INPUTB) 回傳email(String 型態)
         // INPUTA 是keyword,可以是 email, givenName, displayName
         // INPUTB 是預設的文字
-
+        account = view.findViewById(R.id.account);
         connectGoogle = view.findViewById(R.id.connectGoogle);
-
+        linearLayout = view.findViewById(R.id.linearLayout);
+        backupdate = view.findViewById(R.id.backupdate);
+        backupdate.setText("最新備份紀錄:\n"+settingData.getString("backupdate", "沒有備份紀錄"));
         //判斷是否已經登入，若登入則自動點擊連結帳號button
-        if(mGDS.ifConnected() && ifLogInBefore()){
-            //有登入數據，也已經登入
-            String userEmail = googleDriveData.getString("email","已登入");
-            connectGoogle.setText(userEmail);
+        if(ifLogInBefore() && mGDS.ifConnected()){
+            Log.w("auto","已經登入");
+            connectGoogle.setVisibility(View.GONE);
+            account.setVisibility(View.VISIBLE);
+            linearLayout.setVisibility(View.VISIBLE);
+            backupdate.setVisibility(View.VISIBLE);
+            account.setText(userEmail);
         }else if(ifLogInBefore() && !mGDS.ifConnected()){
             //曾經登入過（有email紀錄），但沒有登入數據
             Log.w("auto","自動登入");
@@ -61,58 +72,53 @@ public class SettingFragment extends Fragment {
             startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
         }else{
             Log.w("auto","完全登出");
+            connectGoogle.setVisibility(View.VISIBLE);
+            account.setVisibility(View.GONE);
+            linearLayout.setVisibility(View.GONE);
+            backupdate.setVisibility(View.GONE);
             //登出了（沒有email紀錄），也沒有登入數據
-            connectGoogle.setText("連結帳號");
+            //connectGoogle.setText("連結帳號");
         }
+
         connectGoogle.setOnClickListener(v -> {
             Log.i("ifLogInBefore", ifLogInBefore().toString());
-            if(ifLogInBefore() && mGDS.ifConnected()){
-                mGDS.logOut();
-                mGDS.clearAccountData(googleDriveData);
-                updateIsLogIn(false);
-                Toast.makeText(this.getContext(), "登出", Toast.LENGTH_SHORT).show();
-                connectGoogle.setText("連結帳號");
-            }else {
-                Log.i("onclick", "start sign in");
-                Intent intent = mGDS.getSignInIntent(this.getActivity());
-                startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
-            }
+            Log.i("onclick", "start sign in");
+            Intent intent = mGDS.getSignInIntent(this.getActivity());
+            startActivityForResult(intent, GoogleDriveService.RC_SIGN_IN);
         });
-        backupdate = view.findViewById(R.id.backupdate);
-        backupdate.setText("最新備份紀錄:\n"+settingData.getString("backupdate", "沒有備份紀錄"));
 
-        handbutton = view.findViewById(R.id.handbackup);
-        handbutton.setOnClickListener(v -> {
-            if (!ifLogInBefore()){
-                Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
-            }else {
-                mGDS.backUpToDrive(this.getContext());
-                String now = dateFormat.format(calendar.getTime());
-                backupdate.setText("最新備份紀錄:"+now);
-                SharedPreferences.Editor editor = settingData.edit();
-                editor.putString("backupdate", now);
-                editor.apply();
-            }
+        account.setOnClickListener(v -> {
+            showToast(v.getContext(),"已連結帳號" + userEmail);
         });
-        handrestore = view.findViewById(R.id.handrestore);
-        handrestore.setOnClickListener(v -> {
-            if (!ifLogInBefore()){
-                Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
-            }else {
-                mGDS.restoreFileFromDrive(this.getContext());
-            }
+
+        backup = view.findViewById(R.id.backup);
+        backup.setOnClickListener(v -> {
+            mGDS.backUpToDrive(this.getContext());
+            String now = dateFormat.format(calendar.getTime());
+            backupdate.setText("最新備份紀錄:"+now);
+            SharedPreferences.Editor editor = settingData.edit();
+            editor.putString("backupdate", now);
+            editor.apply();
         });
-        autoBackup = view.findViewById(R.id.autoBackup);
-        autoBackup.setOnClickListener(v -> {
-            if (!ifLogInBefore()){
-                Toast.makeText(this.getContext(), "請先登入", Toast.LENGTH_SHORT).show();
-            }else {
-                mGDS.deleteAllBackupFromDrive(this.getContext());
-            }
-//            Intent intent = new Intent();
-//            intent.setClass(SettingActivity.this, BackUpActivity.class);
-//            startActivity(intent);
+
+        restore = view.findViewById(R.id.restore);
+        restore.setOnClickListener(v -> {
+            mGDS.restoreFileFromDrive(this.getContext());
         });
+
+        logOut = view.findViewById(R.id.logOut);
+        logOut.setOnClickListener(v -> {
+            mGDS.logOut();
+            mGDS.clearAccountData(googleDriveData);
+            updateIsLogIn(false);
+            showToast(this.getContext(),"已登出");
+            //Toast.makeText(this.getContext(), "登出", Toast.LENGTH_SHORT).show();
+            connectGoogle.setVisibility(View.VISIBLE);
+            account.setVisibility(View.GONE);
+            linearLayout.setVisibility(View.GONE);
+            backupdate.setVisibility(View.GONE);
+        });
+
         income = view.findViewById(R.id.income);
         income.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -170,14 +176,20 @@ public class SettingFragment extends Fragment {
 //                    mGDS.backUpToDrive(SettingActivity.this);
 //                    mGDS.restoreFileFromDrive(SettingActivity.this);
                 googleDriveData = mGDS.setAccountData(googleDriveData);
-                String userEmail = googleDriveData.getString("email", "已登入");
-                connectGoogle.setText(userEmail);
-
+                userEmail = googleDriveData.getString("email", "已登入");
+                //connectGoogle.setText(userEmail);
                 updateIsLogIn(true);
-                Toast.makeText(this.getContext(), "已連結帳號" + userEmail, Toast.LENGTH_SHORT).show();
+                showToast(this.getContext(),"已連結帳號" + userEmail);
+                //Toast.makeText(this.getContext(), "已連結帳號" + userEmail, Toast.LENGTH_SHORT).show();
                 Log.i("sign in", "Sign in success");
+                connectGoogle.setVisibility(View.GONE);
+                account.setVisibility(View.VISIBLE);
+                linearLayout.setVisibility(View.VISIBLE);
+                backupdate.setVisibility(View.VISIBLE);
+                account.setText(userEmail);
             } else {
-                Toast.makeText(this.getContext(), "登入失敗", Toast.LENGTH_SHORT).show();
+                showToast(this.getContext(),"登入失敗");
+                //Toast.makeText(this.getContext(), "登入失敗", Toast.LENGTH_SHORT).show();
                 updateIsLogIn(false);
             }
         }
@@ -191,5 +203,15 @@ public class SettingFragment extends Fragment {
     }
     private Boolean ifLogInBefore(){
         return googleDriveData.getBoolean("isLogIn", false);
+    }
+
+    private static Toast toast;
+    public static void showToast(Context context, String msg) {
+        if (toast != null) {
+            toast.cancel();
+            toast = null;
+        }
+        toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

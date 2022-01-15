@@ -18,6 +18,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:src="@color/black" />
+        android:layout_height="0.5dp"
+        android:src="@color/midGray" />
 </LinearLayout>

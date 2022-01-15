@@ -3,21 +3,21 @@ package com.mark.pocketmanager.Home;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -33,42 +33,42 @@ import java.util.Calendar;
 import java.util.List;
 
 public class AddOrEditActivity extends AppCompatActivity {
-    Button inButton, outButton, inButtonLine, outButtonLine;
-    Button datePickButton, timePickButton;
-    Button deleteButton, saveButton, addButton;
-    String mode;
-    Spinner assetPicker, categoryPicker;
-    EditText noteEditor, amountEditor;
-    AccountViewModel accountViewModel;
-    CategoryViewModel categoryViewModel;
-    Calendar calendar = Calendar.getInstance();
+    private Button inButton, outButton, inButtonLine, outButtonLine;
+    private Button datePickButton, timePickButton;
+    private Button deleteButton, saveButton, addButton;
+    private String mode;
+    private Spinner assetPicker, categoryPicker;
+    private EditText noteEditor, amountEditor;
+    private AccountViewModel accountViewModel;
+    private CategoryViewModel categoryViewModel;
+    private Calendar calendar = Calendar.getInstance();
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat time = new SimpleDateFormat("a hh:mm");
-    List<String> assets = Arrays.asList("現金", "帳戶");
-    List<String> types = Arrays.asList("收入", "支出", "轉帳");
-    List<String> inCategories = new ArrayList<>();
-    List<String> outCategories = new ArrayList<>();
-    ArrayAdapter inCategoryAdapter, outCategoryAdapter;
-    String type;
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    private SimpleDateFormat time = new SimpleDateFormat("a hh:mm");
+    private List<String> assets = Arrays.asList("現金", "帳戶");
+    private List<String> types = Arrays.asList("收入", "支出", "轉帳");
+    private List<String> inCategories = new ArrayList<>();
+    private List<String> outCategories = new ArrayList<>();
+    private ArrayAdapter inCategoryAdapter, outCategoryAdapter;
+    private String type;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("");
         setContentView(R.layout.activity_add_or_edit);
+
+        View actionBar = findViewById(R.id.my_actionBar);
+        ImageButton backButton = actionBar.findViewById(R.id.backButton);
+        TextView title = actionBar.findViewById(R.id.title);
+        title.setText("");
+        backButton.setOnClickListener(v -> {
+            finish();
+        });
+
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         mode = intent.getStringExtra("mode");
         inButton = findViewById(R.id.inButton);
@@ -157,9 +157,11 @@ public class AddOrEditActivity extends AppCompatActivity {
 
         addButton.setOnClickListener(v -> {
             if(TextUtils.isEmpty(amountEditor.getText())){
-                Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
+                showToast(v.getContext(),"請輸入金額");
+                //Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
             } else if(amountEditor.getText().toString().startsWith("0") || amountEditor.getText().toString().startsWith("-")){
-                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
+                showToast(v.getContext(),"請輸入合法金額");
+                //Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
             } else{
                 accountViewModel.insertAccounts(new Account(
                         assetPicker.getSelectedItem().toString(),
@@ -248,5 +250,14 @@ public class AddOrEditActivity extends AppCompatActivity {
             inButtonLine.setVisibility(View.GONE);
             outButtonLine.setVisibility(View.VISIBLE);
         }
+    }
+    private static Toast toast;
+    public static void showToast(Context context, String msg) {
+        if (toast != null) {
+            toast.cancel();
+            toast = null;
+        }
+        toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

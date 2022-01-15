@@ -104,13 +104,15 @@
                 tools:layout_editor_absoluteY="84dp" />
         </LinearLayout>
     </LinearLayout>
+
     <TextView
         android:id="@+id/noData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="還沒有資料喔~"
-        android:textColor="@color/midGray"
+        android:textColor="@color/deepGray"
+        android:visibility="gone"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
@@ -133,6 +135,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
         android:src="@android:drawable/ic_menu_revert"
+        android:visibility="gone"
         app:fabCustomSize="60dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -145,6 +148,7 @@
         android:layout_marginStart="15dp"
         android:scaleX="-1"
         android:src="@android:drawable/ic_menu_revert"
+        android:visibility="gone"
         app:fabCustomSize="60dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="@+id/previousStep"
@@ -199,7 +203,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_left"
-        app:tint="?android:attr/textColor" />
+        app:tint="@color/black" />
 
     <ImageButton
         android:id="@+id/nextMonth"
@@ -210,6 +214,6 @@
         app:layout_constraintStart_toEndOf="@+id/monthPicker"
         app:layout_constraintTop_toTopOf="@+id/lastMonth"
         app:srcCompat="@drawable/arrow_right"
-        app:tint="?android:attr/textColor" />
+        app:tint="@color/black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

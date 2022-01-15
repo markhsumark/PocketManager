@@ -6,14 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.mark.pocketmanager.Setting.EditCategory">
 
-    <TextView
-        android:id="@+id/hintTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:text="編輯類別"
-        android:textSize="40dp"
+    <include
+        android:id="@+id/my_actionBar"
+        layout="@layout/my_actionbar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,35 +18,41 @@
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:inputType="text"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hintTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/my_actionBar" />
 
     <Button
         android:id="@+id/save"
         android:layout_width="0dp"
         android:layout_height="48dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:text="儲存"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guidelineAdd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDelete"
         app:layout_constraintTop_toBottomOf="@+id/categoryEditText" />
 
     <Button
         android:id="@+id/deleteButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
         android:text="刪除"
+        app:icon="@drawable/delete_outline"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDelete"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoryEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/categoryEditText"
+        app:strokeColor="@color/black"
+        app:strokeWidth="1dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineDelete"
@@ -59,10 +61,4 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.4" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.6" />
 </androidx.constraintlayout.widget.ConstraintLayout>

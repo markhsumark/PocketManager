@@ -6,14 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.mark.pocketmanager.Setting.CategoryActivity">
 
-    <TextView
-        android:id="@+id/hintTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:text="類別"
-        android:textSize="40dp"
+    <include
+        android:id="@+id/my_actionBar"
+        layout="@layout/my_actionbar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,10 +30,9 @@
         android:id="@+id/categoryRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hintTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/my_actionBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
