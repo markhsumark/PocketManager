@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -27,10 +26,11 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import com.mark.pocketmanager.Account.Account;
+import com.mark.pocketmanager.Account.AccountViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 
 public class GoogleDriveService {
 
@@ -178,7 +178,7 @@ public class GoogleDriveService {
         thr.start();
 
     }
-    public void restoreFileFromDrive(Context context){
+    public void restoreFileFromDrive(Context context, AccountViewModel accountViewModel){
         SharedPreferences googleDriveData = context.getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
         ProgressDialog progress = createProgressing("還原資料中...", 6);
         progress.show();
@@ -195,6 +195,8 @@ public class GoogleDriveService {
                 counter = counter + 1;
                 progress.setProgress(counter);
             }
+            accountViewModel.insertAccounts(new Account(-1));
+            accountViewModel.deleteAccounts(new Account(-1));
 //                Toast.makeText(context, "雲端資料不完整！（終止還原）", Toast.LENGTH_SHORT).show();
         });
         thr.start();

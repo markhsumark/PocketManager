@@ -19,8 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.common.SignInButton;
+import com.mark.pocketmanager.Account.AccountViewModel;
 import com.mark.pocketmanager.R;
 
 import java.text.SimpleDateFormat;
@@ -103,10 +105,10 @@ public class SettingFragment extends Fragment {
             editor.putString("backupdate", now);
             editor.apply();
         });
-
+        AccountViewModel accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         restore = view.findViewById(R.id.restore);
         restore.setOnClickListener(v -> {
-            mGDS.restoreFileFromDrive(this.getContext());
+            mGDS.restoreFileFromDrive(this.getContext(),accountViewModel);
         });
 
         logOut = view.findViewById(R.id.logOut);
