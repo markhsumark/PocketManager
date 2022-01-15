@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -135,11 +136,13 @@ public class GoogleDriveService {
         return accountData;
     }
     public void backUpToDrive(Context context){
-        ProgressDialog progress = createProgressing("備份中...", 6);
+        ProgressDialog progress = createProgressing("備份資料中...", 6);
         driveService= getDriveService(context);
         progress.show();
+        progress.setCancelable(false);
+        //progress.setCanceledOnTouchOutside(false);
         Thread thr = new Thread(() -> {
-
+            progress.setProgress(0);
             int counter = 0;
             for(String filename: GoogleDriveUtil.dbFileNames){
                 ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
@@ -150,8 +153,16 @@ public class GoogleDriveService {
                 }
                 counter++;
                 progress.setProgress(counter);
-
             }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                return;
+            }
+            progress.cancel();
+            Looper.prepare();
+            Toast.makeText(context, "備份完成", Toast.LENGTH_SHORT).show();
+            Looper.loop();
         });
         thr.start();
     }
@@ -174,6 +185,7 @@ public class GoogleDriveService {
                 counter = counter + 1;
 //                progress.setProgress(counter);
             }
+
         });
         thr.start();
 
@@ -182,7 +194,9 @@ public class GoogleDriveService {
         SharedPreferences googleDriveData = context.getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
         ProgressDialog progress = createProgressing("還原資料中...", 6);
         progress.show();
+        progress.setCancelable(false);
         Thread thr = new Thread(() -> {
+            progress.setProgress(0);
             int counter = 0;
             for(String filename: GoogleDriveUtil.dbFileNames) {
                 ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
@@ -195,6 +209,15 @@ public class GoogleDriveService {
                 counter = counter + 1;
                 progress.setProgress(counter);
             }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                return;
+            }
+            progress.cancel();
+            Looper.prepare();
+            Toast.makeText(context, "還原完成", Toast.LENGTH_SHORT).show();
+            Looper.loop();
             accountViewModel.insertAccounts(new Account(-1));
             accountViewModel.deleteAccounts(new Account(-1));
 //                Toast.makeText(context, "雲端資料不完整！（終止還原）", Toast.LENGTH_SHORT).show();
