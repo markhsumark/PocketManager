@@ -2,6 +2,7 @@ package com.mark.pocketmanager.Setting;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.mark.pocketmanager.Setting.ZipManager.unzip;
 import static com.mark.pocketmanager.Setting.ZipManager.zip;
 
 import android.Manifest;
@@ -42,7 +43,7 @@ public class GoogleDriveService {
     public static final int RC_SIGN_IN = 400;
     private GoogleSignInClient client;
     private GoogleSignInAccount account;
-
+    private String backupDBPath = GoogleDriveUtil.rootPath + "/data/com.mark.pocketmanager/databases";
     private Drive driveService;
 
 //    public ThreadLocal<Integer> threadLocal = new ThreadLocal<Integer>();
@@ -140,12 +141,11 @@ public class GoogleDriveService {
         return accountData;
     }
     public void backUpToDrive(Context context){
-        ProgressDialog progress = createProgressing("備份資料中...", 6);
+        ProgressDialog progress = createProgressing("備份資料中...", 1);
         driveService= getDriveService(context);
         progress.show();
         progress.setCancelable(false);
 
-        String backupDBPath = GoogleDriveUtil.rootPath + "/data/com.mark.pocketmanager/databases";
         final File backupDBFolder = new File(backupDBPath);
         backupDBFolder.mkdirs();
         String[] s = new String[6];
@@ -153,15 +153,11 @@ public class GoogleDriveService {
             final File backupDB = new File(backupDBFolder, GoogleDriveUtil.dbFileNames.get(i));
             s[i]= backupDB.getAbsolutePath();
         }
-
         try{
             zip(s, backupDBPath + "/pocketmanager_all_db.zip");
         }catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
         //progress.setCanceledOnTouchOutside(false);
         Thread thread = new Thread(() -> {
             progress.setProgress(0);
@@ -173,7 +169,7 @@ public class GoogleDriveService {
             }else{
                 GoogleDriveUtil.uploadFileToDrive(driveService, ids.get(0), filename);
             }
-            progress.setProgress(6);
+            progress.setProgress(1);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -212,42 +208,43 @@ public class GoogleDriveService {
     }
     public void restoreFileFromDrive(Context context, AccountViewModel accountViewModel){
         SharedPreferences googleDriveData = context.getSharedPreferences("GoogleDrive_Data", MODE_PRIVATE);
-        ProgressDialog progress = createProgressing("還原資料中...", 6);
+        ProgressDialog progress = createProgressing("還原資料中...", 2);
         progress.show();
         progress.setCancelable(false);
+
         Thread thread = new Thread(() -> {
+            Looper.prepare();
             progress.setProgress(0);
             int counter = 0;
-            if(checkIfIntegrity()){
-                for(String filename: GoogleDriveUtil.dbFileNames) {
-                    ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
-                    try {
-                        Log.i("download id", ids.get(0));
-                        GoogleDriveUtil.downloadFileFromDrive(driveService, ids.get(0), filename);
-                    } catch (NullPointerException e) {
-                        Log.w("restore", "there isn't exist file");
-                    }
-                    counter = counter + 1;
-                    progress.setProgress(counter);
-                }
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    return;
-                }
-                progress.cancel();
-                Looper.prepare();
-                Toast.makeText(context, "還原完成", Toast.LENGTH_SHORT).show();
-                Looper.loop();
-                accountViewModel.insertAccounts(new Account(-1));
-                accountViewModel.deleteAccounts(new Account(-1));
+            String filename = "pocketmanager_all_db.zip";
+            ArrayList<String> ids = GoogleDriveUtil.searchFileFromDrive(driveService, filename);
+            if(ids == null){
+                Toast.makeText(context, "找不到備份", Toast.LENGTH_SHORT).show();
             }else{
-                progress.cancel();
-                Looper.prepare();
-                Toast.makeText(context, "雲端資料不完整（終止還原）", Toast.LENGTH_SHORT).show();
-                Looper.loop();
+                GoogleDriveUtil.downloadFileFromDrive(driveService, ids.get(0), filename);
+                File dbPath = new File(backupDBPath);
+                if (dbPath.canWrite()) {
+                    try {
+                        Toast.makeText(context, "解壓縮中", Toast.LENGTH_SHORT).show();
+                        progress.setProgress(1);
+                        unzip(backupDBPath + "/pocketmanager_all_db.zip", backupDBPath);
+                        progress.setProgress(2);
+                        Toast.makeText(context, "還原完成", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                return;
+            }
+            progress.cancel();
+            accountViewModel.insertAccounts(new Account(-1));
+            accountViewModel.deleteAccounts(new Account(-1));
+            Looper.loop();
 //                Toast.makeText(context, "雲端資料不完整！（終止還原）", Toast.LENGTH_SHORT).show();
         });
         thread.start();
