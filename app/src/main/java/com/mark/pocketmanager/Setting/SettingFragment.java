@@ -126,7 +126,7 @@ public class SettingFragment extends Fragment {
         income.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("type","收入");
-            intent.setClass(this.getContext(), CategoryActivity.class);
+            intent.setClass(this.getContext(), CategoryListActivity.class);
             startActivity(intent);
         });
 
@@ -134,7 +134,7 @@ public class SettingFragment extends Fragment {
         expenditure.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("type","支出");
-            intent.setClass(this.getContext(), CategoryActivity.class);
+            intent.setClass(this.getContext(), CategoryListActivity.class);
             startActivity(intent);
         });
 

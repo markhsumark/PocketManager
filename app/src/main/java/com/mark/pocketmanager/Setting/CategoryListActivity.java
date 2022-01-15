@@ -25,7 +25,7 @@ import com.mark.pocketmanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryActivity extends AppCompatActivity {
+public class CategoryListActivity extends AppCompatActivity {
     FloatingActionButton add;
     private RecyclerView categoryRecyclerView;
     private RecyclerView.LayoutManager caLayoutManager;
@@ -39,7 +39,7 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.category_page);
+        setContentView(R.layout.activity_category_list);
 
         type = getIntent().getStringExtra("type");
         View actionBar = findViewById(R.id.my_actionBar);
@@ -62,7 +62,7 @@ public class CategoryActivity extends AppCompatActivity {
         add.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("type", type);
-            intent.setClass(CategoryActivity.this, AddCategoryActivity.class);
+            intent.setClass(CategoryListActivity.this, CategoryAddActivity.class);
             startActivity(intent);
         });
 
@@ -105,7 +105,7 @@ public class CategoryActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(v -> {
                 Integer id = categoryData.get(position).getId();
                 String category = categoryData.get(position).getCategory();
-                Intent intent = new Intent(CategoryActivity.this, EditCategory.class);
+                Intent intent = new Intent(CategoryListActivity.this, CategoryEditActivity.class);
                 intent.putExtra("type",type);
                 intent.putExtra("category", category);
                 intent.putExtra("id", id);

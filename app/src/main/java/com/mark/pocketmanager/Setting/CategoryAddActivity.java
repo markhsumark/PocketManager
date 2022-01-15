@@ -19,7 +19,7 @@ import com.mark.pocketmanager.Category.Category;
 import com.mark.pocketmanager.Category.CategoryViewModel;
 import com.mark.pocketmanager.R;
 
-public class AddCategoryActivity extends AppCompatActivity {
+public class CategoryAddActivity extends AppCompatActivity {
     private Button save;
     private CategoryViewModel categoryViewModel;
     private EditText categoryEditText;
@@ -28,7 +28,7 @@ public class AddCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_category);
+        setContentView(R.layout.activity_category_add);
 
         Intent intent = getIntent();
         String type = intent.getStringExtra("type");
