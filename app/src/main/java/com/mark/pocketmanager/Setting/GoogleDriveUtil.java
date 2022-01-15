@@ -1,5 +1,6 @@
 package com.mark.pocketmanager.Setting;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
 
@@ -20,8 +21,8 @@ public class GoogleDriveUtil {
 
 
 //    會改為資料庫的路徑
-    private static final String rootPath = Environment.getDataDirectory().getPath();
-    private static final String appFolderRootPath = "/data/com.mark.pocketmanager/databases/";
+    public static final String rootPath = Environment.getDataDirectory().getPath();
+    public static final String appFolderRootPath = "/data/com.mark.pocketmanager/databases/";
     private static final String testFolderRootPath = "/data/com.mark.pocketmanager/shared_prefs/";
 //    會改為DB file name
     public static final List<String> dbFileNames = Arrays.asList(
@@ -29,8 +30,11 @@ public class GoogleDriveUtil {
             "category_database", "category_database-shm", "category_database-wal");
     private static final String testFileName = "Account_Data.xml";
 
-    private static final String mineType = "*/*";
-    private static final String testMineType = "plain/xml";
+    private static final String mimeType = "*/*";
+    private static final String testMimeType = "plain/xml";
+    private static final String zipMimeType = "application/zip";
+
+
 
     private static File createMetadata(String filename){
         File fileMetadata = new File();
@@ -40,7 +44,7 @@ public class GoogleDriveUtil {
     }
     private static FileContent createMediaContent(String filename){
         java.io.File filePath = new java.io.File(rootPath + appFolderRootPath + filename);
-        return new FileContent(mineType, filePath);
+        return new FileContent(mimeType, filePath);
     }
     private static void doCreate(Drive driveService, File metaData, FileContent mediaContent) throws IOException{
         File file = driveService.files().create(metaData, mediaContent)
@@ -77,7 +81,7 @@ public class GoogleDriveUtil {
             //  實際檔案位置
             java.io.File filePath = new java.io.File(rootPath +appFolderRootPath + filename);
             //  設定檔案內容
-            FileContent mediaContent = new FileContent(mineType, filePath);
+            FileContent mediaContent = new FileContent(mimeType, filePath);
             //  新增檔案，要求：檔案資訊和檔案內容
             File file = driveService.files().update(fileId, fileMetadata, mediaContent)
                     .execute();

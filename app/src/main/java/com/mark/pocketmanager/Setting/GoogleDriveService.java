@@ -2,6 +2,8 @@ package com.mark.pocketmanager.Setting;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.mark.pocketmanager.Setting.ZipManager.zip;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -30,6 +32,8 @@ import com.google.api.services.drive.DriveScopes;
 import com.mark.pocketmanager.Account.Account;
 import com.mark.pocketmanager.Account.AccountViewModel;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -140,6 +144,24 @@ public class GoogleDriveService {
         driveService= getDriveService(context);
         progress.show();
         progress.setCancelable(false);
+
+        String backupDBPath = GoogleDriveUtil.rootPath + "/data/com.mark.pocketmanager/databases";
+        final File backupDBFolder = new File(backupDBPath);
+        backupDBFolder.mkdirs();
+        String[] s = new String[6];
+        for(int i = 0; i<GoogleDriveUtil.dbFileNames.size(); i= i+1){
+            final File backupDB = new File(backupDBFolder, GoogleDriveUtil.dbFileNames.get(i));
+            s[i]= backupDB.getAbsolutePath();
+        }
+
+        try{
+            zip(s, backupDBPath + "/pocketmanager_all_db.zip");
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
         //progress.setCanceledOnTouchOutside(false);
         Thread thread = new Thread(() -> {
             progress.setProgress(0);
