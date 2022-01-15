@@ -22,6 +22,7 @@
         android:inputType="text"
         android:textSize="30dp"
         android:gravity="left|bottom"
+        android:hint="輸入類別名稱"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_actionBar" />

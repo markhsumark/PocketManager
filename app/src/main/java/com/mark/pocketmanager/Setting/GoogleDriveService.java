@@ -141,7 +141,7 @@ public class GoogleDriveService {
         progress.show();
         progress.setCancelable(false);
         //progress.setCanceledOnTouchOutside(false);
-        Thread thr = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             progress.setProgress(0);
             int counter = 0;
             for(String filename: GoogleDriveUtil.dbFileNames){
@@ -164,7 +164,7 @@ public class GoogleDriveService {
             Toast.makeText(context, "備份完成", Toast.LENGTH_SHORT).show();
             Looper.loop();
         });
-        thr.start();
+        thread.start();
     }
     public void deleteAllBackupFromDrive(Context context){
 //        ProgressDialog progress = createProgressing("刪除資料中...", 6);
@@ -195,7 +195,7 @@ public class GoogleDriveService {
         ProgressDialog progress = createProgressing("還原資料中...", 6);
         progress.show();
         progress.setCancelable(false);
-        Thread thr = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             progress.setProgress(0);
             int counter = 0;
             for(String filename: GoogleDriveUtil.dbFileNames) {
@@ -222,7 +222,7 @@ public class GoogleDriveService {
             accountViewModel.deleteAccounts(new Account(-1));
 //                Toast.makeText(context, "雲端資料不完整！（終止還原）", Toast.LENGTH_SHORT).show();
         });
-        thr.start();
+        thread.start();
     }
     private Boolean isLogIn(Drive drive){
         return drive != null;
