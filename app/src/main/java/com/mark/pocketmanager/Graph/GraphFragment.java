@@ -515,7 +515,7 @@ public class GraphFragment extends Fragment {
     }
 
     private void inBarChartShow() {
-        monthBarChart.setTouchEnabled(false);
+        inBarChart.setTouchEnabled(false);
         inBarChart.getDescription().setEnabled(false);
         //incomeBarChart.setDescription("收入");
         //設置最大值條目，超出之後不會有值
@@ -581,7 +581,7 @@ public class GraphFragment extends Fragment {
     }
 
     private void outBarChartShow() {
-        monthBarChart.setTouchEnabled(false);
+        outBarChart.setTouchEnabled(false);
         outBarChart.getDescription().setEnabled(false);
         //設置最大值條目，超出之後不會有值
         outBarChart.setMaxVisibleValueCount(60);
