@@ -3,6 +3,7 @@ package com.mark.pocketmanager.Setting;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -98,17 +99,44 @@ public class SettingFragment extends Fragment {
 
         backup = view.findViewById(R.id.backup);
         backup.setOnClickListener(v -> {
-            mGDS.backUpToDrive(this.getContext());
-            String now = dateFormat.format(calendar.getTime());
-            backupdate.setText("最新備份紀錄:"+now);
-            SharedPreferences.Editor editor = settingData.edit();
-            editor.putString("backupdate", now);
-            editor.apply();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+            alertDialog.setTitle("警告");
+            alertDialog.setMessage("確定要進行備份嗎？\n之前的備份將被覆蓋");
+            alertDialog.setPositiveButton("確定",((dialog, which) -> {}));
+            alertDialog.setNeutralButton("取消",((dialog, which) -> {}));
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v2 -> {
+                mGDS.backUpToDrive(this.getContext());
+                String now = dateFormat.format(calendar.getTime());
+                backupdate.setText("最新備份紀錄:"+now);
+                SharedPreferences.Editor editor = settingData.edit();
+                editor.putString("backupdate", now);
+                editor.apply();
+                dialog.dismiss();
+            });
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v2 -> {
+                dialog.dismiss();
+            });
         });
+
         AccountViewModel accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         restore = view.findViewById(R.id.restore);
         restore.setOnClickListener(v -> {
-            mGDS.restoreFileFromDrive(this.getContext(),accountViewModel);
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+            alertDialog.setTitle("警告");
+            alertDialog.setMessage("確定要進行還原嗎？\n目前的紀錄將被覆蓋");
+            alertDialog.setPositiveButton("確定",((dialog, which) -> {}));
+            alertDialog.setNeutralButton("取消",((dialog, which) -> {}));
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v2 -> {
+                mGDS.restoreFileFromDrive(this.getContext(),accountViewModel);
+                dialog.dismiss();
+            });
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v2 -> {
+                dialog.dismiss();
+            });
         });
 
         logOut = view.findViewById(R.id.logOut);
@@ -147,12 +175,6 @@ public class SettingFragment extends Fragment {
             startActivity(intent);
         });
 
-        //preferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
-
-        //boolean Remind = preferences.getBoolean("remind",false);
-        //remindSwitch.setChecked(Remind);
-
-
         noticeSwitch=view.findViewById(R.id.noticeSwitch);
         noticeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             boolean listener = noticeSwitch.isChecked();
@@ -164,12 +186,6 @@ public class SettingFragment extends Fragment {
         noticeSwitch.setChecked(settingData.getBoolean("listener",false));
 
         return view;
-    }
-
-    public void intentBuget(){
-//        Intent intent = new Intent();
-//        intent.setClass(SettingActivity.this, ExpenditureThreshold.class);
-//        startActivity(intent);
     }
 
     @Override
