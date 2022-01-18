@@ -205,13 +205,15 @@ public class AddOrEditActivity extends AppCompatActivity {
         });
 
         addButton.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(amountEditor.getText())){
-                showToast(v.getContext(),"請輸入金額");
-                //Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
-            } else if(amountEditor.getText().toString().startsWith("0") || amountEditor.getText().toString().startsWith("-")){
-                showToast(v.getContext(),"請輸入合法金額");
-                //Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
-            } else{
+            try {
+                Integer.parseInt(amountEditor.getText().toString());
+            }catch (Exception e) {
+                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(Integer.parseInt(amountEditor.getText().toString())<0)
+                Toast.makeText(v.getContext(),"請輸入正整數金額",Toast.LENGTH_SHORT).show();
+            else{
                 accountViewModel.insertAccounts(new Account(
                         assetPicker.getSelectedItem().toString(),
                         type,
@@ -228,11 +230,15 @@ public class AddOrEditActivity extends AppCompatActivity {
 
         //新增OR編輯完成
         saveButton.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(amountEditor.getText())){
-                Toast.makeText(v.getContext(),"請輸入金額",Toast.LENGTH_LONG).show();
-            } else if(amountEditor.getText().toString().startsWith("0") || amountEditor.getText().toString().startsWith("-")){
-                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_LONG).show();
-            } else {
+            try {
+                Integer.parseInt(amountEditor.getText().toString());
+            }catch (Exception e) {
+                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(Integer.parseInt(amountEditor.getText().toString())<0)
+                Toast.makeText(v.getContext(),"請輸入正整數金額",Toast.LENGTH_SHORT).show();
+            else{
                 accountViewModel.updateAccounts(new Account(
                         intent.getIntExtra("Id", 0),
                         assetPicker.getSelectedItem().toString(),
