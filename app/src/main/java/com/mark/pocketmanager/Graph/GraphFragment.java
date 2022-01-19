@@ -526,11 +526,14 @@ public class GraphFragment extends Fragment {
         inBarChart.setDoubleTapToZoomEnabled(false);
         //設置剩餘統計圖的陰影
         inBarChart.setDrawBarShadow(false);
+
         //設置網格佈局
         inBarChart.setDrawGridBackground(true);
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
         //獲取x軸線
         XAxis xAxis = inBarChart.getXAxis();
+        //斜體字
+        xAxis.setLabelRotationAngle(-60);
         //設置x軸的顯示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //設置網格佈局
@@ -596,6 +599,8 @@ public class GraphFragment extends Fragment {
         //通過自定義一個x軸標籤來實現2,015 有分割符符bug
         //獲取x軸線
         XAxis xAxis = outBarChart.getXAxis();
+        //斜體字
+        xAxis.setLabelRotationAngle(-60);
         //設置x軸的顯示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //設置網格佈局
