@@ -35,6 +35,22 @@
         <entry key="..\:/Users/Sean/AndroidStudioProjects/IHAVENOIDEA/app/src/main/res/layout/single_record.xml" value="0.490036231884058" />
         <entry key="..\:/Users/Sean/AndroidStudioProjects/IHAVENOIDEA/app/src/main/res/layout/tabletool.xml" value="0.16742654508611957" />
         <entry key="..\:/Users/Sean/AndroidStudioProjects/IHAVENOIDEA/app/src/main/res/layout/test_google.xml" value="0.490036231884058" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable-v21/app_widget_background.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.565625" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable/account.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable/arrow_left.xml" value="0.565625" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable/back.xml" value="0.565625" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.565625" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable/money.xml" value="0.3463541666666667" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable/notifications.xml" value="0.3463541666666667" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable/restore.xml" value="0.3463541666666667" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable/round.xml" value="0.3463541666666667" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/drawable/setting_icon.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/layout/tabletool.xml" value="0.3302083333333333" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/mipmap-anydpi-v26/sean.xml" value="0.41510416666666666" />
+        <entry key="..\:/Users/Sean/AndroidStudioProjects/PocketManager2/app/src/main/res/mipmap-anydpi-v26/sean_round.xml" value="0.5697916666666667" />
         <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/drawable/edit.xml" value="0.3435185185185185" />
         <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/drawable/round.xml" value="0.16203703703703703" />
         <entry key="..\:/Users/chang/Desktop/Android/PocketManager/app/src/main/res/layout/activity_add_category.xml" value="0.125" />
@@ -104,6 +120,9 @@
         <entry key="app/src/main/res/layout/test_google.xml" value="0.26163723636036146" />
       </map>
     </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/sean_round.xml" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
