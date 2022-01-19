@@ -55,14 +55,14 @@ public class GoogleDriveService {
         Log.i("log", "get sign in intent");
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestScopes(new Scope(DriveScopes.DRIVE_FILE),
-                        new Scope(DriveScopes.DRIVE),
-                        new Scope(DriveScopes.DRIVE_APPDATA),
-                        new Scope(DriveScopes.DRIVE_READONLY),
-                        new Scope(DriveScopes.DRIVE_METADATA),
-                        new Scope(DriveScopes.DRIVE_SCRIPTS),
-                        new Scope(DriveScopes.DRIVE_METADATA_READONLY),
-                        new Scope(DriveScopes.DRIVE_PHOTOS_READONLY))
+//                .requestScopes(new Scope(DriveScopes.DRIVE_FILE),
+//                        new Scope(DriveScopes.DRIVE),
+//                        new Scope(DriveScopes.DRIVE_APPDATA),
+//                        new Scope(DriveScopes.DRIVE_READONLY),
+//                        new Scope(DriveScopes.DRIVE_METADATA),
+//                        new Scope(DriveScopes.DRIVE_SCRIPTS),
+//                        new Scope(DriveScopes.DRIVE_METADATA_READONLY),
+//                        new Scope(DriveScopes.DRIVE_PHOTOS_READONLY))
 //                .requestIdToken("1013631286690-3gfib9ndh7r8t7snq6k98ukc4p814119.apps.googleusercontent.com")
                 .requestProfile()
                 .build();
