@@ -73,13 +73,8 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation 'com.google.android.material:material:1.0.0'
 
-    compileOnly ('org.seleniumhq.selenium:selenium-java:3.141.59')
-    implementation ('io.appium:java-client:7.3.0') {
-        ['org.apache.commons','commons-logging','org.springframework',
-         'junit'].each {
-            exclude group: "$it"
-        }
-        exclude group: "org.seleniumhq.selenium", module: "selenium-api"
-    }
+    compileOnly 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    implementation 'io.appium:java-client:7.3.0'
+
 
 }
