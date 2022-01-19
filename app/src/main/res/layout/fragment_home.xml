@@ -162,6 +162,7 @@
         android:layout_marginBottom="15dp"
         android:autoSizeTextType="uniform"
         android:src="@android:drawable/ic_menu_edit"
+        android:visibility="gone"
         app:fabCustomSize="60dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toTopOf="@+id/adder"
