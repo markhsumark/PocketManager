@@ -25,4 +25,7 @@ public interface CategoryDao {
 
     @Query("SELECT Category FROM Category where Type = :type")
     List<String> getCategoriesList(String type);
+
+    @Query("SELECT Category FROM Category where Category = :category")
+    List<String> getCategory(String category);
 }

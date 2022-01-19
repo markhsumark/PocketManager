@@ -22,6 +22,11 @@ public class CategoryRepository {
         return categoryDao.getCategoriesList(type);
     }
 
+    public List<String> getCategory(String category) {
+        return categoryDao.getCategory(category);
+    }
+
+
     void insertCategories(Category... categories) {
         new InsertAsyncTask(categoryDao).execute(categories);
     }

@@ -48,6 +48,8 @@ public class CategoryAddActivity extends AppCompatActivity {
         save.setOnClickListener(v -> {
             if(TextUtils.isEmpty(categoryEditText.getText())){
                 showToast(v.getContext(),"請輸入類別名稱");
+            } else if(categoryViewModel.getCategory(categoryEditText.getText().toString()).size() != 0){
+                showToast(v.getContext(),"此類別名稱已存在");
             } else{
                 categoryViewModel.insertCategories(new Category(type, categoryEditText.getText().toString()));
                 finish();
