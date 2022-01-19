@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pocket Manager</string>
+    <string name="app_name">記帳小助手</string>
     <string name="round">圓餅圖</string>
     <string name="bar">長條圖</string>
     <string-array name="property_array">
