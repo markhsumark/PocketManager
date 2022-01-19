@@ -23,6 +23,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kal.rackmonthpicker.RackMonthPicker;
 import com.mark.pocketmanager.Account.Account;
 import com.mark.pocketmanager.Account.AccountViewModel;
+import com.mark.pocketmanager.Category.Category;
+import com.mark.pocketmanager.Category.CategoryViewModel;
 import com.mark.pocketmanager.R;
 
 import java.text.SimpleDateFormat;
@@ -54,6 +56,10 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        CategoryViewModel categoryViewModel;
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        categoryViewModel.insertCategories(new Category(-1));
+        categoryViewModel.deleteCategories(new Category(-1));
         ImageButton lastMonth = view.findViewById(R.id.lastMonth);
         ImageButton nextMonth = view.findViewById(R.id.nextMonth);
         inAmount = view.findViewById(R.id.inAmount);
