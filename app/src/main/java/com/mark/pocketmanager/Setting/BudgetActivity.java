@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,20 +44,24 @@ public class BudgetActivity extends AppCompatActivity {
         remindSwitch = findViewById(R.id.remindSwitch);
         Button save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
-            try {
-                Integer.parseInt(budgetEdit.getText().toString());
-            }catch (Exception e) {
-                showToast(v.getContext(),"請輸入合法數字");
-                return;
-            }
-            if(Integer.parseInt(budgetEdit.getText().toString()) < 0)
-                showToast(v.getContext(),"請輸入大於0的數字");
-            else {
-                SharedPreferences.Editor editor = settingData.edit();
-                editor.putInt("budget", Integer.parseInt(budgetEdit.getText().toString()));
-                editor.putBoolean("ifRemind", remindSwitch.isChecked());
-                editor.apply();
-                finish();
+            if(TextUtils.isEmpty(budgetEdit.getText())){
+                showToast(v.getContext(),"請輸入預算");
+            } else{
+                try {
+                    Integer.parseInt(budgetEdit.getText().toString());
+                }catch (Exception e) {
+                    showToast(v.getContext(),"請輸入合法預算");
+                    return;
+                }
+                if(Integer.parseInt(budgetEdit.getText().toString()) < 0){
+                    showToast(v.getContext(),"請輸入大於0的預算");
+                } else {
+                    SharedPreferences.Editor editor = settingData.edit();
+                    editor.putInt("budget", Integer.parseInt(budgetEdit.getText().toString()));
+                    editor.putBoolean("ifRemind", remindSwitch.isChecked());
+                    editor.apply();
+                    finish();
+                }
             }
         });
         remindSwitch.setChecked(settingData.getBoolean("ifRemind",false));
