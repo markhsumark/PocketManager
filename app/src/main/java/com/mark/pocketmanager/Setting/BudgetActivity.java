@@ -1,5 +1,7 @@
 package com.mark.pocketmanager.Setting;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -19,11 +21,12 @@ import com.mark.pocketmanager.R;
     {"budget" : String 預算金額, "ifRemind" : Boolean是否提醒}
 */
 public class BudgetActivity extends AppCompatActivity {
-    Switch remindSwitch;
-    EditText budgetEdit;
-    Button save;
-    SharedPreferences settingData;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch remindSwitch;
+    private EditText budgetEdit;
+    private SharedPreferences settingData;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,31 +36,40 @@ public class BudgetActivity extends AppCompatActivity {
         ImageButton backButton = actionBar.findViewById(R.id.backButton);
         TextView title = actionBar.findViewById(R.id.title);
         title.setText("預算設定");
-        backButton.setOnClickListener(v -> {
-            finish();
-        });
+        backButton.setOnClickListener(v -> finish());
 
         settingData = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
         budgetEdit = findViewById(R.id.budgetEdit);
         remindSwitch = findViewById(R.id.remindSwitch);
-        save = findViewById(R.id.save);
+        Button save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
-            String buget = budgetEdit.getText().toString();
-            boolean ifRemind = remindSwitch.isChecked();
-            if(ifRemind && buget.equals("0")){
-                Toast.makeText(BudgetActivity.this ,"預算不得為0", Toast.LENGTH_LONG).show();
+            try {
+                Integer.parseInt(budgetEdit.getText().toString());
+            }catch (Exception e) {
+                showToast(v.getContext(),"請輸入合法數字");
+                return;
             }
+            if(Integer.parseInt(budgetEdit.getText().toString()) < 0)
+                showToast(v.getContext(),"請輸入大於0的數字");
             else {
-//            Boolean ifRemind = remindSwitch.isChecked();
                 SharedPreferences.Editor editor = settingData.edit();
-                editor.putString("buget", buget);
-                editor.putBoolean("ifRemind", ifRemind);
-//            editor.putBoolean("ifRemind", ifRemind);
+                editor.putInt("budget", Integer.parseInt(budgetEdit.getText().toString()));
+                editor.putBoolean("ifRemind", remindSwitch.isChecked());
                 editor.apply();
                 finish();
             }
         });
         remindSwitch.setChecked(settingData.getBoolean("ifRemind",false));
-        budgetEdit.setText(settingData.getString("buget","0"));
+        budgetEdit.setText(Integer.toString(settingData.getInt("budget",0)));
+    }
+
+    private static Toast toast;
+    public static void showToast(Context context, String msg) {
+        if (toast != null) {
+            toast.cancel();
+            toast = null;
+        }
+        toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

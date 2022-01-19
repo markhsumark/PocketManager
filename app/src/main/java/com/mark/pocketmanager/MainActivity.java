@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-
 import com.google.android.material.tabs.TabLayout;
 import com.mark.pocketmanager.Graph.GraphFragment;
 import com.mark.pocketmanager.Home.HomeFragment;
@@ -18,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
     public static int lastPosition = 0;
 
     @Override
@@ -27,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mViewPager = findViewById(R.id.view_pager);
-
+        ViewPager mViewPager = findViewById(R.id.view_pager);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
@@ -42,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupViewPager(mViewPager);
 
-        mTabLayout = findViewById(R.id.tab_layout);
+        TabLayout mTabLayout = findViewById(R.id.tab_layout);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.getTabAt(0).setIcon(R.drawable.bill_icon);
         mTabLayout.getTabAt(1).setIcon(R.drawable.graph_icon);

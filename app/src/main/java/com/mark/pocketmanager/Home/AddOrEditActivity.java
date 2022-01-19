@@ -5,8 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -53,20 +53,19 @@ public class AddOrEditActivity extends AppCompatActivity {
     private List<String> outCategories = new ArrayList<>();
     private ArrayAdapter inCategoryAdapter, outCategoryAdapter;
     private String type;
+    private SharedPreferences settingData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("");
         setContentView(R.layout.activity_add_or_edit);
-
+        settingData = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
         View actionBar = findViewById(R.id.my_actionBar);
         ImageButton backButton = actionBar.findViewById(R.id.backButton);
         TextView title = actionBar.findViewById(R.id.title);
         title.setText("");
-        backButton.setOnClickListener(v -> {
-            finish();
-        });;
+        backButton.setOnClickListener(v -> finish());
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         Intent intent = getIntent();
@@ -204,15 +203,16 @@ public class AddOrEditActivity extends AppCompatActivity {
             finish();
         });
 
+        //新增完成
         addButton.setOnClickListener(v -> {
             try {
                 Integer.parseInt(amountEditor.getText().toString());
             }catch (Exception e) {
-                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_SHORT).show();
+                showToast(v.getContext(),"請輸入合法數字");
                 return;
             }
             if(Integer.parseInt(amountEditor.getText().toString())<0)
-                Toast.makeText(v.getContext(),"請輸入正整數金額",Toast.LENGTH_SHORT).show();
+                showToast(v.getContext(),"請輸入大於0的數字");
             else{
                 accountViewModel.insertAccounts(new Account(
                         assetPicker.getSelectedItem().toString(),
@@ -225,19 +225,26 @@ public class AddOrEditActivity extends AppCompatActivity {
                 amountEditor.getBackground().clearColorFilter();
                 noteEditor.getBackground().clearColorFilter();
                 finish();
+                if(settingData.getBoolean("ifRemind", false)){
+                    if(accountViewModel.getDayAmount(calendar.get(Calendar.YEAR),
+                            calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.DAY_OF_MONTH),
+                            "支出") >= settingData.getInt("budget",0))
+                        showToast(v.getContext(),"注意！已超過每日預算！");
+                }
             }
         });
 
-        //新增OR編輯完成
+        //編輯完成
         saveButton.setOnClickListener(v -> {
             try {
                 Integer.parseInt(amountEditor.getText().toString());
             }catch (Exception e) {
-                Toast.makeText(v.getContext(),"請輸入合法金額",Toast.LENGTH_SHORT).show();
+                showToast(v.getContext(),"請輸入合法數字");
                 return;
             }
             if(Integer.parseInt(amountEditor.getText().toString())<0)
-                Toast.makeText(v.getContext(),"請輸入正整數金額",Toast.LENGTH_SHORT).show();
+                showToast(v.getContext(),"請輸入大於0的數字");
             else{
                 accountViewModel.updateAccounts(new Account(
                         intent.getIntExtra("Id", 0),
@@ -251,6 +258,13 @@ public class AddOrEditActivity extends AppCompatActivity {
                 amountEditor.getBackground().clearColorFilter();
                 noteEditor.getBackground().clearColorFilter();
                 finish();
+                if(settingData.getBoolean("ifRemind", false)){
+                    if(accountViewModel.getDayAmount(calendar.get(Calendar.YEAR),
+                                                    calendar.get(Calendar.MONTH),
+                                                    calendar.get(Calendar.DAY_OF_MONTH),
+                                                    "支出") >= settingData.getInt("budget",0))
+                        showToast(v.getContext(),"注意！已超過每日預算！");
+                }
             }
         });
     }
