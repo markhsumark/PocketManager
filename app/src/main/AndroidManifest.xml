@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PocketManager">
         <activity
-            android:name=".Setting.Budget"
+            android:name=".Setting.BudgetActivity"
             android:exported="false" />
         <activity
             android:name=".Setting.CategoryEditActivity"

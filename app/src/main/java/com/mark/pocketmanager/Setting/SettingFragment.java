@@ -171,7 +171,7 @@ public class SettingFragment extends Fragment {
         remind = view.findViewById(R.id.remind);
         remind.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.setClass(this.getContext(), Budget.class);
+            intent.setClass(this.getContext(), BudgetActivity.class);
             startActivity(intent);
         });
 

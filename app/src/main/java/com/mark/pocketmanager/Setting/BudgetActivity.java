@@ -18,7 +18,7 @@ import com.mark.pocketmanager.R;
     SharedPpreference's Data:
     {"budget" : String 預算金額, "ifRemind" : Boolean是否提醒}
 */
-public class Budget extends AppCompatActivity {
+public class BudgetActivity extends AppCompatActivity {
     Switch remindSwitch;
     EditText budgetEdit;
     Button save;
@@ -38,14 +38,14 @@ public class Budget extends AppCompatActivity {
         });
 
         settingData = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
-        budgetEdit = findViewById(R.id.bugetEdit);
+        budgetEdit = findViewById(R.id.budgetEdit);
         remindSwitch = findViewById(R.id.remindSwitch);
         save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
             String buget = budgetEdit.getText().toString();
             boolean ifRemind = remindSwitch.isChecked();
             if(ifRemind && buget.equals("0")){
-                Toast.makeText(Budget.this ,"預算不得為0", Toast.LENGTH_LONG).show();
+                Toast.makeText(BudgetActivity.this ,"預算不得為0", Toast.LENGTH_LONG).show();
             }
             else {
 //            Boolean ifRemind = remindSwitch.isChecked();
