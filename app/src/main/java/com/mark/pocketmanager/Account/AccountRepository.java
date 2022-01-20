@@ -52,8 +52,8 @@ public class AccountRepository {
     void deleteAccounts(Account... accounts) {
         new DeleteAsyncTask(accountDao).execute(accounts);
     }
-    void afterCategoryEdit(String old_category, String new_category) {
-        accountDao.afterCategoryEdit(old_category, new_category);
+    void afterCategoryEdit(String type, String old_category, String new_category) {
+        accountDao.afterCategoryEdit(type, old_category, new_category);
     }
     void deleteAllAccounts() {
         new DeleteAllAsyncTask(accountDao).execute();

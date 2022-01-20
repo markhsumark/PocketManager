@@ -64,7 +64,7 @@ public class CategoryEditActivity extends AppCompatActivity {
                     showToast(v.getContext(),"此類別名稱已存在");
                 } else{
                     categoryViewModel.updateCategories(new Category(id, type, categoryEditText.getText().toString()));
-                    accountViewModel.afterCategoryEdit(category, categoryEditText.getText().toString());
+                    accountViewModel.afterCategoryEdit(type, category, categoryEditText.getText().toString());
                     finish();
                 }
             }
