@@ -22,8 +22,8 @@ public class CategoryRepository {
         return categoryDao.getCategoriesList(type);
     }
 
-    public List<String> getCategory(String category) {
-        return categoryDao.getCategory(category);
+    public List<String> getCategory(String type, String category) {
+        return categoryDao.getCategory(type, category);
     }
 
 

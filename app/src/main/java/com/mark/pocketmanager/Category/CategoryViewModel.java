@@ -24,8 +24,8 @@ public class CategoryViewModel extends AndroidViewModel {
         return categoryRepository.getCategoriesList(type);
     }
 
-    public List<String> getCategory(String category) {
-        return categoryRepository.getCategory(category);
+    public List<String> getCategory(String type, String category) {
+        return categoryRepository.getCategory(type, category);
     }
 
     public void insertCategories(Category... categories) {

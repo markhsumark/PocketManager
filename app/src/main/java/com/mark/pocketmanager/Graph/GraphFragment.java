@@ -445,7 +445,7 @@ public class GraphFragment extends Fragment {
     }
 
     private void monthBarChartShow() {
-        monthBarChart.setTouchEnabled(false);
+        //monthBarChart.setTouchEnabled(false);
         monthBarChart.getDescription().setEnabled(false);
         //設置最大值條目，超出之後不會有值
         monthBarChart.setMaxVisibleValueCount(60);

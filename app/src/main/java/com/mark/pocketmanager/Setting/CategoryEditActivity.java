@@ -51,8 +51,11 @@ public class CategoryEditActivity extends AppCompatActivity {
         save.setOnClickListener(v -> {
             if(TextUtils.isEmpty(categoryEditText.getText())){
                 showToast(v.getContext(),"請輸入類別名稱");
-            } else {
-                categoryViewModel.updateCategories(new Category(type, categoryEditText.getText().toString()));
+            } else if(categoryViewModel.getCategory(type, categoryEditText.getText().toString()).size() != 0
+                    && !categoryEditText.getText().toString().equals(category)){
+                showToast(v.getContext(),"此類別名稱已存在");
+            } else{
+                categoryViewModel.updateCategories(new Category(id, type, categoryEditText.getText().toString()));
                 finish();
             }
         });
