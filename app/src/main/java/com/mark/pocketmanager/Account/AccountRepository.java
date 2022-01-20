@@ -43,6 +43,10 @@ public class AccountRepository {
         return accountDao.getMonthAmount(year, month, type);
     }
 
+    public List<Account> getAccountCategory(String type, String category) {
+        return accountDao.getAccountCategory(type, category);
+    }
+
     void insertAccounts(Account... accounts) {
         new InsertAsyncTask(accountDao).execute(accounts);
     }

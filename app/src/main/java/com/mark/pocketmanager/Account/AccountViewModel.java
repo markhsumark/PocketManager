@@ -47,6 +47,10 @@ public class AccountViewModel extends AndroidViewModel {
         accountRepository.afterCategoryEdit(type, old_category, new_category);
     }
 
+    public List<Account> getAccountCategory(String type, String category) {
+        return accountRepository.getAccountCategory(type, category);
+    }
+
     public void insertAccounts(Account... accounts) {
         accountRepository.insertAccounts(accounts);
     }

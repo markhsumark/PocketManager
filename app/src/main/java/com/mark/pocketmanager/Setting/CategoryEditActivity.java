@@ -1,6 +1,7 @@
 package com.mark.pocketmanager.Setting;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,7 +63,24 @@ public class CategoryEditActivity extends AppCompatActivity {
                 //如果輸入不為空也不是一樣的名稱
                 if(categoryViewModel.getCategory(type, categoryEditText.getText().toString()).size() != 0){
                     showToast(v.getContext(),"此類別名稱已存在");
-                } else{
+                } else if(accountViewModel.getAccountCategory(type, categoryEditText.getText().toString()).size() != 0) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                    alertDialog.setTitle("警告");
+                    alertDialog.setMessage("發現有帳目中有相同的類別名稱\n確定要整合兩筆不同類別的資料嗎？");
+                    alertDialog.setPositiveButton("確定",((dialog, which) -> {}));
+                    alertDialog.setNeutralButton("取消",((dialog, which) -> {}));
+                    AlertDialog dialog = alertDialog.create();
+                    dialog.show();
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v2 -> {
+                        categoryViewModel.updateCategories(new Category(id, type, categoryEditText.getText().toString()));
+                        accountViewModel.afterCategoryEdit(type, category, categoryEditText.getText().toString());
+                        finish();
+                        dialog.dismiss();
+                    });
+                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v2 -> {
+                        dialog.dismiss();
+                    });
+                } else {
                     categoryViewModel.updateCategories(new Category(id, type, categoryEditText.getText().toString()));
                     accountViewModel.afterCategoryEdit(type, category, categoryEditText.getText().toString());
                     finish();

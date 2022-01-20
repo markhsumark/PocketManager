@@ -46,4 +46,7 @@ public interface AccountDao {
 
     @Query("SELECT Day, SUM(CASE WHEN Type = '收入' then Amount else - Amount end) as Amount FROM Account WHERE Year = :year AND Month = :month GROUP BY Day")
     LiveData<List<DayAmount>> getDayAmountsLive(int year, int month);
+
+    @Query("select * from Account where Type = :type and Category = :category")
+    List<Account> getAccountCategory(String type, String category);
 }
