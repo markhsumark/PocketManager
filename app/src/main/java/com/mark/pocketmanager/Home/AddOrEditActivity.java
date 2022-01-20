@@ -181,6 +181,12 @@ public class AddOrEditActivity extends AppCompatActivity {
             addButton.setVisibility(View.VISIBLE);
             selectButton(type);
             categoryPicker.setAdapter(outCategoryAdapter);
+        } else if (mode.equals("addByDate")){
+            saveButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
+            addButton.setVisibility(View.VISIBLE);
+            selectButton(type);
+            categoryPicker.setAdapter(outCategoryAdapter);
         }
         //設置type,asset,category綁定的資源，並可於頁面中更改選取的物件
 

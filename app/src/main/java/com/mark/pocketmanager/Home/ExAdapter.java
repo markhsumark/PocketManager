@@ -2,6 +2,7 @@ package com.mark.pocketmanager.Home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,10 +74,17 @@ public class ExAdapter extends RecyclerView.Adapter<ExAdapter.MyViewHolder> {
         time.set(Calendar.YEAR,dataGroupByDay.get(position).get(0).getYear());
         time.set(Calendar.MONTH,dataGroupByDay.get(position).get(0).getMonth());
         time.set(Calendar.DAY_OF_MONTH,dataGroupByDay.get(position).get(0).getDay());
+        holder.itemView.setOnClickListener(v-> {
+            Intent intent = new Intent(context, AddOrEditActivity.class);
+            intent.putExtra("mode", "addByDate");
+            intent.putExtra("Year", dataGroupByDay.get(position).get(0).getYear());
+            intent.putExtra("Month", dataGroupByDay.get(position).get(0).getMonth());
+            intent.putExtra("Day", dataGroupByDay.get(position).get(0).getDay());
+            context.startActivity(intent);
+        });
         holder.date.setText(Integer.toString(time.get(Calendar.DAY_OF_MONTH)));
         holder.dayOfTheWeek.setText(weekDays[time.get(Calendar.DAY_OF_WEEK)-1]);
         holder.yearAndMonth.setText(dateFormat.format(time.getTime()));
-
         holder.dailyInAmount.setText(String.format("$ %d", accountViewModel.getDayAmount(time.get(Calendar.YEAR), time.get(Calendar.MONTH), time.get(Calendar.DAY_OF_MONTH), "收入")));
         holder.dailyOutAmount.setText(String.format("$ %d", accountViewModel.getDayAmount(time.get(Calendar.YEAR), time.get(Calendar.MONTH), time.get(Calendar.DAY_OF_MONTH), "支出")));
         holder.internalRecyclerView.setAdapter(new InAdapter(dataGroupByDay.get(position), context));

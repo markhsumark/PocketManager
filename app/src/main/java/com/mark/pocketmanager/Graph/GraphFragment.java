@@ -691,7 +691,7 @@ public class GraphFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull  GraphFragment.incomeGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             holder.category.setText(inCategoryAmountData.get(position).Category);
-            holder.amount.setText("$ " + Integer.toString(inCategoryAmountData.get(position).Amount));
+            holder.amount.setText("$ " + Long.toString(inCategoryAmountData.get(position).Amount));
             holder.amount.setTextColor(getResources().getColor(R.color.blue));
 
 //            holder.itemView.setOnClickListener(v -> {
@@ -733,7 +733,7 @@ public class GraphFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull  GraphFragment.expenseGraphAdapter.MyViewHolder  holder, @SuppressLint("RecyclerView") int position) {
             holder.category.setText(outCategoryAmountData.get(position).Category);
-            holder.amount.setText("$ " + Integer.toString(outCategoryAmountData.get(position).Amount));
+            holder.amount.setText("$ " + Long.toString(outCategoryAmountData.get(position).Amount));
             holder.amount.setTextColor(getResources().getColor(R.color.red));
 
 //            holder.itemView.setOnClickListener(v -> {

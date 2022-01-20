@@ -1,7 +1,6 @@
 package com.mark.pocketmanager.Account;
 
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Calendar;
@@ -12,7 +11,7 @@ public class Account {
     private int Id;
     private String Asset;
     private String Type;
-    private int Amount;
+    private long Amount;
     private String Category;
     private String SubCategory;
 
@@ -25,7 +24,7 @@ public class Account {
 
     private String Note;
 
-    public Account(String asset, String type, int amount, String category, String subCategory, Calendar time, String note) {
+    public Account(String asset, String type, long amount, String category, String subCategory, Calendar time, String note) {
         Asset = asset;
         Type = type;
         Amount = amount;
@@ -40,7 +39,7 @@ public class Account {
         Note = note;
     }
 
-    public Account(int id, String asset, String type, int amount, String category, String subCategory, Calendar time, String note) {
+    public Account(int id, String asset, String type, long amount, String category, String subCategory, Calendar time, String note) {
         Id = id;
         Asset = asset;
         Type = type;
@@ -71,7 +70,7 @@ public class Account {
     public String getType() {
         return Type;
     }
-    public int getAmount() {
+    public long getAmount() {
         return Amount;
     }
     public String getCategory() {
@@ -99,7 +98,7 @@ public class Account {
     public void setType(String type) {
         Type = type;
     }
-    public void setAmount(int amount) {
+    public void setAmount(long amount) {
         Amount = amount;
     }
     public void setCategory(String category) {
