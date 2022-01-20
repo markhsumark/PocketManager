@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mark.pocketmanager.Account.AccountViewModel;
 import com.mark.pocketmanager.Category.Category;
 import com.mark.pocketmanager.Category.CategoryViewModel;
 import com.mark.pocketmanager.R;
@@ -23,6 +24,7 @@ public class CategoryEditActivity extends AppCompatActivity {
     private Button save, delete;
     private EditText categoryEditText;
     private CategoryViewModel categoryViewModel;
+    private AccountViewModel accountViewModel;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -44,19 +46,27 @@ public class CategoryEditActivity extends AppCompatActivity {
         });
 
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         categoryEditText = findViewById(R.id.categoryEditText);
         categoryEditText.setText(category);
 
         save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(categoryEditText.getText())){
+            if(TextUtils.isEmpty(categoryEditText.getText())) {
+                //如果輸入為空
                 showToast(v.getContext(),"請輸入類別名稱");
-            } else if(categoryViewModel.getCategory(type, categoryEditText.getText().toString()).size() != 0
-                    && !categoryEditText.getText().toString().equals(category)){
-                showToast(v.getContext(),"此類別名稱已存在");
-            } else{
-                categoryViewModel.updateCategories(new Category(id, type, categoryEditText.getText().toString()));
+            } else if(categoryEditText.getText().toString().equals(category)) {
+                //如果是一樣的名稱
                 finish();
+            } else {
+                //如果輸入不為空也不是一樣的名稱
+                if(categoryViewModel.getCategory(type, categoryEditText.getText().toString()).size() != 0){
+                    showToast(v.getContext(),"此類別名稱已存在");
+                } else{
+                    categoryViewModel.updateCategories(new Category(id, type, categoryEditText.getText().toString()));
+                    accountViewModel.afterCategoryEdit(category, categoryEditText.getText().toString());
+                    finish();
+                }
             }
         });
 

@@ -43,6 +43,10 @@ public class AccountViewModel extends AndroidViewModel {
         return accountRepository.getMonthAmount(year, month, type);
     }
 
+    public void afterCategoryEdit(String old_category, String new_category) {
+        accountRepository.afterCategoryEdit(old_category, new_category);
+    }
+
     public void insertAccounts(Account... accounts) {
         accountRepository.insertAccounts(accounts);
     }

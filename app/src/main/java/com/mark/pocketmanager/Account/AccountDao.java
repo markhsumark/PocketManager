@@ -26,6 +26,9 @@ public interface AccountDao {
     @Query("DELETE FROM Account")
     void deleteAllAccounts();
 
+    @Query("UPDATE Account SET Category = :new_category WHERE Category = :old_category")
+    void afterCategoryEdit(String old_category, String new_category);
+
     @Query("SELECT * FROM Account ORDER BY Id DESC")
     LiveData<List<Account>> getAllAccountsLive();
 
