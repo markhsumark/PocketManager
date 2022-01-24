@@ -18,10 +18,12 @@
 6. 輕量且簡易使用
 
 # APP展示
-<img width="186" alt="image" src="https://user-images.githubusercontent.com/51476624/150727253-f15521fa-c154-4f1c-bd2a-88541156cc65.png">
-<img width="289" alt="image" src="https://user-images.githubusercontent.com/51476624/150727307-57672527-d2a2-4a8f-b6fd-7b4333f33140.png">
-<img width="151" alt="image" src="https://user-images.githubusercontent.com/51476624/150727319-56a4e613-b7a9-4243-9553-9b7a6a250a08.png">
-<img width="131" alt="image" src="https://user-images.githubusercontent.com/51476624/150727341-aaccc8b0-522f-4a20-a013-7cd06ce1f12d.png">
+<img width="186" alt="image" src="https://user-images.githubusercontent.com/51476624/150731964-79575c82-8ae4-4be3-bb85-1eb5bc5eacc7.png">
+<img width="289" alt="image" src="https://user-images.githubusercontent.com/51476624/150731974-ae215362-95da-4baf-9609-2d33b24ad4ac.png">
+<img width="289" alt="image" src="https://user-images.githubusercontent.com/51476624/150731984-2cec72bd-8a32-46d7-8ed4-7c794b0e1609.png">
+<img width="299" alt="image" src="https://user-images.githubusercontent.com/51476624/150731992-bd64a6d6-c34a-4e55-873a-bf27200e20c7.png">
+<img width="288" alt="image" src="https://user-images.githubusercontent.com/51476624/150731998-e3c0e092-084d-4e8e-87d3-2d9f8d2ea113.png">
+
 
 # 需求
 android 手機 
