@@ -1,3 +1,4 @@
+# 記帳小助手
 # 簡介
 這是一個給大學生用的記帳軟體
 
@@ -28,11 +29,13 @@ android版本7.1以上
 
 # 建置
 ## 手機體驗
-APP下載連結：https://play.google.com/store/apps/details?id=com.mark.pocketmanager
-或是手機掃描QRCODE
+- APP下載連結：https://play.google.com/store/apps/details?id=com.mark.pocketmanager
+- 手機掃描QRCODE
 <img width="246" alt="image" src="https://user-images.githubusercontent.com/51476624/150726732-7d5d36d6-a764-4e2c-9ba0-88b626991d7f.png">
 
+
 注意：遇到gooogledrive許可的地方，請把所有的格子都打勾
+- google play搜尋「記帳小助手」
 
 APK下載
 下載project目錄中的檔案app-release.apk
