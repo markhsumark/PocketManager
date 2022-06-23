@@ -1,6 +1,5 @@
 # 記帳小助手
-https://medium.com/@tulsa0415/4-ios-3572619f97b6
-
+[https://medium.com/@tulsa0415/4-ios-3572619f97b6](https://medium.com/@tulsa0415/軟工專案-android-app-記帳小助手-46aeedc1acd0)
 # 簡介
 這是一個給大學生用的記帳軟體
 
